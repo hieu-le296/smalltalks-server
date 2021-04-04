@@ -23,18 +23,6 @@ exports.getQuestion = (req, res, next) => {
 };
 
 /**
- * @description     Get single question
- * @route           GET /api/v1/questions/:id
- * @access          Public
- */
-exports.getQuestion = (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    msg: `Show question ${req.params.id}`,
-  });
-};
-
-/**
  * @description     Create new question
  * @route           GET /api/v1/questions
  * @access          Private
@@ -50,8 +38,8 @@ exports.createQuestion = (req, res, next) => {
 
 /**
  * @description     Update the question
- * @route           GET /api/v1/questions/:id
- * @access          Private
+ * @route           PUT /api/v1/questions/:id
+ * @access          Private - Only owner or admin
  */
 exports.updateQuestion = (req, res, next) => {
   res.status(200).json({
@@ -61,6 +49,11 @@ exports.updateQuestion = (req, res, next) => {
   });
 };
 
+/**
+ * @description     Delete the question
+ * @route           DELETE /api/v1/questions/:id
+ * @access          Private - Only owner or admin
+ */
 exports.deleteQuestion = (req, res, next) => {
   res.status(200).json({
     success: true,
