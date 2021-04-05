@@ -1,3 +1,4 @@
+const Question = require('../models/questions');
 const questions = [
   {
     id: 1,
@@ -84,12 +85,20 @@ const questions = [
  * @route           GET /api/v1/questions
  * @access          Public
  */
-exports.getQuestions = (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    data: questions,
-    msg: 'Show all questions',
-  });
+exports.getQuestions = async (req, res, next) => {
+  try {
+    const data = await Question.find();
+    res.status(200).json({
+      success: true,
+      data: data,
+      msg: 'Show all questions',
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      msg: 'Could not fetch questions',
+    });
+  }
 };
 
 /**
