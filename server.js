@@ -8,6 +8,15 @@ const cors = require('cors');
 // Load env configurations
 dotenv.config({ path: './config/config.env' });
 
+const connectDb = require('./config/db');
+
+connectDb.getConnection((err, connection) => {
+  if (err) throw err;
+  console.log(
+    `Connected to database ${process.env.DB_NAME}`.cyan.underline.bold
+  );
+});
+
 const app = express();
 
 // Using body parser
@@ -43,6 +52,6 @@ const server = app.listen(
 process.on('unhandledRejection', (err, promise) => {
   console.log(`Error: ${err.message}`.red);
 
-  // Close server and exit process
-  server.close();
+  // Close server & exit process
+  server.close(() => process.exit(1));
 });
