@@ -25,9 +25,11 @@ if (process.env.NODE_ENV === 'development') {
 // Import route modules
 const questions = require('./routes/questions');
 const users = require('./routes/users');
+const comments = require('./routes/comments');
 
 app.use('/api/v1/questions', questions);
 app.use('/api/v1/users', users);
+app.use('/api/v1/comments', comments);
 
 const PORT = process.env.PORT || 5700;
 

@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 
 const {
   getUserQuestions,
@@ -9,6 +8,8 @@ const {
   updateUser,
   deleteUser,
 } = require('../controllers/users');
+
+const router = express.Router();
 
 router.route('/').get(getUsers).post(createUser);
 

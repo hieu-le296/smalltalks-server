@@ -7,11 +7,29 @@ const questions = [
     createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
     updatedAt: null,
     userId: 1,
-    comments: {
-      ids: [1, 2, 3],
-      commentUserIds: [2, 3, 3],
-      contents: ['MERN', 'MEAN', 'PHP I think!'],
-    },
+    comments: [
+      {
+        id: 1,
+        commentUserId: 2,
+        content: 'MERN',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+      {
+        id: 2,
+        commentUserId: 3,
+        content: 'MEAN',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+      {
+        id: 3,
+        commentUserId: 3,
+        content: 'and PHP I think',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
   },
 
   {
@@ -22,29 +40,42 @@ const questions = [
     createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
     updatedAt: null,
     userId: 2,
-    comments: {
-      ids: [4, 5],
-      commentUserIds: [1, 2],
-      contents: [
-        "I don't know",
-        'UFV announces that they will welcome us back in this Fall',
-      ],
-    },
+    comments: [
+      {
+        id: 4,
+        commentUserId: 1,
+        content: "I don't know",
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+
+      {
+        id: 5,
+        commentUserId: 2,
+        content: 'UFV announces that they will welcome us back in this Fall',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
   },
 
   {
     id: 3,
     title: 'Should I learn React or Angular now?',
+    content: 'As title, anyone can give me an advice, please?',
     createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
     updatedAt: null,
     userId: 1,
-    comments: {
-      ids: [5],
-      commentUserIds: [1],
-      contents: [
-        'Every framework has its pro and const. Take a look here: https://www.sitepoint.com/react-vs-angular/',
-      ],
-    },
+    comments: [
+      {
+        id: 6,
+        commentUserId: 2,
+        content:
+          'Every framework has its pro and const. Take a look here: https://www.sitepoint.com/react-vs-angular/',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
   },
 ];
 

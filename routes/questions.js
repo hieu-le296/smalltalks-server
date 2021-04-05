@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 
 const {
   getQuestions,
@@ -9,6 +8,15 @@ const {
   deleteQuestion,
 } = require('../controllers/questions');
 
+const router = express.Router();
+
+// Include other resource routers
+const commentRouter = require('./comments');
+
+// Re-route into other resource routers
+router.use('/:questionId/comments', commentRouter);
+
+// Mount router
 router.route('/').get(getQuestions).post(createQuestion);
 
 router

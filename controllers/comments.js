@@ -1,13 +1,13 @@
 /**
  * @description     Get all comments that associated with the question
- * @route           GET /api/v1/question/:questionId/comments
+ * @route           GET /api/v1/questions/:questionId/comments
  * @access          Public
  */
 exports.getComments = (req, res, next) => {
   res.status(200).json({
     success: true,
-    data: users,
-    msg: `Show all comments`,
+    data: {},
+    msg: `Show all comments of the question with the id of ${req.params.questionId}`,
   });
 };
 
@@ -19,7 +19,7 @@ exports.getComments = (req, res, next) => {
 exports.getComment = (req, res, next) => {
   res.status(200).json({
     success: true,
-    data: users[req.params.id - 1],
+    data: {},
     msg: `Show single comment detail with the id of ${req.params.id}`,
   });
 };
@@ -29,11 +29,11 @@ exports.getComment = (req, res, next) => {
  * @route           GET /api/v1/questions/:questionId/comments
  * @access          Private - authenticated users
  */
-exports.createComments = (req, res, next) => {
+exports.createComment = (req, res, next) => {
   console.log(req.body);
   res.status(200).json({
     success: true,
-    msg: 'New user successfully created!',
+    msg: 'New comment successfully created!',
     data: req.body,
   });
 };
@@ -57,7 +57,7 @@ exports.updateComment = (req, res, next) => {
  * @route           DELETE /api/v1/comments/:id
  * @access          Private - authenticated users
  */
-exports.deleteUser = (req, res, next) => {
+exports.deleteComment = (req, res, next) => {
   const id = req.params.id;
   res.status(200).json({
     msg: `Comment with the id of ${id} successfully deleted!`,

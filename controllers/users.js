@@ -6,8 +6,32 @@ const users = [
     email: 'john@gmail.com',
     role: 'admin',
     profilePics: 'default.jpeg',
-    questionIds: [1],
-    commentIds: [4, 6],
+    questions: [
+      {
+        questionId: 1,
+        title: 'Why is the best web stack now?',
+        content:
+          'I am starting to study web development. Can someone give me a hint?',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+
+      {
+        questionId: 3,
+        title: 'Should I learn React or Angular now?',
+        content: 'As title, anyone can give me an advice, please?',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
+    comments: [
+      {
+        commentId: 4,
+        content: "I don't know",
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
   },
 
   {
@@ -17,8 +41,39 @@ const users = [
     email: 'hieu@gmail.com',
     role: 'admin',
     profilePics: 'default.jpeg',
-    questionIds: [2],
-    commentIds: [1, 5],
+    questions: [
+      {
+        questionId: 2,
+        title: 'When will go back to UFV soon?',
+        content:
+          'It has been a while we did not go to the campus. I am just wondering when we go back to school?',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
+    comments: [
+      {
+        commentId: 1,
+        content: 'MERN',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+
+      {
+        commentId: 5,
+        content: 'UFV announces that they will welcome us back in this Fall',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+
+      {
+        commentId: 6,
+        content:
+          'Every framework has its pro and const. Take a look here: https://www.sitepoint.com/react-vs-angular/',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
   },
 
   {
@@ -28,8 +83,21 @@ const users = [
     email: 'gurjit@gmail.com',
     role: 'admin',
     profilePics: 'default.jpeg',
-    questionIds: [3],
-    commentIds: [2, 3],
+    questions: [],
+    comments: [
+      {
+        commentId: 2,
+        content: 'MEAN',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+      {
+        commentId: 3,
+        content: 'and PHP I think',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
   },
 ];
 /**
@@ -107,5 +175,6 @@ exports.getUserQuestions = (req, res, next) => {
   res.status(200).json({
     success: true,
     msg: `Show all questions of user id of ${req.params.id}`,
+    data: users[req.params.id - 1].questions,
   });
 };
