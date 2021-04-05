@@ -1,11 +1,46 @@
+const users = [
+  {
+    id: 1,
+    name: 'John Doe',
+    username: 'johndoe',
+    email: 'john@gmail.com',
+    role: 'admin',
+    profilePics: 'default.jpeg',
+    questionIds: [1],
+    commentIds: [4, 6],
+  },
+
+  {
+    id: 2,
+    name: 'Hieu Le',
+    username: 'hieule',
+    email: 'hieu@gmail.com',
+    role: 'admin',
+    profilePics: 'default.jpeg',
+    questionIds: [2],
+    commentIds: [1, 5],
+  },
+
+  {
+    id: 3,
+    name: 'Gurjit Singh',
+    username: 'gurjit',
+    email: 'gurjit@gmail.com',
+    role: 'admin',
+    profilePics: 'default.jpeg',
+    questionIds: [3],
+    commentIds: [2, 3],
+  },
+];
 /**
- * @description     Get all users in
+ * @description     Get all users in admin page
  * @route           GET /api/v1/users
  * @access          Private - access only admin
  */
 exports.getUsers = (req, res, next) => {
   res.status(200).json({
     success: true,
+    data: users,
     msg: `Show all users`,
   });
 };
@@ -18,7 +53,8 @@ exports.getUsers = (req, res, next) => {
 exports.getUser = (req, res, next) => {
   res.status(200).json({
     success: true,
-    msg: `Show user detail ${req.params.id}`,
+    data: users[req.params.id - 1],
+    msg: `Show user detail with the id of ${req.params.id}`,
   });
 };
 
@@ -39,13 +75,13 @@ exports.createUser = (req, res, next) => {
 /**
  * @description     Update the user information
  * @route           PUT /api/v1/users/:id
- * @access          Private
+ * @access          Private - access only admin
  */
 exports.updateUser = (req, res, next) => {
   const id = req.params.id;
   res.status(200).json({
     success: true,
-    msg: `User with the id of ${id} successfully update!`,
+    msg: `User with the id of ${id} successfully updated!`,
     data: req.body,
   });
 };
@@ -53,7 +89,7 @@ exports.updateUser = (req, res, next) => {
 /**
  * @description     Delete the question
  * @route           DELETE /api/v1/users/:id
- * @access          Private
+ * @access          Private - access only admin
  */
 exports.deleteUser = (req, res, next) => {
   const id = req.params.id;
@@ -63,7 +99,7 @@ exports.deleteUser = (req, res, next) => {
 };
 
 /**
- * @description     Get User's all questions
+ * @description     Get User's all questions. This route is for showing on user's public page
  * @route           GET /api/v1/users/:id/questions
  * @access          Public
  */
