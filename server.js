@@ -15,6 +15,7 @@ connectDb.getConnection((err, connection) => {
   console.log(
     `Connected to database ${process.env.DB_NAME}`.cyan.underline.bold
   );
+  connection.release();
 });
 
 const app = express();

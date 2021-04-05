@@ -4,6 +4,9 @@ const connectPool = require('../config/db');
 class Database {
   constructor() {
     this.connectPool = connectPool;
+    this.createTable(UserTable);
+    this.createTable(questionTable);
+    this.createTable(commentTable);
   }
 
   queryDatabase(query, values) {
@@ -29,3 +32,44 @@ class Database {
     return this.queryDatabase(query);
   }
 }
+
+let UserTable = `
+  CREATE TABLE IF NOT EXISTS users(
+    userId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE, 
+    passwd VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') NOT NULL,
+    profilePic VARCHAR(100) DEFAULT 'default.jpeg',
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updateAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) 
+`;
+
+let questionTable = `
+  CREATE TABLE IF NOT EXISTS questions(
+    questionId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    userId INT(11) NOT NULL, 
+    title VARCHAR(250) NOT NULL UNIQUE,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updateAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES users (userId) ON DELETE CASCADE ON UPDATE CASCADE
+)
+`;
+
+let commentTable = `
+  CREATE TABLE IF NOT EXISTS comments(
+    commentsId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    questionId INT(11) NOT NULL,
+    commentUserId INT(11) NOT NULL, 
+    content TEXT NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updateAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (commentUserId) REFERENCES users (userId) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (questionId) REFERENCES questions (questionId) ON DELETE CASCADE ON UPDATE CASCADE
+)
+`;
+
+module.exports = Database;
