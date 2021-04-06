@@ -9,7 +9,7 @@ class Question {
     const query = `
     SELECT q.questionId, q.title, q.content, u.userId, u.username, u.name, q.createdAt, q.updatedAt
     FROM questions q, users u
-    WHERE q.questionId = u.userId`;
+    WHERE q.userId = u.userId`;
 
     const questions = await db.queryDatabase(query, []);
     return Question.convertJSON(questions);
@@ -24,20 +24,33 @@ class Question {
       question.content,
     ]);
     const insertId = result.insertId;
-    const foundQuestion = await Question.findOneById(insertId);
-    console.log(insertId);
+    const foundQuestion = await Question.findById(insertId);
     if (foundQuestion) return Question.convertJSON(foundQuestion);
   }
 
-  static async findOneById(id) {
+  static async findById(id) {
     const db = new Database();
     let query = `
-        SELECT q.questionId, q.title, q.content, u.userId, u.username, u.name, q.createdAt, q.updatedAt
-        FROM questions q, users u
-        WHERE q.questionId = u.userId AND q.questionId = ? `;
+            SELECT q.questionId, q.title, q.content, q.userId, u.username, u.name, q.createdAt, q.updatedAt
+            FROM questions q, users u
+            WHERE q.userId = u.userId AND q.questionId = ?;`;
 
     const questions = await db.queryDatabase(query, [id]);
     return this.convertJSON(questions);
+  }
+
+  static async findByIdAndUpdate(id, question) {
+    const db = new Database();
+    let query = `UPDATE questions SET title = ?, content = ? WHERE questionId = ?`;
+    await db.queryDatabase(query, [question.title, question.content, id]);
+    const updatedQuestion = await Question.findById(id);
+    return Question.convertJSON(updatedQuestion);
+  }
+
+  static async findByIdAndDelete(id) {
+    const db = new Database();
+    let query = `DELETE FROM questions WHERE questionId = ?`;
+    return await db.queryDatabase(query, [id]);
   }
 
   static convertJSON(questions) {
