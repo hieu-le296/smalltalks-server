@@ -29,6 +29,10 @@ class Question {
     };
   }
 
+  /**
+   * Find all questions
+   * @returns questionsData - All questions
+   */
   static async findAll() {
     const db = new Database();
     const query = `
@@ -47,6 +51,11 @@ class Question {
     return questionsData;
   }
 
+  /**
+   * Find single question by Id
+   * @param {id} id of the question
+   * @returns single question
+   */
   static async findById(id) {
     const db = new Database();
     let query = `
@@ -59,6 +68,11 @@ class Question {
     return new Question(questions[0]).data;
   }
 
+  /**
+   * Create a question
+   * @param {question} question is the object
+   * @returns insertId
+   */
   static async create(question) {
     const db = new Database();
     let insertQuery = `INSERT INTO questions(userId, title, content) VALUES(?, ?, ?);`;
@@ -70,12 +84,22 @@ class Question {
     return result.insertId;
   }
 
+  /**
+   * Update a question by Id
+   * @param {id} id of the question
+   * @param {question} question is the object
+   */
   static async findByIdAndUpdate(id, question) {
     const db = new Database();
     let query = `UPDATE questions SET title = ?, content = ? WHERE questionId = ?`;
     await db.queryDatabase(query, [question.title, question.content, id]);
   }
 
+  /**
+   * Delete a question by Id
+   * @param {id} id of the question
+   * @returns {}
+   */
   static async findByIdAndDelete(id) {
     const db = new Database();
     let query = `DELETE FROM questions WHERE questionId = ?`;
