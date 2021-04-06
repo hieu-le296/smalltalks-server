@@ -89,13 +89,16 @@ class Comment {
      */
      static async update(commentData){
 
+
       const {id,content} = commentData;
 
       const db = new Database();
       const query =
           `UPDATE comments SET content = '${content}' WHERE commentId = ?`;
 
-      await db.queryDatabase(query,[id]);
+       await db.queryDatabase(query,[id]);
+
+    
 
       //Return JSON object of new comment to frontend -- including info of user who posted the comment
       return Comment.findOne(id);

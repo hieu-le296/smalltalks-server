@@ -69,14 +69,7 @@ exports.createComment = async(req, res, next) => {
  * @access          Private - authenticated users
  */
 exports.updateComment = async(req, res, next) => {
-
-  /**
-   * Format of data => {
-    "content": "I am testing udpate /put route for comments !"
-    }
-   */
- 
-
+  const id = req.params.id;
 
   req.body.id = req.params.id;
 
