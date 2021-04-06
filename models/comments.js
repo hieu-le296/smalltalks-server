@@ -89,23 +89,17 @@ class Comment {
      */
      static async update(commentData){
 
-      console.log('data :',commentData);
-
       const {id,content} = commentData;
 
       const db = new Database();
+
       const query =
           `UPDATE comments SET content = '${content}' WHERE commentId = ?`;
 
-
-       const data = await db.queryDatabase(query,[id]);
-
-       console.log('response from database = ',data);
-
+       await db.queryDatabase(query,[id]);
   
       //Return JSON object of new comment to frontend -- including info of user who posted the comment
       return Comment.findOne(id);
-
 
   }
 
@@ -123,8 +117,6 @@ class Comment {
 
         //Return JSON object of new comment to frontend -- including info of user who posted the comment
       return true;
-
-    
 
   }
 
