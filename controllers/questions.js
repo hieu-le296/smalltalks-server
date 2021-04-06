@@ -54,16 +54,19 @@ exports.getQuestion = async (req, res, next) => {
  * @access          Private
  */
 exports.createQuestion = async (req, res, next) => {
-  // Add the current logged in user to body => Will do after implementing the authentication
-  // req.body.userId = req.user.id;
-  req.body.userId = 1;
-  const createdQuestion = await Question.create(req.body);
   try {
-    res.status(200).json({
-      success: true,
-      data: createdQuestion,
-      msg: 'Question successfully created!',
-    });
+    // Add the current logged in user to body => Will do after implementing the authentication
+    // req.body.userId = req.user.id;
+    req.body.userId = 1;
+    const insertId = await Question.create(req.body);
+    const foundQuestion = await Question.findById(insertId);
+    if (foundQuestion) {
+      res.status(200).json({
+        success: true,
+        data: foundQuestion,
+        msg: 'Question successfully created!',
+      });
+    } else throw error();
   } catch (error) {
     res.status(400).json({
       success: false,
@@ -88,12 +91,12 @@ exports.updateQuestion = async (req, res, next) => {
         .json({ success: false, msg: `Question is not found` });
 
     // Check if the question author
-    if (question[0].postedBy.userId != req.user) throw new error();
+    if (question.postedBy.userId != req.user) throw new error();
 
-    const updatedQuestion = await Question.findByIdAndUpdate(
-      req.params.id,
-      req.body
-    );
+    await Question.findByIdAndUpdate(req.params.id, req.body);
+
+    const updatedQuestion = await Question.findById(req.params.id);
+    console.log(updatedQuestion);
     res.status(200).json({
       success: true,
       data: updatedQuestion,
@@ -123,7 +126,7 @@ exports.deleteQuestion = async (req, res, next) => {
         .json({ success: false, msg: `Question is not found` });
 
     // Check if the question author
-    if (question[0].postedBy.userId != req.user) throw new error();
+    if (question.postedBy.userId != req.user) throw new error();
 
     await Question.findByIdAndDelete(req.params.id);
     res.status(200).json({
