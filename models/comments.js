@@ -38,11 +38,27 @@ class Comment {
         const commentsData = [];
 
         //Format data for each comment 
-        comments.forEach(comment => {
-            commentsData.push(new Comment(comment).data);
-        });
+        comments.forEach(comment => commentsData.push(new Comment(comment).data));
 
         return commentsData;
+
+    }
+
+    /**
+     * Method to find one comment by id
+     */
+    static async findOne(id){
+        const db = new Database();
+        const query =
+            `SELECT c.commentId, c.commentUserId, u.name, c.content, c.createdAt, c.updatedAt FROM comments c 
+            INNER JOIN users u ON 
+            c.commentUserId = u.userId 
+            WHERE c.commentId = ?`;
+
+        const comment = await db.queryDatabase(query, [id]);
+
+        //Response from database is returned as array - so get the first element/row of array and format it in JSON
+        return new Comment(comment[0]).data;
 
     }
 }

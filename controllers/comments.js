@@ -72,7 +72,7 @@ const comments = {
     ],
   },
 };
-/**
+/** --- DONE --- 
  * @description     Get all comments that associated with the question
  * @route           GET /api/v1/questions/:questionId/comments
  * @access          Public
@@ -90,15 +90,20 @@ exports.getComments = async(req, res, next) => {
   });
 };
 
-/**
+/** ---- DONE ----
  * @description     Get single comment
  * @route           GET /api/v1/comments/:id
  * @access          Public
  */
-exports.getComment = (req, res, next) => {
+exports.getComment = async(req, res, next) => {
+
+  const commentId = req.params.id;
+
+  const comment = await Comment.findOne(commentId);
+
   res.status(200).json({
     success: true,
-    data: {},
+    data: comment,
     msg: `Show single comment detail with the id of ${req.params.id}`,
   });
 };
