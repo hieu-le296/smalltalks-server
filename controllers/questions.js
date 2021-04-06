@@ -1,43 +1,4 @@
 const Question = require('../models/questions');
-const questions = [
-  {
-    id: 1,
-    title: 'Why is the best web stack now?',
-    content:
-      'I am starting to study web development. Can someone give me a hint?',
-    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updatedAt: null,
-    postedBy: {
-      userId: 1,
-      name: 'John Doe',
-    },
-  },
-
-  {
-    id: 2,
-    title: 'When will go back to UFV soon?',
-    content:
-      'It has been a while we did not go to the campus. I am just wondering when we go back to school?',
-    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updatedAt: null,
-    postedBy: {
-      userId: 2,
-      name: 'Hieu Le',
-    },
-  },
-
-  {
-    id: 3,
-    title: 'Should I learn React or Angular now?',
-    content: 'As title, anyone can give me an advice, please?',
-    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updatedAt: null,
-    postedBy: {
-      userId: 1,
-      name: 'John Doe',
-    },
-  },
-];
 
 /**
  * @description     Get All public questions
@@ -46,10 +7,10 @@ const questions = [
  */
 exports.getQuestions = async (req, res, next) => {
   try {
-    const data = await Question.findAll();
+    const questions = await Question.findAll();
     res.status(200).json({
       success: true,
-      data: data,
+      data: questions,
       msg: 'Show all questions',
     });
   } catch (error) {
@@ -65,12 +26,20 @@ exports.getQuestions = async (req, res, next) => {
  * @route           GET /api/v1/questions/:id
  * @access          Public
  */
-exports.getQuestion = (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    data: questions[req.params.id - 1],
-    msg: `Show question ${req.params.id}`,
-  });
+exports.getQuestion = async (req, res, next) => {
+  try {
+    const question = await Question.findOneById(req.params.id);
+    res.status(200).json({
+      success: true,
+      data: question,
+      msg: `Show question ${req.params.id}`,
+    });
+  } catch (error) {
+    res.status(404).json({
+      sucess: false,
+      msg: `Question is not found with the id of ${req.params.id}`,
+    });
+  }
 };
 
 /**
@@ -78,13 +47,23 @@ exports.getQuestion = (req, res, next) => {
  * @route           GET /api/v1/questions
  * @access          Private
  */
-exports.createQuestion = (req, res, next) => {
-  console.log(req.body);
-  res.status(200).json({
-    success: true,
-    msg: 'Question successfully created!',
-    data: req.body,
-  });
+exports.createQuestion = async (req, res, next) => {
+  // Add the current logged in user to body
+  // req.body.userId = req.user.id;
+  req.body.userId = 1;
+  const createdQuestion = await Question.create(req.body);
+  try {
+    res.status(200).json({
+      success: true,
+      data: createdQuestion,
+      msg: 'Question successfully created!',
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      msg: 'Could not create a question!',
+    });
+  }
 };
 
 /**

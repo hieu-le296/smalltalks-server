@@ -61,7 +61,7 @@ let questionTable = `
 
 let commentTable = `
   CREATE TABLE IF NOT EXISTS comments(
-    commentsId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    commentId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     questionId INT(11) NOT NULL,
     commentUserId INT(11) NOT NULL, 
     content TEXT NOT NULL,
