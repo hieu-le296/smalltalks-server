@@ -25,7 +25,7 @@ class Question {
   static async findAll() {
     const db = new Database();
     const query = `
-    SELECT q.questionId, q.title, q.content, u.userId, u.username, q.createdAt, q.updateAt
+    SELECT q.questionId, q.title, q.content, u.userId, u.username, q.createdAt, q.updatedAt
     FROM questions q, users u
     WHERE q.questionId = u.userId`;
 
