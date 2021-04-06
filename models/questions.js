@@ -1,47 +1,57 @@
 const Database = require('../utils/db_query');
 
-class Question {
-  constructor(questionId, userId, title, content, createdAt, updatedAt) {
-    this.userId = userId;
+// This class is for creating the model before CRUD operation
+class QuestionModel {
+  constructor(questionId, title, content) {
+    this.questionId = questionId;
     this.title = title;
     this.content = content;
+  }
+}
+
+// This class is for API JSON return
+class QuestionInfo extends QuestionModel {
+  constructor(questionId, title, content, createdAt, updatedAt, postedBy) {
+    super(questionId, title, content);
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.questionId = questionId;
+    this.postedBy = postedBy;
   }
+}
+
+// This class is used to perform the CRUD operations
+class Question {
+  constructor() {}
   static async findAll() {
     const db = new Database();
-    const query = `SELECT q.questionId, q.userId, q.title, q.content, q.created_at, q.updateAt, u.username, c.commentUserId, c.content, c.createdAt, c.updateAt
-    FROM questions q INNER JOIN 
-    users u ON q.userId = u.userId LEFT join  comments c 
-    ON
-          c.questionId = q.questionId;
-       `;
+    const query = `
+    SELECT q.questionId, q.title, q.content, u.userId, u.username, q.createdAt, q.updateAt
+    FROM questions q, users u
+    WHERE q.questionId = u.userId`;
 
-    const data = await db.queryDatabase(query, []);
+    const questions = await db.queryDatabase(query, []);
+    let questionInfos = [];
+    questions.forEach((question) => {
+      const questionInfo = new QuestionInfo(
+        question.questionId,
+        question.title,
+        question.content,
+        question.createdAt,
+        question.updatedAt,
+        {
+          userId: question.userId,
+          username: question.username,
+        }
+      );
+      questionInfos.push(questionInfo);
+    });
 
-    let comments = [];
-
-    // Loop through comments to have array
-
-    const questions = {
-      questionId: data.questionId,
-      title: data.title,
-      comments: comments
-
-    }
-    console.log(data)
-    // return questions;
-    return true;
+    return questionInfos;
   }
 
-  static async create() {
+  static async create() {}
 
-  }
-
-  static async findByIdAndUpdate(id) {
-
-  }
+  static async findByIdAndUpdate(id) {}
 }
 
 module.exports = Question;

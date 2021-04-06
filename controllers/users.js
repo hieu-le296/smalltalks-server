@@ -9,7 +9,7 @@ const users = [
     questions: [
       {
         questionId: 1,
-        title: 'Why is the best web stack now?',
+        title: 'What is the best web stack now?',
         content:
           'I am starting to study web development. Can someone give me a hint?',
         createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),

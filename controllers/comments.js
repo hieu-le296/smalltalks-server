@@ -1,12 +1,85 @@
+const comments = {
+  questionId: {
+    1: [
+      {
+        commentId: 1,
+        postedBy: {
+          commentUserId: 2,
+          name: 'Hieu Le',
+        },
+        content: 'MERN',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+      {
+        commentId: 2,
+        postedBy: {
+          commentUserId: 3,
+          name: 'Gurjit Singh',
+        },
+        content: 'MEAN',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+      {
+        commentId: 3,
+        postedBy: {
+          commentUserId: 3,
+          name: 'Gurjit Singh',
+        },
+        content: 'and PHP I think',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
+    2: [
+      {
+        commentId: 4,
+        postedBy: {
+          commentUserId: 1,
+          name: 'John Doe',
+        },
+        content: "I don't know",
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+
+      {
+        commentId: 5,
+        postedBy: {
+          commentUserId: 2,
+          name: 'Hieu Le',
+        },
+        content: 'UFV announces that they will welcome us back in this Fall',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
+    3: [
+      {
+        id: 6,
+        postedBy: {
+          commentUserId: 2,
+          name: 'Hieu Le',
+        },
+        content:
+          'Every framework has its pro and const. Take a look here: https://www.sitepoint.com/react-vs-angular/',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        updatedAt: null,
+      },
+    ],
+  },
+};
 /**
  * @description     Get all comments that associated with the question
  * @route           GET /api/v1/questions/:questionId/comments
  * @access          Public
  */
 exports.getComments = (req, res, next) => {
+  console.log(req.params);
   res.status(200).json({
     success: true,
-    data: {},
+    data: comments.questionId[req.params.questionId],
     msg: `Show all comments of the question with the id of ${req.params.questionId}`,
   });
 };

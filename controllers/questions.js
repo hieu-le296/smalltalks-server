@@ -11,42 +11,10 @@ const questions = [
       userId: 1,
       name: 'John Doe',
     },
-    comments: [
-      {
-        commentId: 1,
-        postedBy: {
-          commentUserId: 2,
-          name: 'Hieu Le',
-        },
-        content: 'MERN',
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        updatedAt: null,
-      },
-      {
-        commentId: 2,
-        postedBy: {
-          commentUserId: 3,
-          name: 'Gurjit Singh',
-        },
-        content: 'MEAN',
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        updatedAt: null,
-      },
-      {
-        commentId: 3,
-        postedBy: {
-          commentUserId: 3,
-          name: 'Gurjit Singh',
-        },
-        content: 'and PHP I think',
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        updatedAt: null,
-      },
-    ],
   },
 
   {
-    commentId: 2,
+    id: 2,
     title: 'When will go back to UFV soon?',
     content:
       'It has been a while we did not go to the campus. I am just wondering when we go back to school?',
@@ -56,29 +24,6 @@ const questions = [
       userId: 2,
       name: 'Hieu Le',
     },
-    comments: [
-      {
-        commentId: 4,
-        postedBy: {
-          commentUserId: 1,
-          name: 'John Doe',
-        },
-        content: "I don't know",
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        updatedAt: null,
-      },
-
-      {
-        commentId: 5,
-        postedBy: {
-          commentUserId: 2,
-          name: 'Hieu Le',
-        },
-        content: 'UFV announces that they will welcome us back in this Fall',
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        updatedAt: null,
-      },
-    ],
   },
 
   {
@@ -91,19 +36,6 @@ const questions = [
       userId: 1,
       name: 'John Doe',
     },
-    comments: [
-      {
-        id: 6,
-        postedBy: {
-          commentUserId: 2,
-          name: 'Hieu Le',
-        },
-        content:
-          'Every framework has its pro and const. Take a look here: https://www.sitepoint.com/react-vs-angular/',
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        updatedAt: null,
-      },
-    ],
   },
 ];
 
