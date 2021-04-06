@@ -82,9 +82,30 @@ class Comment {
 
         //Return JSON object of new comment to frontend -- including info of user who posted the comment
         return Comment.findOne(comment.insertId);
-
-
     }
+
+    /**
+     * Method to update a comment for a question
+     */
+     static async update(commentData){
+
+
+      const {id,content} = commentData;
+
+      const db = new Database();
+      const query =
+          `UPDATE comments SET content = '${content}' WHERE commentId = ?`;
+
+       await db.queryDatabase(query,[id]);
+
+    
+
+      //Return JSON object of new comment to frontend -- including info of user who posted the comment
+      return Comment.findOne(id);
+
+
+  }
+
 }
 
 module.exports = Comment;
