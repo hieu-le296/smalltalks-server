@@ -114,7 +114,7 @@ const questions = [
  */
 exports.getQuestions = async (req, res, next) => {
   try {
-    const data = await Question.find();
+    const data = await Question.findAll();
     res.status(200).json({
       success: true,
       data: data,
