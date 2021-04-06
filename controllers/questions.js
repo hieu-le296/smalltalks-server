@@ -1,3 +1,4 @@
+const ThrowError = require('../utils/throwError');
 const Question = require('../models/questions');
 
 /**
@@ -29,17 +30,21 @@ exports.getQuestions = async (req, res, next) => {
 exports.getQuestion = async (req, res, next) => {
   try {
     const question = await Question.findById(req.params.id);
-    if (question.length === 0) throw new error();
+    if (question.length === 0)
+      return next(
+        new ThrowError(`Question not found with id of ${req.params.id}`, 404)
+      );
     res.status(200).json({
       success: true,
       data: question,
       msg: `Show question ${req.params.id}`,
     });
   } catch (error) {
-    res.status(404).json({
-      sucess: false,
-      msg: `Question is not found with the id of ${req.params.id}`,
-    });
+    // res.status(404).json({
+    //   sucess: false,
+    //   msg: `Question is not found with the id of ${req.params.id}`,
+    // });
+    next(new ThrowError(`Question not found with id of ${req.params.id}`, 404));
   }
 };
 

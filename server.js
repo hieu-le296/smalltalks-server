@@ -5,6 +5,9 @@ const morgan = require('morgan');
 const colors = require('colors');
 const cors = require('cors');
 
+// Load middleware
+const errorHandler = require('./middleware/error');
+
 // Load env configurations
 dotenv.config({ path: './config/config.env' });
 
@@ -40,6 +43,8 @@ const comments = require('./routes/comments');
 app.use('/api/v1/questions', questions);
 app.use('/api/v1/users', users);
 app.use('/api/v1/comments', comments);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5700;
 
