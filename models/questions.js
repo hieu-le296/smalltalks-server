@@ -81,7 +81,7 @@ class Question {
       question.title,
       question.content,
     ]);
-    return result.insertId;
+    return result;
   }
 
   /**
