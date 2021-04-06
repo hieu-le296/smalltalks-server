@@ -89,6 +89,7 @@ class Comment {
      */
      static async update(commentData){
 
+      console.log('data :',commentData);
 
       const {id,content} = commentData;
 
@@ -96,13 +97,34 @@ class Comment {
       const query =
           `UPDATE comments SET content = '${content}' WHERE commentId = ?`;
 
-       await db.queryDatabase(query,[id]);
 
-    
+       const data = await db.queryDatabase(query,[id]);
 
+       console.log('response from database = ',data);
+
+  
       //Return JSON object of new comment to frontend -- including info of user who posted the comment
       return Comment.findOne(id);
 
+
+  }
+
+
+  /**
+   * Method to delete a comment for a question
+   */
+  static async delete(commentId){
+
+    const db = new Database();
+    const query =
+        `DELETE FROM comments WHERE commentId = ?`;
+    
+        await db.queryDatabase(query,[commentId]);
+
+        //Return JSON object of new comment to frontend -- including info of user who posted the comment
+      return true;
+
+    
 
   }
 

@@ -87,9 +87,13 @@ exports.updateComment = async(req, res, next) => {
  * @route           DELETE /api/v1/comments/:id
  * @access          Private - authenticated users
  */
-exports.deleteComment = (req, res, next) => {
+exports.deleteComment = async(req, res, next) => {
   const id = req.params.id;
+
+  await Comment.delete(id);
+
   res.status(200).json({
-    msg: `Comment with the id of ${id} successfully deleted!`,
+    success:true,
+    msg: `Comment with the id of ${id} successfully deleted!`
   });
 };
