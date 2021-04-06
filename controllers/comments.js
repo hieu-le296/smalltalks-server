@@ -1,3 +1,5 @@
+
+const Comment = require('../models/comments');
 const comments = {
   questionId: {
     1: [
@@ -75,11 +77,15 @@ const comments = {
  * @route           GET /api/v1/questions/:questionId/comments
  * @access          Public
  */
-exports.getComments = (req, res, next) => {
-  console.log(req.params);
+exports.getComments = async(req, res, next) => {
+ 
+  const questionId = req.params.questionId;
+
+  const questionComments = await Comment.findAll(questionId);
+
   res.status(200).json({
     success: true,
-    data: comments.questionId[req.params.questionId],
+    data: questionComments,
     msg: `Show all comments of the question with the id of ${req.params.questionId}`,
   });
 };
