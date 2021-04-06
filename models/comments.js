@@ -8,7 +8,7 @@ class Comment {
         const { commentId, commentUserId, name, content, createdAt, updatedAt } = comment;
 
         //JSON Object structure for comment
-        this.commentInfo = {
+        this.data = {
             commentId,
             postedBy: {
                 commentUserId,
@@ -39,7 +39,7 @@ class Comment {
 
         //Format data for each comment 
         comments.forEach(comment => {
-            commentsData.push(new Comment(comment));
+            commentsData.push(new Comment(comment).data);
         });
 
         return commentsData;
