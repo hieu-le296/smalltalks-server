@@ -72,7 +72,7 @@ const comments = {
     ],
   },
 };
-/** --- DONE --- 
+/** 
  * @description     Get all comments that associated with the question
  * @route           GET /api/v1/questions/:questionId/comments
  * @access          Public
@@ -90,7 +90,7 @@ exports.getComments = async(req, res, next) => {
   });
 };
 
-/** ---- DONE ----
+/** 
  * @description     Get single comment
  * @route           GET /api/v1/comments/:id
  * @access          Public
@@ -110,15 +110,28 @@ exports.getComment = async(req, res, next) => {
 
 /**
  * @description     Create a question comment
- * @route           GET /api/v1/questions/:questionId/comments
+ * @route           POST /api/v1/questions/:questionId/comments
  * @access          Private - authenticated users
  */
-exports.createComment = (req, res, next) => {
-  console.log(req.body);
+exports.createComment = async(req, res, next) => {
+
+  /**
+   * Format of data =>
+   * 
+   * {
+    "commentUserId": 1,
+    "content":"React + Node is good too!"
+    }
+   */
+  
+  req.body.questionId = req.params.questionId;
+
+  const createdComment = await Comment.create(req.body);
+
   res.status(200).json({
     success: true,
     msg: 'New comment successfully created!',
-    data: req.body,
+    data: createdComment,
   });
 };
 

@@ -57,8 +57,31 @@ class Comment {
 
         const comment = await db.queryDatabase(query, [id]);
 
-        //Response from database is returned as array - so get the first element/row of array and format it in JSON
+    //Response from database is returned as array - so get the first element/row of array and format it in JSON
         return new Comment(comment[0]).data;
+
+    }
+
+    /**
+     * Method to create a comment for a question
+     */
+    static async create(commentData){
+
+        const {questionId,commentUserId,content} = commentData;
+
+        const db = new Database();
+        const query =
+            `INSERT INTO comments (questionId,commentUserId,content) values(?,?,?)`;
+
+        const comment = await db.queryDatabase(query,[
+            questionId,
+            commentUserId,
+            content
+        ]);
+
+        //Return JSON object of new comment to frontend -- including info of user who posted the comment
+        return Comment.findOne(comment.insertId);
+
 
     }
 }
