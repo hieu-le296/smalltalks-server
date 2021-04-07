@@ -57,9 +57,6 @@ exports.createComment = asyncHandler(async(req, res, next) => {
 
   const comment = await Comment.create(req.body);
 
-  if (!comment) return next(new ThrowError('Comment is duplicated!', 400));
-
-
   const foundComment = await Comment.findOne(comment.insertId);
 
   if (!foundComment)
@@ -84,10 +81,6 @@ exports.updateComment = asyncHandler(async(req, res, next) => {
 
   const comment = await Comment.findOne(req.params.id);
 
-  //check if comment exists in the database
-  if (!comment)
-    return next(new ThrowError('Could not find the comment', 404));
-  
   // Check if the question author
   if (comment.postedBy.commentUserId != req.user)
     return next(
@@ -114,10 +107,7 @@ exports.deleteComment = async(req, res, next) => {
 
   const comment = await Comment.findOne(req.params.id);
 
-  //check if comment exists in the database
-  if (!comment)
-    return next(new ThrowError('Could not find the comment', 404));
-  
+
   // Check if the question author
   if (comment.postedBy.commentUserId != req.user)
     return next(
