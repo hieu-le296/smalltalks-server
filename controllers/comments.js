@@ -109,12 +109,25 @@ exports.updateComment = asyncHandler(async(req, res, next) => {
  * @access          Private - authenticated users
  */
 exports.deleteComment = async(req, res, next) => {
-  const id = req.params.id;
+  
+  req.user = 2; // req.user.id will be from authentication later on
 
-  await Comment.delete(id);
+  const comment = await Comment.findOne(req.params.id);
+
+  //check if comment exists in the database
+  if (!comment)
+    return next(new ThrowError('Could not find the comment', 404));
+  
+  // Check if the question author
+  if (comment.postedBy.commentUserId != req.user)
+    return next(
+      new ThrowError('This user is not authorized to delete the question', 404)
+    );
+
+  await Comment.delete(req.params.id);
 
   res.status(200).json({
     success:true,
-    msg: `Comment with the id of ${id} successfully deleted!`
+    msg: `Comment successfully deleted!`
   });
 };
