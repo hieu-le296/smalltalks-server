@@ -1,4 +1,5 @@
-
+const ThrowError = require('../utils/throwError');
+const asyncHandler = require('../middleware/async');
 const Comment = require('../models/comments');
 
 
@@ -43,7 +44,7 @@ exports.getComment = async(req, res, next) => {
  * @route           POST /api/v1/questions/:questionId/comments
  * @access          Private - authenticated users
  */
-exports.createComment = async(req, res, next) => {
+exports.createComment = asyncHandler(async(req, res, next) => {
 
   /**
    * Format of data => {
@@ -54,14 +55,23 @@ exports.createComment = async(req, res, next) => {
   
   req.body.questionId = req.params.questionId;
 
-  const createdComment = await Comment.create(req.body);
+  const comment = await Comment.create(req.body);
 
-  res.status(200).json({
+  if (!comment) return next(new ThrowError('Comment is duplicated!', 400));
+
+
+  const foundComment = await Comment.findOne(comment.insertId);
+
+  if (!foundComment)
+    return next(new ThrowError('Could not create the comment!', 400));
+
+
+  res.status(201).json({
     success: true,
     msg: 'New comment successfully created!',
-    data: createdComment,
+    data: foundComment
   });
-};
+});
 
 /**
  * @description     Update the comment

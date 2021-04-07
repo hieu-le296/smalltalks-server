@@ -59,7 +59,7 @@ class Comment {
         const comment = await db.queryDatabase(query, [id]);
 
     //Response from database is returned as array - so get the first element/row of array and format it in JSON
-        return new Comment(comment[0]).data;
+        return comment;
 
     }
 
@@ -81,7 +81,8 @@ class Comment {
         ]);
 
         //Return JSON object of new comment to frontend -- including info of user who posted the comment
-        return Comment.findOne(comment.insertId);
+        return comment;
+        // return Comment.findOne(comment.insertId);
     }
 
     /**
@@ -94,9 +95,9 @@ class Comment {
       const db = new Database();
 
       const query =
-          `UPDATE comments SET content = '${content}' WHERE commentId = ?`;
+          `UPDATE comments SET content = ? WHERE commentId = ?`;
 
-       await db.queryDatabase(query,[id]);
+       await db.queryDatabase(query,[content,id]);
   
       //Return JSON object of new comment to frontend -- including info of user who posted the comment
       return Comment.findOne(id);
