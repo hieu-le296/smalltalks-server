@@ -1,0 +1,99 @@
+[
+    {   
+        "commentId": 1,
+        "questionId": 1,
+        "commentUserId": 1,
+        "content": "I think React and NodeJs. You can check out the MERN stack."
+    },
+
+    {
+        "commentId": 2,
+        "questionId": 1,
+        "commentUserId": 2,
+        "content": "Have you checked Django? I have been using Django framework and it is great!"
+    },
+
+    {   
+        "commentId": 3,
+        "questionId": 2,
+        "commentUserId": 3,
+        "content": "I think this Fall."
+    },
+
+    {   
+        "commentId": 4,
+        "questionId": 2,
+        "commentUserId": 4,
+        "content": "Yea UFV announces we will return to the campus this Fall."
+    },
+
+    {   
+        "commentId": 5,
+        "questionId": 3,
+        "commentUserId": 2,
+        "content": "For my experience, I would choose Ontario for jobs, but I love BC more because it is beautiful."
+    },
+
+    {   
+        "commentId": 6,
+        "questionId": 4,
+        "commentUserId": 5,
+        "content": "My favourite one is blue."
+    },
+
+    {   
+        "commentId": 7,
+        "questionId": 5,
+        "commentUserId": 1,
+        "content": "I also never see it before, but am curious how it looks!."
+    },
+
+    {   
+        "commentId": 8,
+        "questionId": 6,
+        "commentUserId": 3,
+        "content": "I do not really care haha."
+    },
+
+    {   
+        "commentId": 9,
+        "questionId": 7,
+        "commentUserId": 4,
+        "content": "I would go for Samsung Galaxy S21"
+    },
+
+    {   
+        "commentId": 10,
+        "questionId": 7,
+        "commentUserId": 1,
+        "content": "iPhone is my choice"
+    },
+
+    {   
+        "commentId": 11,
+        "questionId": 8,
+        "commentUserId": 5,
+        "content": "iPhone is much more powerful and supported for a long time, so you should go for iPhone."
+    },
+
+    {   
+        "commentId": 12,
+        "questionId": 4,
+        "commentUserId": 2,
+        "content": "I like all colors lol."
+    },
+
+    {   
+        "commentId": 13,
+        "questionId": 2,
+        "commentUserId": 3,
+        "content": "This Fall for sure."
+    },
+
+    {   
+        "commentId": 14,
+        "questionId": 9,
+        "commentUserId": 4,
+        "content": "Hi, I am from Punbjab, just message me, I will show u where to get it.."
+    }
+]

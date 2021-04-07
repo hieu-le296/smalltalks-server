@@ -1,0 +1,71 @@
+[
+    {
+        "questionId": 1,
+        "userId": 1,
+        "title": "What is the best web stack now?",
+        "content": "I am starting to study web development. Can someone give me a hint?"
+    },
+    
+    {
+        "questionId": 2,
+        "userId": 1,
+        "title": "When will we go back to UFV",
+        "content": "It has been a while. \n I miss UFV!"
+    },
+
+    {
+        "questionId": 3,
+        "userId": 2,
+        "title": "BC vs. Ontario regarding the tech jobs",
+        "content": "Hi, I am about to graduate soon! I want to know whether there are more tech jobs in Ontario. I am living in BC now."
+    },
+
+    {
+        "questionId": 4,
+        "userId": 3,
+        "title": "What’s your favorite color?",
+        "content": "For me, I like blue. How about you, guys?"
+    },
+
+    {
+        "questionId": 5,
+        "userId": 4,
+        "title": "Have you ever seen a UFO?",
+        "content": "I never see it, but would like to know how it looks."
+    },
+
+    {
+        "questionId": 6,
+        "userId": 5,
+        "title": "What’s your all-time favorite quotes?",
+        "content": "\"Think Different\" - from Steve Jobs"
+    },
+
+    {
+        "questionId": 7,
+        "userId": 2,
+        "title": "Can someone give me the advice for my next phone?",
+        "content": "I am going to upgrade my phone. So any advice please"
+    },
+
+    {
+        "questionId": 8,
+        "userId": 4,
+        "title": "iPhone 12 Pro Max vs. Google Pixel 5",
+        "content": "As the title, any advice?"
+    },
+
+    {
+        "questionId": 9,
+        "userId": 3,
+        "title": "Places to get Indian Roti bread.",
+        "content": "I like Indian Roti bread. Can someone show me the best place to get Roti?"
+    },
+
+    {
+        "questionId": 10,
+        "userId": 1,
+        "title": "What are you studying in COMP 351",
+        "content": "I am going to register for COMP 351 in next Fall. Any suggestion?"
+    }
+]

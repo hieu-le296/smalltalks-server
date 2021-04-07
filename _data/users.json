@@ -1,0 +1,64 @@
+[
+    {
+        "userId": 1,
+        "name": "John Doe",
+        "username": "johndoe",
+        "email": "john@gmail.com",
+        "password": "123",
+        "role": "user"
+    },
+
+    {
+        "userId": 2,
+        "name": "Mary Smith",
+        "username": "marysmith2",
+        "email": "mary@gmail.com",
+        "password": "123",
+        "role": "user"
+    },
+
+    {
+        "userId": 3,
+        "name": "Hieu Le",
+        "username": "hieule",
+        "email": "hieu@gmail.com",
+        "password": "123",
+        "role": "admin"
+    },
+
+    {
+        "userId": 4,
+        "name": "Gurjit Singh",
+        "username": "gurjit1",
+        "email": "gurjit@gmail.com",
+        "password": "123",
+        "role": "admin"
+    },
+
+    {
+        "userId": 5,
+        "name": "Jonny Le",
+        "username": "johnnyle",
+        "email": "johnny.le@gmail.com",
+        "password": "123",
+        "role": "user"
+    },
+
+    {
+        "userId": 6,
+        "name": "Danyal Whitney",
+        "username": "danyalw",
+        "email": "danyal@gmail.com",
+        "password": "123",
+        "role": "user"
+    },
+
+    {
+        "userId": 7,
+        "name": "Lowri Jacobs",
+        "username": "lowri1",
+        "email": "lowri1@gmail.com",
+        "password": "123",
+        "role": "user"
+    }
+]
