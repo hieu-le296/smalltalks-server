@@ -59,7 +59,7 @@ class Comment {
         const comment = await db.queryDatabase(query, [id]);
 
     //Response from database is returned as array - so get the first element/row of array and format it in JSON
-        return comment;
+        return new Comment(comment[0]).data;
 
     }
 
@@ -88,9 +88,9 @@ class Comment {
     /**
      * Method to update a comment for a question
      */
-     static async update(commentData){
+     static async update(id,commentData){
 
-      const {id,content} = commentData;
+      const {content} = commentData;
 
       const db = new Database();
 

@@ -78,19 +78,30 @@ exports.createComment = asyncHandler(async(req, res, next) => {
  * @route           PUT /api/v1/comments/:id
  * @access          Private - authenticated users
  */
-exports.updateComment = async(req, res, next) => {
-  const id = req.params.id;
+exports.updateComment = asyncHandler(async(req, res, next) => {
+  
+  req.user = 2; // req.user.id will be from authentication later on
 
-  req.body.id = req.params.id;
+  const comment = await Comment.findOne(req.params.id);
 
-  const updatedComment = await Comment.update(req.body);
+  //check if comment exists in the database
+  if (!comment)
+    return next(new ThrowError('Could not find the comment', 404));
+  
+  // Check if the question author
+  if (comment.postedBy.commentUserId != req.user)
+    return next(
+      new ThrowError('This user is not authorized to update the question', 404)
+    );
+
+  const updatedComment = await Comment.update(req.params.id,req.body);
 
   res.status(200).json({
     success: true,
-    msg: `Comment with the id of ${id} successfully updated!`,
+    msg: `Comment successfully updated!`,
     data: updatedComment,
   });
-};
+});
 
 /**
  * @description     Delete the comment
