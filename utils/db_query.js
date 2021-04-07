@@ -4,7 +4,7 @@ const connectPool = require('../config/db');
 class Database {
   constructor() {
     this.connectPool = connectPool;
-    this.createTable(UserTable);
+    this.createTable(userTable);
     this.createTable(questionTable);
     this.createTable(commentTable);
   }
@@ -33,7 +33,7 @@ class Database {
   }
 }
 
-let UserTable = `
+let userTable = `
   CREATE TABLE IF NOT EXISTS users(
     userId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -53,7 +53,7 @@ let questionTable = `
     userId INT(11) NOT NULL, 
     title VARCHAR(250) NOT NULL UNIQUE,
     content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (userId) REFERENCES users (userId) ON DELETE CASCADE ON UPDATE CASCADE
 )
