@@ -1,4 +1,5 @@
 const express = require('express');
+const { performValidation } = require('../middleware/validation')
 
 const {
   getQuestions,
@@ -17,7 +18,7 @@ const commentRouter = require('./comments');
 router.use('/:questionId/comments', commentRouter);
 
 // Mount router
-router.route('/').get(getQuestions).post(createQuestion);
+router.route('/').get(getQuestions).post(performValidation, createQuestion);
 
 router
   .route('/:id')
