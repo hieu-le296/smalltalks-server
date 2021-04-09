@@ -43,7 +43,7 @@ class Question {
     ON q.userId = u.userId`;
 
     if (req.searchKey) {
-      query += ` WHERE q.title LIKE CONCAT('%','${req.searchKey}','%')`;
+      query += ` WHERE q.title LIKE CONCAT('%','${req.searchKey}','%') OR q.content LIKE CONCAT('%','${req.searchKey}','%')`;
     }
 
     const questions = await db.queryDatabase(query, []);
