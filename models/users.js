@@ -1,17 +1,38 @@
 const Database = require('../utils/db_query');
+const { findAll } = require('./questions');
 
 class User {
-    constructor()
-    constructor(name, username, email, password, role, profilePic, createdAt, updatedAt) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.profilePic = profilePic;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+  constructor(user) {
+    const {
+      userId,
+      name,
+      username,
+      email,
+      password,
+      role,
+      createdAt,
+      updatedAt,
+    } = user;
+
+    this.data = {
+      userId,
+      name,
+      username,
+      email,
+      createdAt,
+      updatedAt,
+      questions,
+      comments,
+    };
+  }
+
+  static async findAll() {
+    const db = new Database();
+
+    let query = 'SELECT * FROM users;';
+
+    return await db.queryDatabase(query, []);
+  }
 }
 
 module.exports = User;
