@@ -29,14 +29,21 @@ class Comment {
    * Method to find all comments linked to a question having unique ID
    *
    */
-  static async findAll(questionId) {
+  static async findAll(questionId, req) {
     const db = new Database();
-    const query = `SELECT c.commentId, c.commentUserId, u.name, c.content, c.createdAt, c.updatedAt FROM comments c 
+    let query = `SELECT c.commentId, c.commentUserId, u.name, c.content, c.createdAt, c.updatedAt FROM comments c 
                 INNER JOIN users u ON 
                 c.commentUserId = u.userId 
-                WHERE c.questionId = ?;`;
+                WHERE c.questionId = ?`;
+
+    if(req.searchKey){
+
+      query += ` AND c.content LIKE CONCAT('%','${req.searchKey}','%')`
+
+    }
 
     const comments = await db.queryDatabase(query, [questionId]);
+    console.log(comments)
 
     const commentsData = [];
 

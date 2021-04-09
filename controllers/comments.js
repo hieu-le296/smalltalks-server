@@ -12,13 +12,18 @@ exports.getComments = async(req, res, next) => {
  
   const questionId = req.params.questionId;
 
-  const questionComments = await Comment.findAll(questionId);
+  const questionComments = await Comment.findAll(questionId, req);
 
-  res.status(200).json({
-    success: true,
-    data: questionComments,
-    msg: `Show all comments of the question with the id of ${req.params.questionId}`,
-  });
+  if (questionComments.length > 0) {
+    res.status(200).json({
+      success: true,
+      data: questionComments,
+      msg: `Show all comments of the question with the id of ${req.params.questionId}`,
+    });
+  }
+  else {
+    return(next(new ThrowError('No comments found', 404)));
+  }
 };
 
 /** 
