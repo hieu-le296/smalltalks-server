@@ -1,8 +1,11 @@
-const routeURLDetector = (req,res,next)=>{
+
+
+
+const routeURLDetector = async(req,res,next)=>{
+
+  //leave it here, otherwise app keeps crashing
+  const RouteStats = require('../models/routeStats');
   
-
-  console.log('HTTP VERB ',req.method);
-
   /**
   * In database generalized route counts will be store, so replace numbers with 'id'
   * Example : /api/v1/users/1/questions  =====>  /api/v1/users/id/questions
@@ -12,8 +15,10 @@ const routeURLDetector = (req,res,next)=>{
   //Store generalized request url in the request object
   req.routeURL = req.baseUrl + generializedPathName;
 
-  console.log('URL is ',req.routeURL);
+  //Perform query to update/store in hit count for endpoint in the database table
+  await RouteStats.storeRouteCount(req);
 
+  //go to next middleware
   next();
 }
 
