@@ -8,12 +8,18 @@ const Question = require('../models/questions');
  * @access          Public
  */
 exports.getQuestions = asyncHandler(async (req, res, next) => {
-  const questions = await Question.findAll();
-  res.status(200).json({
-    success: true,
-    data: questions,
-    msg: 'Show all questions',
-  });
+  const questions = await Question.findAll(req);
+  if (questions.length > 0) {
+    res.status(200).json({
+      success: true,
+      data: questions,
+      msg: 'Show all questions',
+    });
+  }
+  else {
+    return(next(new ThrowError('No questions found', 404)));
+  }
+  
 });
 
 /**

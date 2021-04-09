@@ -33,14 +33,21 @@ class Question {
    * Find all questions
    * @returns questionsData - All questions
    */
-  static async findAll() {
+  static async findAll(req) {
     const db = new Database();
-    const query = `
+
+
+    let query = `
     SELECT q.questionId, q.title, q.content, u.userId, u.username, u.name, q.createdAt, q.updatedAt
     FROM questions q INNER JOIN users u 
     ON q.userId = u.userId`;
 
+    if (req.searchKey) {
+      query += ` WHERE q.title LIKE CONCAT('%','${req.searchKey}','%')`;
+    }
+
     const questions = await db.queryDatabase(query, []);
+
     const questionsData = [];
 
     //Format data for each question
