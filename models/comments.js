@@ -43,7 +43,7 @@ class Comment {
     }
 
     const comments = await db.queryDatabase(query, [questionId]);
-    console.log(comments)
+   
 
     const commentsData = [];
 

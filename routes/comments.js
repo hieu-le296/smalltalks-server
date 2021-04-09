@@ -1,5 +1,5 @@
 const express = require('express');
-const {search} = require('../middleware/search');
+const {search} = require('../middleware/advancedFilters');
 
 const {
   getComments,
