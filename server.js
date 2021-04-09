@@ -7,6 +7,7 @@ const cors = require('cors');
 
 // Load middleware
 const errorHandler = require('./middleware/error');
+const routeURLDetector = require('./middleware/routeURLDetector');
 
 // Load env configurations
 dotenv.config({ path: './config/config.env' });
@@ -40,11 +41,16 @@ const questions = require('./routes/questions');
 const users = require('./routes/users');
 const comments = require('./routes/comments');
 
-app.use('/api/v1/questions', questions);
-app.use('/api/v1/users', users);
-app.use('/api/v1/comments', comments);
+
+
+
+app.use('/api/v1/questions', routeURLDetector, questions);
+app.use('/api/v1/users', routeURLDetector, users);
+app.use('/api/v1/comments', routeURLDetector, comments);
 
 app.use(errorHandler);
+app.use(routeURLDetector);
+
 
 const PORT = process.env.PORT || 5700;
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const { performValidation } = require('../middleware/validation')
-const {search} = require('../middleware/search');
+const {search} = require('../middleware/advancedFilters');
 
 const {
   getQuestions,
