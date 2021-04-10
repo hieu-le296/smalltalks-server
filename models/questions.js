@@ -66,7 +66,7 @@ class Question {
    * @param {id} id of the question
    * @returns single question
    */
-  static async findById(id) {
+  static async findOne(id) {
     const db = new Database();
     let query = `
             SELECT q.questionId, q.title, q.content, q.userId, u.username, u.name, q.createdAt, q.updatedAt

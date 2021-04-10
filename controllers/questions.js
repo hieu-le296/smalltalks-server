@@ -10,21 +10,18 @@ const Question = require('../models/questions');
 exports.getQuestions = asyncHandler(async (req, res, next) => {
   const questions = await Question.findAll(req);
   if (questions.length > 0) {
-
     res.status(200).json({
       success: true,
-      pagination : {
-        'limit':req.limit,
-        'offset':req.offset
+      pagination: {
+        limit: req.limit,
+        offset: req.offset,
       },
       data: questions,
       msg: 'Show all questions',
     });
+  } else {
+    return next(new ThrowError('No questions found', 404));
   }
-  else {
-    return(next(new ThrowError('No questions found', 404)));
-  }
-  
 });
 
 /**
@@ -33,7 +30,7 @@ exports.getQuestions = asyncHandler(async (req, res, next) => {
  * @access          Public
  */
 exports.getQuestion = asyncHandler(async (req, res, next) => {
-  const question = await Question.findById(req.params.id);
+  const question = await Question.findOne(req.params.id);
 
   res.status(200).json({
     success: true,
@@ -55,7 +52,7 @@ exports.createQuestion = asyncHandler(async (req, res, next) => {
 
   if (!result) return next(new ThrowError('Question is duplicate', 400));
 
-  const foundQuestion = await Question.findById(result.insertId);
+  const foundQuestion = await Question.findOne(result.insertId);
 
   if (!foundQuestion)
     return next(new ThrowError('Could not create a question', 400));
@@ -74,7 +71,7 @@ exports.createQuestion = asyncHandler(async (req, res, next) => {
  */
 exports.updateQuestion = asyncHandler(async (req, res, next) => {
   req.user = 2; // req.user.id will be from authentication later on
-  const question = await Question.findById(req.params.id);
+  const question = await Question.findOne(req.params.id);
 
   if (!question)
     return next(new ThrowError('Could not update the question', 404));
@@ -87,7 +84,7 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
 
   await Question.findByIdAndUpdate(req.params.id, req.body);
 
-  const updatedQuestion = await Question.findById(req.params.id);
+  const updatedQuestion = await Question.findOne(req.params.id);
 
   res.status(200).json({
     success: true,
@@ -103,7 +100,7 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
  */
 exports.deleteQuestion = asyncHandler(async (req, res, next) => {
   req.user = 2; // req.user.id will be from authentication later on
-  const question = await Question.findById(req.params.id);
+  const question = await Question.findOne(req.params.id);
 
   if (!question)
     return next(new ThrowError('Coudl not delete the question', 404));
