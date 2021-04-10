@@ -50,7 +50,7 @@ exports.createQuestion = asyncHandler(async (req, res, next) => {
   req.body.userId = 2;
   const result = await Question.create(req.body);
 
-  if (!result) return next(new ThrowError('Question is duplicate', 400));
+  if (!result) return next(new ThrowError('Question is duplicate', 406));
 
   const foundQuestion = await Question.findOne(result.insertId);
 

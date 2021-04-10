@@ -22,9 +22,10 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
  * @access          Private - access only admin
  */
 exports.getUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne('userId', req.params.id);
   res.status(200).json({
     success: true,
-    data: users[req.params.id - 1],
+    data: user,
     msg: `Show user detail with the id of ${req.params.id}`,
   });
 });
@@ -35,11 +36,18 @@ exports.getUser = asyncHandler(async (req, res, next) => {
  * @access          Private - access only by admin
  */
 exports.createUser = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
+  const result = await User.create(req.body);
+
+  if (!result) return next(new ThrowError('User already existed', 406));
+
+  const foundUser = await User.findOne('userId', result.insertId);
+
+  if (!foundUser)
+    return next(new ThrowError('Could not create a new user', 400));
   res.status(200).json({
     success: true,
+    data: foundUser,
     msg: 'New user successfully created!',
-    data: req.body,
   });
 });
 
