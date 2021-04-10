@@ -41,16 +41,12 @@ const questions = require('./routes/questions');
 const users = require('./routes/users');
 const comments = require('./routes/comments');
 
-
-
-
 app.use('/api/v1/questions', routeURLDetector, questions);
 app.use('/api/v1/users', routeURLDetector, users);
 app.use('/api/v1/comments', routeURLDetector, comments);
 
 app.use(errorHandler);
 app.use(routeURLDetector);
-
 
 const PORT = process.env.PORT || 5700;
 

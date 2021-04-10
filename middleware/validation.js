@@ -1,7 +1,6 @@
 const { check, validationResult, body } = require('express-validator');
 const ThrowError = require('../utils/throwError');
 
-
 exports.performValidation = async (req, res, next) => {
   await check('title')
     .notEmpty()

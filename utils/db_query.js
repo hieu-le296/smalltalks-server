@@ -82,5 +82,4 @@ CREATE TABLE IF NOT EXISTS routeStats(
   );
   `;
 
-
 module.exports = Database;

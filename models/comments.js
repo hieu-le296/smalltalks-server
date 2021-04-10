@@ -36,14 +36,11 @@ class Comment {
                 c.commentUserId = u.userId 
                 WHERE c.questionId = ?`;
 
-    if(req.searchKey){
-
-      query += ` AND c.content LIKE CONCAT('%','${req.searchKey}','%')`
-
+    if (req.searchKey) {
+      query += ` AND c.content LIKE CONCAT('%','${req.searchKey}','%')`;
     }
 
     const comments = await db.queryDatabase(query, [questionId]);
-   
 
     const commentsData = [];
 
@@ -63,71 +60,60 @@ class Comment {
             c.commentUserId = u.userId 
             WHERE c.commentId = ?`;
 
-        const comment = await db.queryDatabase(query, [id]);
+    const comment = await db.queryDatabase(query, [id]);
 
     //Response from database is returned as array - so get the first element/row of array and format it in JSON
-        return new Comment(comment[0]).data;
-
-    }
-
-    /**
-     * Method to create a comment for a question
-     */
-    static async create(commentData){
-
-        const {questionId,commentUserId,content} = commentData;
-
-        const db = new Database();
-        const query =
-            `INSERT INTO comments (questionId,commentUserId,content) values(?,?,?)`;
-
-        const comment = await db.queryDatabase(query,[
-            questionId,
-            commentUserId,
-            content
-        ]);
-
-        //Return JSON object of new comment to frontend -- including info of user who posted the comment
-        return comment;
-        // return Comment.findOne(comment.insertId);
-    }
-
-    /**
-     * Method to update a comment for a question
-     */
-     static async update(id,commentData){
-
-      const {content} = commentData;
-
-      const db = new Database();
-
-      const query =
-          `UPDATE comments SET content = ? WHERE commentId = ?`;
-
-       await db.queryDatabase(query,[content,id]);
-  
-      //Return JSON object of new comment to frontend -- including info of user who posted the comment
-      return Comment.findOne(id);
-
+    return new Comment(comment[0]).data;
   }
 
+  /**
+   * Method to create a comment for a question
+   */
+  static async create(commentData) {
+    const { questionId, commentUserId, content } = commentData;
+
+    const db = new Database();
+    const query = `INSERT INTO comments (questionId,commentUserId,content) values(?,?,?)`;
+
+    const comment = await db.queryDatabase(query, [
+      questionId,
+      commentUserId,
+      content,
+    ]);
+
+    //Return JSON object of new comment to frontend -- including info of user who posted the comment
+    return comment;
+    // return Comment.findOne(comment.insertId);
+  }
+
+  /**
+   * Method to update a comment for a question
+   */
+  static async update(id, commentData) {
+    const { content } = commentData;
+
+    const db = new Database();
+
+    const query = `UPDATE comments SET content = ? WHERE commentId = ?`;
+
+    await db.queryDatabase(query, [content, id]);
+
+    //Return JSON object of new comment to frontend -- including info of user who posted the comment
+    return Comment.findOne(id);
+  }
 
   /**
    * Method to delete a comment for a question
    */
-  static async delete(commentId){
-
+  static async delete(commentId) {
     const db = new Database();
-    const query =
-        `DELETE FROM comments WHERE commentId = ?`;
-    
-        await db.queryDatabase(query,[commentId]);
+    const query = `DELETE FROM comments WHERE commentId = ?`;
 
-        //Return JSON object of new comment to frontend -- including info of user who posted the comment
-      return true;
+    await db.queryDatabase(query, [commentId]);
 
+    //Return JSON object of new comment to frontend -- including info of user who posted the comment
+    return true;
   }
-
 }
 
 module.exports = Comment;
