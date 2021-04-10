@@ -46,6 +46,11 @@ class Question {
       query += ` WHERE q.title LIKE CONCAT('%','${req.searchKey}','%') OR q.content LIKE CONCAT('%','${req.searchKey}','%')`;
     }
 
+    if(req.limit && req.offset){
+
+        query+=` LIMIT ${req.limit} OFFSET ${req.offset}`;
+    }
+
     const questions = await db.queryDatabase(query, []);
 
     const questionsData = [];
