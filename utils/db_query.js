@@ -7,6 +7,7 @@ class Database {
     this.createTable(userTable);
     this.createTable(questionTable);
     this.createTable(commentTable);
+    this.createTable(routeStatsTable);
   }
 
   queryDatabase(query, values) {
@@ -71,5 +72,15 @@ let commentTable = `
     FOREIGN KEY (questionId) REFERENCES questions (questionId) ON DELETE CASCADE ON UPDATE CASCADE
 )
 `;
+
+let routeStatsTable = `
+CREATE TABLE IF NOT EXISTS routeStats(
+  method VARCHAR(100) NOT NULL,
+  endpoint VARCHAR(250) not NULL,
+  requestCount INT(11) NOT NULL,
+  PRIMARY KEY (method, endpoint)
+  );
+  `;
+
 
 module.exports = Database;
