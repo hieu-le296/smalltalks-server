@@ -10,8 +10,13 @@ const Question = require('../models/questions');
 exports.getQuestions = asyncHandler(async (req, res, next) => {
   const questions = await Question.findAll(req);
   if (questions.length > 0) {
+
     res.status(200).json({
       success: true,
+      pagination : {
+        'limit':req.limit,
+        'offset':req.offset
+      },
       data: questions,
       msg: 'Show all questions',
     });
