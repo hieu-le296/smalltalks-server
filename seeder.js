@@ -98,10 +98,10 @@ async function createComments(commentsObj) {
 // Import into DB
 const importData = async () => {
   try {
+    console.log('Please Wait! Importing Data...'.green.inverse);
     await createUsers(users);
     await createQuestions(questions);
     await createComments(comments);
-    console.log('Please Wait! Importing Data...'.green.inverse);
   } catch (error) {
     console.log(error);
   }
@@ -110,8 +110,9 @@ const importData = async () => {
 // Delete all columns and tables from DB
 const deleteData = async () => {
   try {
-    await queryDatabase(`DELETE FROM users`, []);
     console.log('Please Wait! Deleting Data...'.red.inverse);
+    await queryDatabase(`DELETE FROM users`, []);
+    await queryDatabase(`DELETE FROM routeStats`, []);
   } catch (error) {
     console.log(error);
   }
