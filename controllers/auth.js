@@ -14,6 +14,15 @@ exports.uploadProfilePic = asyncHandler(async (req, res, next) => {
   // Check if the user is found
   if (!user) return next(new ThrowError('User not found!', 404));
 
+  // Check if the user owner
+  if (user.userId !== req.user.userId && req.user.role !== 'admin')
+    return next(
+      new ThrowError(
+        'This user is not authorized to update the picture profile',
+        401
+      )
+    );
+
   if (!req.files) return next(new ThrowError('Please upload a picture', 400));
 
   const file = req.files.file;
@@ -34,7 +43,7 @@ exports.uploadProfilePic = asyncHandler(async (req, res, next) => {
   }
 
   // Create custom filename and its extension
-  file.name = `photo_${user.username}${path.parse(file.name).ext}`;
+  file.name = `photo_${user.userId}${path.parse(file.name).ext}`;
 
   file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
     if (err) {

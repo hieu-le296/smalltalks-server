@@ -13,20 +13,27 @@ const {
 
 const router = express.Router();
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
-router.route('/').get(protect, getUsers).post(protect, createUser);
+// Admin Access only
+
+router
+  .route('/')
+  .get(protect, authorize('admin'), getUsers)
+  .post(protect, authorize('admin'), createUser);
 
 router
   .route('/:id')
-  .get(protect, getUser)
-  .put(protect, updateUser)
-  .delete(protect, deleteUser);
+  .get(protect, authorize('admin'), getUser)
+  .put(protect, authorize('admin'), updateUser)
+  .delete(protect, authorize('admin'), deleteUser);
+
+router.route('/:id/password').put(protect, authorize('admin'), setUserPassword);
+
+// Public Access
 
 router.route('/:id/questions').get(getUserQuestions);
 
 router.route('/:id/comments').get(getUserComments);
-
-router.route('/:id/password').put(protect, setUserPassword);
 
 module.exports = router;

@@ -12,7 +12,7 @@ const {
 
 const router = express.Router();
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 // Include other resource routers
 const commentRouter = require('./comments');
@@ -24,12 +24,12 @@ router.use('/:questionId/comments', commentRouter);
 router
   .route('/')
   .get(advancedFilters, getQuestions)
-  .post(protect, performValidation, createQuestion);
+  .post(protect, authorize('user', 'admin'), performValidation, createQuestion);
 
 router
   .route('/:id')
   .get(getQuestion)
-  .put(protect, performValidation, updateQuestion)
-  .delete(protect, deleteQuestion);
+  .put(protect, authorize('user', 'admin'), performValidation, updateQuestion)
+  .delete(protect, authorize('user', 'admin'), deleteQuestion);
 
 module.exports = router;

@@ -3,7 +3,9 @@ const asyncHandler = require('./async');
 const ThrowError = require('../utils/throwError');
 const User = require('../models/User');
 
-// Protect routes
+/**
+ * Function to protect the route by checking the Bearer Token from Header Authorization
+ */
 exports.protect = asyncHandler(async (req, res, next) => {
   let token;
 
@@ -29,3 +31,19 @@ exports.protect = asyncHandler(async (req, res, next) => {
     next();
   } catch (error) {}
 });
+
+/**
+ *
+ * @param  {...any} roles any current roles
+ * @returns go to next()
+ */
+exports.authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ThrowError(`User are not unauthorized to access this route`, 403)
+      );
+    }
+    next();
+  };
+};

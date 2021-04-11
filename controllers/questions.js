@@ -68,11 +68,11 @@ exports.createQuestion = asyncHandler(async (req, res, next) => {
  * @access          Private - Only owner or admin
  */
 exports.updateQuestion = asyncHandler(async (req, res, next) => {
-  req.user = 2; // req.user.id will be from authentication later on
+  req.body.userId = req.user.userId;
   const question = await Question.findOne(req.params.id);
 
   // Check if the question author
-  if (question.postedBy.userId != req.user)
+  if (question.postedBy.userId !== req.user.userId && req.user.role !== 'admin')
     return next(
       new ThrowError('This user is not authorized to update the question', 401)
     );
@@ -97,14 +97,14 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
  * @access          Private - Only owner or admin
  */
 exports.deleteQuestion = asyncHandler(async (req, res, next) => {
-  req.user = 2; // req.user.id will be from authentication later on
+  req.body.userId = req.user.userId;
   const question = await Question.findOne(req.params.id);
 
   if (!question)
     return next(new ThrowError('Could not delete the question', 404));
 
   // Check if the question author
-  if (question.postedBy.userId != req.user)
+  if (question.postedBy.userId !== req.user.userId && req.user.role !== 'admin')
     return next(
       new ThrowError('This user is not authorized to update the question', 401)
     );
