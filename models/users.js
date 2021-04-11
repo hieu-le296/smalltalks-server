@@ -71,6 +71,28 @@ class User {
     return await db.queryDatabase(query, [id]);
   }
 
+  static async findUserQuestions(id) {
+    const db = new Database();
+    let query = `
+      SELECT q.questionId, q.title, q.createdAt, q.updatedAt FROM users u 
+      INNER JOIN questions q ON u.userId = q.userId 
+      WHERE u.userId = ?
+    `;
+    const data = await db.queryDatabase(query, [id]);
+    return data;
+  }
+
+  static async findUserComments(id) {
+    const db = new Database();
+    let query = `
+      SELECT c.commentId, c.content, c.createdAt, c.updatedAt 
+      FROM users u LEFT JOIN comments c ON u.userId = c.commentUserId 
+      WHERE u.userId = ?
+    `;
+    const data = await db.queryDatabase(query, [id]);
+    return data;
+  }
+
   // Encrypt password using bcrypt
   static async encryptPassword(password) {
     const salt = await bcrypt.genSalt(10);

@@ -106,15 +106,24 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @description     Get User's all questions. This route is for showing on user's public page. Admin can delete any questions of that user
+ * @description     Get User's all questions. This route is for showing on user's public page. Admin or question author can delete any questions of that user
  * @route           GET /api/v1/users/:id/questions
  * @access          Public
  */
 exports.getUserQuestions = asyncHandler(async (req, res, next) => {
+  // Find user
+  const user = await User.findOne('userId', req.params.id);
+  if (!user) return next(new ThrowError('User not found!', 404));
+
+  const username = user.username;
+
+  const questions = await User.findUserQuestions(req.params.id);
+
   res.status(200).json({
     success: true,
-    msg: `Show all questions of user id of ${req.params.id}`,
-    data: users[req.params.id - 1].questions,
+    msg: `All quetions that username ${username} posted`,
+    userId: req.params.id,
+    questions: questions,
   });
 });
 
@@ -124,9 +133,18 @@ exports.getUserQuestions = asyncHandler(async (req, res, next) => {
  * @access          Public
  */
 exports.getUserComments = asyncHandler(async (req, res, next) => {
+  // Find user
+  const user = await User.findOne('userId', req.params.id);
+  if (!user) return next(new ThrowError('User not found!', 404));
+
+  const username = user.username;
+
+  const comments = await User.findUserComments(req.params.id);
   res.status(200).json({
     success: true,
-    msg: `Show all comments of user id of ${req.params.id}`,
-    data: users[req.params.id - 1].questions,
+    msg: `All comments that username ${username} posted`,
+    userId: req.params.id,
+    userId: req.params.id,
+    comments: comments,
   });
 });
