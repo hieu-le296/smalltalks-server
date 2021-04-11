@@ -79,7 +79,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @description     Delete the question
+ * @description     Delete the user
  * @route           DELETE /api/v1/users/:id
  * @access          Private - access only by admin or user
  */
@@ -106,16 +106,37 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 });
 
 /**
+ * @description     Update user password
+ * @route           PUT /api/v1/users/:id/password
+ * @access          Admin only
+ */
+exports.setUserPassword = asyncHandler(async (req, res, next) => {
+  req.role = 'admin';
+  const user = await User.findOne('userId', req.params.id);
+
+  if (req.role !== 'admin')
+    return next(
+      new ThrowError('You are not authorized to delete this user!', 401)
+    );
+
+  const username = user.username;
+
+  await User.setUserPassword(req.params.id, req.body.password);
+
+  res.status(200).json({
+    success: true,
+    msg: `Passowrd of username ${username} successfully updated!`,
+  });
+});
+
+/**
  * @description     Get User's all questions. This route is for showing on user's public page. Admin or question author can delete any questions of that user
  * @route           GET /api/v1/users/:id/questions
  * @access          Public
  */
 exports.getUserQuestions = asyncHandler(async (req, res, next) => {
   // Find user
-  const user = await User.findOne('userId', req.params.id);
-  if (!user) return next(new ThrowError('User not found!', 404));
-
-  const username = user.username;
+  const username = await checkUserExists(req, res, next);
 
   const questions = await User.findUserQuestions(req.params.id);
 
@@ -134,17 +155,19 @@ exports.getUserQuestions = asyncHandler(async (req, res, next) => {
  */
 exports.getUserComments = asyncHandler(async (req, res, next) => {
   // Find user
-  const user = await User.findOne('userId', req.params.id);
-  if (!user) return next(new ThrowError('User not found!', 404));
-
-  const username = user.username;
+  const username = await checkUserExists(req, res, next);
 
   const comments = await User.findUserComments(req.params.id);
   res.status(200).json({
     success: true,
     msg: `All comments that username ${username} posted`,
     userId: req.params.id,
-    userId: req.params.id,
     comments: comments,
   });
 });
+
+const checkUserExists = async (req, res, next) => {
+  const user = await User.findOne('userId', req.params.id);
+  if (!user) return next(new ThrowError('User not found!', 404));
+  return user.username;
+};

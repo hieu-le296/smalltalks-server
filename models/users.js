@@ -17,6 +17,10 @@ class User {
     };
   }
 
+  /**
+   * Find all users
+   * @returns usersData
+   */
   static async findAll() {
     const db = new Database();
 
@@ -30,6 +34,12 @@ class User {
     return usersData;
   }
 
+  /**
+   * Find one user
+   * @param {*} field for condition in WHERE clause
+   * @param {*} value
+   * @returns single user
+   */
   static async findOne(field, value) {
     const db = new Database();
     let query = `SELECT * FROM users WHERE ${field} = ?`;
@@ -52,6 +62,12 @@ class User {
     return result;
   }
 
+  /**
+   * Find the user and update its information
+   * @param {*} id of the user
+   * @param {*} user object
+   * @returns result
+   */
   static async findByIdAndUpdate(id, user) {
     const db = new Database();
     let query = `UPDATE users SET name = ?, username = ?, email = ?, role = ? WHERE userId = ?`;
@@ -65,12 +81,35 @@ class User {
     ]);
   }
 
+  /**
+   * Set the new password for user
+   * @param {*} id of the user
+   * @param {*} password - new password
+   * @returns result
+   */
+  static async setUserPassword(id, password) {
+    const db = new Database();
+    const newPassword = await User.encryptPassword(password);
+    let query = `UPDATE users SET passwd = ? WHERE userId = ?`;
+    return await db.queryDatabase(query, [newPassword, id]);
+  }
+
+  /**
+   * Delete the user
+   * @param {*} id of the user
+   * @returns
+   */
   static async findByIdandDelete(id) {
     const db = new Database();
     let query = `DELETE FROM users WHERE userId = ?`;
     return await db.queryDatabase(query, [id]);
   }
 
+  /**
+   * Find all the questions of the specific user
+   * @param {*} id of the user
+   * @returns all questions of that user
+   */
   static async findUserQuestions(id) {
     const db = new Database();
     let query = `
@@ -82,18 +121,29 @@ class User {
     return data;
   }
 
+  /**
+   * Find all comments of the specific user
+   * @param {*} id of the user
+   * @returns all comments of that user
+   */
   static async findUserComments(id) {
     const db = new Database();
     let query = `
-      SELECT c.commentId, c.content, c.createdAt, c.updatedAt 
-      FROM users u LEFT JOIN comments c ON u.userId = c.commentUserId 
+      SELECT q.questionId, c.commentId, c.content, c.createdAt, c.updatedAt 
+      FROM users u LEFT JOIN comments c 
+        ON u.userId = c.commentUserId INNER JOIN questions q 
+        ON c.questionId = q.questionId
       WHERE u.userId = ?
     `;
     const data = await db.queryDatabase(query, [id]);
     return data;
   }
 
-  // Encrypt password using bcrypt
+  /**
+   * Encrypting the password
+   * @param {*} password
+   * @returns hashed password
+   */
   static async encryptPassword(password) {
     const salt = await bcrypt.genSalt(10);
     return await bcrypt.hash(password, salt);
