@@ -81,12 +81,27 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 /**
  * @description     Delete the question
  * @route           DELETE /api/v1/users/:id
- * @access          Private - access only admin
+ * @access          Private - access only by admin or user
  */
 exports.deleteUser = asyncHandler(async (req, res, next) => {
-  const id = req.params.id;
+  req.user = 2; // req.user.id will be from authentication later on
+  req.role = 'user'; // req.user.admin will be from authentication later on
+
+  const user = await User.findOne('userId', req.params.id);
+
+  if (user.userId != req.user && req.role !== 'admin')
+    return next(
+      new ThrowError('You are not authorized to delete this user!', 401)
+    );
+
+  const username = user.username;
+
+  await User.findByIdandDelete(req.params.id);
+
   res.status(200).json({
-    msg: `User with the id of ${id} successfully deleted!`,
+    success: true,
+    data: {},
+    msg: `User with username ${username} successfully deleted!`,
   });
 });
 

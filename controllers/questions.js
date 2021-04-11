@@ -76,7 +76,7 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
   // Check if the question author
   if (question.postedBy.userId != req.user)
     return next(
-      new ThrowError('This user is not authorized to update the question', 404)
+      new ThrowError('This user is not authorized to update the question', 401)
     );
 
   if (!question)
@@ -103,12 +103,12 @@ exports.deleteQuestion = asyncHandler(async (req, res, next) => {
   const question = await Question.findOne(req.params.id);
 
   if (!question)
-    return next(new ThrowError('Coudl not delete the question', 404));
+    return next(new ThrowError('Could not delete the question', 404));
 
   // Check if the question author
   if (question.postedBy.userId != req.user)
     return next(
-      new ThrowError('This user is not authorized to update the question', 404)
+      new ThrowError('This user is not authorized to update the question', 401)
     );
 
   await Question.findByIdAndDelete(req.params.id);

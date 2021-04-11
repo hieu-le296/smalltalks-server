@@ -65,6 +65,12 @@ class User {
     ]);
   }
 
+  static async findByIdandDelete(id) {
+    const db = new Database();
+    let query = `DELETE FROM users WHERE userId = ?`;
+    return await db.queryDatabase(query, [id]);
+  }
+
   // Encrypt password using bcrypt
   static async encryptPassword(password) {
     const salt = await bcrypt.genSalt(10);
