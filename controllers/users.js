@@ -1,6 +1,6 @@
 const ThrowError = require('../utils/throwError');
 const asyncHandler = require('../middleware/async');
-const User = require('../models/users');
+const User = require('../models/User');
 
 /**
  * @description     Get all users in admin page

@@ -1,5 +1,6 @@
 const Database = require('../utils/db_query');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 class User {
   constructor(user) {
@@ -53,6 +54,12 @@ class User {
     const db = new Database();
     let query = `SELECT * FROM users WHERE ${field} = ?`;
     const user = await db.queryDatabase(query, [value]);
+
+    if (field === 'email') {
+      const data = new User(user[0]).data;
+      data.password = user[0].passwd;
+      return data;
+    }
     return new User(user[0]).data;
   }
 
@@ -169,6 +176,27 @@ class User {
   static async encryptPassword(password) {
     const salt = await bcrypt.genSalt(10);
     return await bcrypt.hash(password, salt);
+  }
+
+  /**
+   * Generate the JSON token
+   * @param {*} userId
+   * @returns JSON token with the id and expiration date in the payload
+   */
+  static getSignedJwtToken(userId) {
+    return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRE,
+    });
+  }
+
+  /**
+   * Compare the entered password with the correct user password
+   * @param {*} enteredPassword
+   * @param {*} userPassword
+   * @returns
+   */
+  static async matchPassword(enteredPassword, userPassword) {
+    return await bcrypt.compare(enteredPassword, userPassword);
   }
 }
 

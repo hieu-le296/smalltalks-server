@@ -1,6 +1,6 @@
 const ThrowError = require('../utils/throwError');
 const asyncHandler = require('../middleware/async');
-const Question = require('../models/questions');
+const Question = require('../models/Question');
 
 /**
  * @description     Get All public questions

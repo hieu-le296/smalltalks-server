@@ -1,7 +1,7 @@
 const path = require('path');
 const asyncHandler = require('../middleware/async');
 const ThrowError = require('../utils/throwError');
-const User = require('../models/users');
+const User = require('../models/User');
 
 /**
  * @description     Upload user profile picture
@@ -59,13 +59,42 @@ exports.register = asyncHandler(async (req, res, next) => {
   // Create user
   const result = await User.create(req.body);
 
-  const createdUser = await User.findOne('userId', result.insertId);
+  // Create token
+  const token = User.getSignedJwtToken(result.insertId);
 
-  res
-    .status(200)
-    .json({
-      success: true,
-      data: createdUser,
-      msg: `User ${req.body.username} successfully created!`,
-    });
+  res.status(200).json({
+    success: true,
+    token: token,
+    msg: `User ${req.body.username} successfully created!`,
+  });
+});
+
+/**
+ * @description     Login user
+ * @route           POST /api/v1/auth/login
+ * @access          Public
+ */
+exports.login = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // Check for user
+  const user = await User.findOne('email', email);
+
+  if (!user) return next(new ThrowError('Invalid credentials', 401));
+
+  // Check if password matches
+  const isMatched = await User.matchPassword(password, user.password);
+
+  console.log(isMatched);
+
+  if (!isMatched) return next(new ThrowError('Invalid credentials', 401));
+
+  // Create token
+  const token = User.getSignedJwtToken(user.userId);
+
+  res.status(200).json({
+    success: true,
+    token: token,
+    msg: `Login successfully created!`,
+  });
 });

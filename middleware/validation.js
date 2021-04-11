@@ -12,6 +12,17 @@ exports.performValidation = async (req, res, next) => {
     .withMessage(' Please input the content')
     .run(req);
 
+  await check('email')
+    .isEmail()
+    .notEmpty()
+    .withMessage(' Please input the email')
+    .run(req);
+
+  await check('password')
+    .notEmpty()
+    .withMessage(' Please input the password')
+    .run(req);
+
   const errors = validationResult(req).formatWith(({ msg }) => msg);
 
   const hasError = !errors.isEmpty();

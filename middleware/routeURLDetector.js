@@ -1,6 +1,6 @@
 const routeURLDetector = async (req, res, next) => {
   //leave it here, otherwise app keeps crashing
-  const RouteStats = require('../models/routeStats');
+  const RouteStats = require('../models/RouteStat');
 
   /**
    * In database generalized route counts will be store, so replace numbers with 'id'
