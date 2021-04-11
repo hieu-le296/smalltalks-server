@@ -11,8 +11,9 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
   const users = await User.findAll();
   res.status(200).json({
     success: true,
+    count: users.length,
     data: users,
-    msg: `Show all users`,
+    msg: `All users successfully fetched!`,
   });
 });
 
@@ -26,7 +27,7 @@ exports.getUser = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: user,
-    msg: `Show user detail with the id of ${req.params.id}`,
+    msg: `Here is the information of user with username ${user.username}`,
   });
 });
 
@@ -57,11 +58,23 @@ exports.createUser = asyncHandler(async (req, res, next) => {
  * @access          Private - access only admin
  */
 exports.updateUser = asyncHandler(async (req, res, next) => {
-  const id = req.params.id;
+  const user = await User.findOne('userId', req.params.id);
+
+  // Check if the user is found
+  if (!user) return next(new ThrowError('User not found!', 404));
+
+  const result = await User.findByIdAndUpdate(req.params.id, req.body);
+
+  if (!result)
+    return next(
+      new ThrowError('User information duplicate with other users', 406)
+    );
+
+  const updatedUser = await User.findOne('userId', req.params.id);
   res.status(200).json({
     success: true,
-    msg: `User with the id of ${id} successfully updated!`,
-    data: req.body,
+    data: updatedUser,
+    msg: `User ${req.body.username} successfully updated!`,
   });
 });
 

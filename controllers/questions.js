@@ -35,7 +35,7 @@ exports.getQuestion = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: question,
-    msg: `Show question ${req.params.id}`,
+    msg: `Show question with the id of ${req.params.id}`,
   });
 });
 
@@ -73,14 +73,14 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
   req.user = 2; // req.user.id will be from authentication later on
   const question = await Question.findOne(req.params.id);
 
-  if (!question)
-    return next(new ThrowError('Could not update the question', 404));
-
   // Check if the question author
   if (question.postedBy.userId != req.user)
     return next(
       new ThrowError('This user is not authorized to update the question', 404)
     );
+
+  if (!question)
+    return next(new ThrowError('Could not update the question', 404));
 
   await Question.findByIdAndUpdate(req.params.id, req.body);
 

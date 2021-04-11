@@ -21,8 +21,13 @@ class User {
     const db = new Database();
 
     let query = 'SELECT * FROM users;';
+    const users = await db.queryDatabase(query, []);
+    const usersData = [];
 
-    return await db.queryDatabase(query, []);
+    // Format data for each user
+    users.forEach((user) => usersData.push(new User(user).data));
+
+    return usersData;
   }
 
   static async findOne(field, value) {
@@ -47,8 +52,17 @@ class User {
     return result;
   }
 
-  static async findByIdAndUpdate(id) {
+  static async findByIdAndUpdate(id, user) {
     const db = new Database();
+    let query = `UPDATE users SET name = ?, username = ?, email = ?, role = ? WHERE userId = ?`;
+
+    return await db.queryDatabase(query, [
+      user.name,
+      user.username,
+      user.email,
+      user.role,
+      id,
+    ]);
   }
 
   // Encrypt password using bcrypt
