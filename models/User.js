@@ -63,6 +63,13 @@ class User {
       data.resetPasswordExpire = user[0].resetPasswordExpire;
       return data;
     }
+
+    if (field === 'resetPasswordToken') {
+      const data = new User(user[0]).data;
+      data.resetPasswordExpireQuery = user[0].resetPasswordToken;
+      data.resetPasswordExpire = user[0].resetPasswordExpire;
+      return data;
+    }
     return new User(user[0]).data;
   }
 
@@ -235,6 +242,12 @@ class User {
     ]);
 
     return resetToken;
+  }
+
+  static async emptyTokenAndExpire(id) {
+    const db = new Database();
+    const query = `UPDATE users SET resetPasswordToken = NULL, resetPasswordExpire = NULL WHERE userId = ? `;
+    await db.queryDatabase(query, [id]);
   }
 }
 

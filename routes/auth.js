@@ -5,6 +5,7 @@ const {
   login,
   getMe,
   forgotPassword,
+  resetPassword,
   uploadProfilePic,
 } = require('../controllers/auth');
 
@@ -19,6 +20,8 @@ router.route('/login').post(login);
 router.route('/me').get(protect, getMe);
 
 router.route('/forgotpassword').post(forgotPassword);
+
+router.route('/resetpassword/:resettoken').put(resetPassword);
 
 router
   .route('/:userId/profilepic')

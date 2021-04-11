@@ -1,4 +1,5 @@
 const path = require('path');
+const crypto = require('crypto');
 const asyncHandler = require('../middleware/async');
 const ThrowError = require('../utils/throwError');
 const User = require('../models/User');
@@ -111,14 +112,15 @@ exports.getMe = asyncHandler(
 
 /**
  * @description     Forgot password
- * @route           GET /api/v1/auth/forgotpassword
+ * @route           POST /api/v1/auth/forgotpassword
  * @access          Public
  */
 exports.forgotPassword = asyncHandler(
   asyncHandler(async (req, res, next) => {
     const user = await User.findOne('email', req.body.email);
 
-    if (!user) return next(new ThrowError('There is user with req.body.email'));
+    if (!user)
+      return next(new ThrowError('There is user with req.body.email', 404));
 
     // Get reset token
     const resetToken = await User.getResetPasswordToken(user.userId);
@@ -126,7 +128,7 @@ exports.forgotPassword = asyncHandler(
     // Create reset url
     const resetUrl = `${req.protocol}://${req.get(
       'host'
-    )}/api/v1/resetpassword/${resetToken}`;
+    )}/api/v1/auth/resetpassword/${resetToken}`;
 
     const message = `You are receiving this email because you has requested a password. Click on the link below to change your password:\n\n ${resetUrl}`;
 
@@ -139,10 +141,38 @@ exports.forgotPassword = asyncHandler(
 
       res.status(200).json({ success: true, data: 'Email Sent!' });
     } catch (error) {
-      console.log(error);
+      // Empty resetPasswordToken and resetPasswordExpire
+      await User.emptyTokenAndExpire(user.userId);
 
       return next(new ThrowError('Email could not be sent', 500));
     }
+  })
+);
+
+/**
+ * @description     Reset password
+ * @route           PUT /api/v1/auth/resetpassword/:resettoken
+ * @access          Public
+ */
+exports.resetPassword = asyncHandler(
+  asyncHandler(async (req, res, next) => {
+    // Get hashed token
+    const resetPasswordToken = crypto
+      .createHash('sha256')
+      .update(req.params.resettoken)
+      .digest('hex');
+
+    const user = await User.findOne('resetPasswordToken', resetPasswordToken);
+
+    if (!user) return next(new ThrowError('Invalid token', 400));
+
+    // set new password
+    await User.setUserPassword(user.userId, req.body.password);
+
+    // Empty resetPasswordToken and resetPasswordExpire
+    await User.emptyTokenAndExpire(user.userId);
+
+    sendTokenCookie(user.userId, 200, res);
   })
 );
 
