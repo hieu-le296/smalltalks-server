@@ -49,3 +49,23 @@ exports.uploadProfilePic = asyncHandler(async (req, res, next) => {
     });
   });
 });
+
+/**
+ * @description     Register user
+ * @route           POST /api/v1/auth/register
+ * @access          Public
+ */
+exports.register = asyncHandler(async (req, res, next) => {
+  // Create user
+  const result = await User.create(req.body);
+
+  const createdUser = await User.findOne('userId', result.insertId);
+
+  res
+    .status(200)
+    .json({
+      success: true,
+      data: createdUser,
+      msg: `User ${req.body.username} successfully created!`,
+    });
+});

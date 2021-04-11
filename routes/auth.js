@@ -1,8 +1,10 @@
 const express = require('express');
 
-const { uploadProfilePic } = require('../controllers/auth');
+const { register, uploadProfilePic } = require('../controllers/auth');
 
 const router = express.Router();
+
+router.route('/register').post(register);
 
 router.route('/:userId/profilepic').put(uploadProfilePic);
 
