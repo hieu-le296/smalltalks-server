@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const fileUpload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const colors = require('colors');
 const cors = require('cors');
@@ -29,6 +30,9 @@ const app = express();
 // Using body parser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser());
 
 // Use cors
 app.use(cors());

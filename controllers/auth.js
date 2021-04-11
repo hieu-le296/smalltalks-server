@@ -57,16 +57,9 @@ exports.uploadProfilePic = asyncHandler(async (req, res, next) => {
  */
 exports.register = asyncHandler(async (req, res, next) => {
   // Create user
-  const result = await User.create(req.body);
+  const user = await User.create(req.body);
 
-  // Create token
-  const token = User.getSignedJwtToken(result.insertId);
-
-  res.status(200).json({
-    success: true,
-    token: token,
-    msg: `User ${req.body.username} successfully created!`,
-  });
+  sendTokenCookie(user.insertId, 200, res);
 });
 
 /**
@@ -85,16 +78,28 @@ exports.login = asyncHandler(async (req, res, next) => {
   // Check if password matches
   const isMatched = await User.matchPassword(password, user.password);
 
-  console.log(isMatched);
-
   if (!isMatched) return next(new ThrowError('Invalid credentials', 401));
 
-  // Create token
-  const token = User.getSignedJwtToken(user.userId);
-
-  res.status(200).json({
-    success: true,
-    token: token,
-    msg: `Login successfully created!`,
-  });
+  sendTokenCookie(user.userId, 200, res);
 });
+
+const sendTokenCookie = (userId, statusCode, res) => {
+  // Create token
+  const token = User.getSignedJwtToken(userId);
+
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+
+  if (process.env.NODE_ENV === 'production') {
+    options.secure = true;
+  }
+
+  res
+    .status(statusCode)
+    .cookie('token', token, options)
+    .json({ success: true, token });
+};
