@@ -2,6 +2,7 @@ const fs = require('fs');
 const mysql = require('mysql');
 const colors = require('colors');
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs');
 
 // Load env configurations
 dotenv.config({ path: './config/config.env' });
@@ -33,6 +34,11 @@ function queryDatabase(query, values) {
   });
 }
 
+async function encryptPassword(password) {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
+}
+
 // Read JSON files
 const users = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8')
@@ -52,12 +58,13 @@ async function createUsers(usersObj) {
   const userArr = [];
 
   for (let i = 0; i < usersObj.length; i++) {
+    const password = await encryptPassword(usersObj[i].password);
     let user = [
       usersObj[i].userId,
       usersObj[i].name,
       usersObj[i].username,
       usersObj[i].email,
-      usersObj[i].password,
+      password,
       usersObj[i].role,
     ];
     userArr.push(user);

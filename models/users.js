@@ -1,5 +1,4 @@
 const Database = require('../utils/db_query');
-const { findAll } = require('./questions');
 const bcrypt = require('bcryptjs');
 
 class User {
