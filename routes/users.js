@@ -13,14 +13,20 @@ const {
 
 const router = express.Router();
 
-router.route('/').get(getUsers).post(createUser);
+const { protect } = require('../middleware/auth');
 
-router.route('/:id').get(getUser).put(updateUser).delete(deleteUser);
+router.route('/').get(protect, getUsers).post(protect, createUser);
+
+router
+  .route('/:id')
+  .get(protect, getUser)
+  .put(protect, updateUser)
+  .delete(protect, deleteUser);
 
 router.route('/:id/questions').get(getUserQuestions);
 
 router.route('/:id/comments').get(getUserComments);
 
-router.route('/:id/password').put(setUserPassword);
+router.route('/:id/password').put(protect, setUserPassword);
 
 module.exports = router;

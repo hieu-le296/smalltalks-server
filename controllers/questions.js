@@ -45,9 +45,7 @@ exports.getQuestion = asyncHandler(async (req, res, next) => {
  * @access          Private
  */
 exports.createQuestion = asyncHandler(async (req, res, next) => {
-  // Add the current logged in user to body => Will do after implementing the authentication
-  // req.body.userId = req.user.id;
-  req.body.userId = 2;
+  req.body.userId = req.user.userId;
   const result = await Question.create(req.body);
 
   if (!result) return next(new ThrowError('Question is duplicate', 406));

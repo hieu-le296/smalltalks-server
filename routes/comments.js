@@ -1,5 +1,5 @@
 const express = require('express');
-const {advancedFilters} = require('../middleware/advancedFilters');
+const { advancedFilters } = require('../middleware/advancedFilters');
 
 const {
   getComments,
@@ -11,8 +11,17 @@ const {
 
 const router = express.Router({ mergeParams: true });
 
-router.route('/').get(advancedFilters, getComments).post(createComment);
+const { protect } = require('../middleware/auth');
 
-router.route('/:id').get(getComment).put(updateComment).delete(deleteComment);
+router
+  .route('/')
+  .get(advancedFilters, getComments)
+  .post(protect, createComment);
+
+router
+  .route('/:id')
+  .get(getComment)
+  .put(protect, updateComment)
+  .delete(protect, deleteComment);
 
 module.exports = router;

@@ -12,6 +12,8 @@ const {
 
 const router = express.Router();
 
+const { protect } = require('../middleware/auth');
+
 // Include other resource routers
 const commentRouter = require('./comments');
 
@@ -22,12 +24,12 @@ router.use('/:questionId/comments', commentRouter);
 router
   .route('/')
   .get(advancedFilters, getQuestions)
-  .post(performValidation, createQuestion);
+  .post(protect, performValidation, createQuestion);
 
 router
   .route('/:id')
   .get(getQuestion)
-  .put(updateQuestion)
-  .delete(deleteQuestion);
+  .put(protect, performValidation, updateQuestion)
+  .delete(protect, deleteQuestion);
 
 module.exports = router;

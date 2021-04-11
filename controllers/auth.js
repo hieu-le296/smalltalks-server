@@ -83,6 +83,22 @@ exports.login = asyncHandler(async (req, res, next) => {
   sendTokenCookie(user.userId, 200, res);
 });
 
+/**
+ * @description     Get current logged in user
+ * @route           GET /api/v1/auth/login
+ * @access          Private
+ */
+exports.getMe = asyncHandler(
+  asyncHandler(async (req, res, next) => {
+    const user = await User.findOne('userId', req.user.userId);
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  })
+);
+
 const sendTokenCookie = (userId, statusCode, res) => {
   // Create token
   const token = User.getSignedJwtToken(userId);
