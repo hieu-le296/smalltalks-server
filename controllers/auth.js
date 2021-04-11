@@ -2,6 +2,7 @@ const path = require('path');
 const asyncHandler = require('../middleware/async');
 const ThrowError = require('../utils/throwError');
 const User = require('../models/User');
+const sendEmail = require('../utils/sendEmail');
 
 /**
  * @description     Upload user profile picture
@@ -105,6 +106,43 @@ exports.getMe = asyncHandler(
       success: true,
       data: user,
     });
+  })
+);
+
+/**
+ * @description     Forgot password
+ * @route           GET /api/v1/auth/forgotpassword
+ * @access          Public
+ */
+exports.forgotPassword = asyncHandler(
+  asyncHandler(async (req, res, next) => {
+    const user = await User.findOne('email', req.body.email);
+
+    if (!user) return next(new ThrowError('There is user with req.body.email'));
+
+    // Get reset token
+    const resetToken = await User.getResetPasswordToken(user.userId);
+
+    // Create reset url
+    const resetUrl = `${req.protocol}://${req.get(
+      'host'
+    )}/api/v1/resetpassword/${resetToken}`;
+
+    const message = `You are receiving this email because you has requested a password. Click on the link below to change your password:\n\n ${resetUrl}`;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: 'Reset Password',
+        message,
+      });
+
+      res.status(200).json({ success: true, data: 'Email Sent!' });
+    } catch (error) {
+      console.log(error);
+
+      return next(new ThrowError('Email could not be sent', 500));
+    }
   })
 );
 

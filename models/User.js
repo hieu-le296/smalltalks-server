@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const Database = require('../utils/db_query');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -58,6 +59,8 @@ class User {
     if (field === 'email') {
       const data = new User(user[0]).data;
       data.password = user[0].passwd;
+      data.resetPasswordExpireQuery = user[0].resetPasswordToken;
+      data.resetPasswordExpire = user[0].resetPasswordExpire;
       return data;
     }
     return new User(user[0]).data;
@@ -197,6 +200,41 @@ class User {
    */
   static async matchPassword(enteredPassword, userPassword) {
     return await bcrypt.compare(enteredPassword, userPassword);
+  }
+
+  // Generate and hash password token
+  static async getResetPasswordToken(userId) {
+    const db = new Database();
+
+    // Generate token
+    const resetToken = crypto.randomBytes(20).toString('hex');
+
+    // Hash token and set to resetPassword
+    let resetPasswordToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+    const resetPasswordTokenQuery = `UPDATE users SET resetPasswordToken = ? WHERE userId = ?;`;
+    await db.queryDatabase(resetPasswordTokenQuery, [
+      resetPasswordToken,
+      userId,
+    ]);
+
+    // Set the expiration in 10 minutes for token
+    const timeElapsed = Date.now() + 10 * 60 * 1000;
+    const today = new Date(timeElapsed);
+    // Format the date to store in MySQL
+    let resetPasswordExpire = today
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
+    const resetPasswordExpireQuery = `UPDATE users SET resetPasswordExpire = ? WHERE userId = ?;`;
+    await db.queryDatabase(resetPasswordExpireQuery, [
+      resetPasswordExpire,
+      userId,
+    ]);
+
+    return resetToken;
   }
 }
 

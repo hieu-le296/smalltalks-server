@@ -43,6 +43,8 @@ let userTable = `
     passwd VARCHAR(255) NOT NULL,
     role ENUM('user', 'admin') NOT NULL,
     profilePic VARCHAR(100) DEFAULT 'default.jpeg',
+    resetPasswordToken VARCHAR(255) DEFAULT NULL,
+    resetPasswordExpire DATETIME DEFAULT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) 
