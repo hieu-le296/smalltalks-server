@@ -1,6 +1,6 @@
 const express = require('express');
-const { performValidation } = require('../middleware/validation')
-const {advancedFilters} = require('../middleware/advancedFilters');
+const { performValidation } = require('../middleware/validation');
+const { advancedFilters } = require('../middleware/advancedFilters');
 
 const {
   getQuestions,
@@ -19,7 +19,10 @@ const commentRouter = require('./comments');
 router.use('/:questionId/comments', commentRouter);
 
 // Mount router
-router.route('/').get(advancedFilters, getQuestions).post(performValidation, createQuestion);
+router
+  .route('/')
+  .get(advancedFilters, getQuestions)
+  .post(performValidation, createQuestion);
 
 router
   .route('/:id')

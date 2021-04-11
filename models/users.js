@@ -3,7 +3,16 @@ const bcrypt = require('bcryptjs');
 
 class User {
   constructor(user) {
-    const { userId, name, username, email, role, createdAt, updatedAt } = user;
+    const {
+      userId,
+      name,
+      username,
+      email,
+      role,
+      profilePic,
+      createdAt,
+      updatedAt,
+    } = user;
 
     this.data = {
       userId,
@@ -11,6 +20,7 @@ class User {
       username,
       email,
       role,
+      profilePic,
       createdAt,
       updatedAt,
     };
@@ -136,6 +146,19 @@ class User {
     `;
     const data = await db.queryDatabase(query, [id]);
     return data;
+  }
+
+  /**
+   * Update User picture profile
+   * @param {*} id of the user
+   * @param {*} filename of the profile picture
+   * @returns result
+   */
+  static async findUserAndUpdatePicture(id, filename) {
+    const db = new Database();
+    let query = `UPDATE users SET profilePic = ? WHERE userId = ?;`;
+
+    return await db.queryDatabase(query, [filename, id]);
   }
 
   /**
