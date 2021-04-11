@@ -1,7 +1,7 @@
 const { check, validationResult, body } = require('express-validator');
 const ThrowError = require('../utils/throwError');
 
-exports.performValidation = async (req, res, next) => {
+exports.questionValidation = async (req, res, next) => {
   await check('title')
     .notEmpty()
     .withMessage(' Please input the question title')
@@ -12,6 +12,12 @@ exports.performValidation = async (req, res, next) => {
     .withMessage(' Please input the content')
     .run(req);
 
+    await parseErrors(req,res,next);
+
+};
+
+let parseErrors = (req,res,next) => {
+
   const errors = validationResult(req).formatWith(({ msg }) => msg);
 
   const hasError = !errors.isEmpty();
@@ -21,4 +27,5 @@ exports.performValidation = async (req, res, next) => {
   } else {
     next();
   }
-};
+
+}

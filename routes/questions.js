@@ -1,5 +1,5 @@
 const express = require('express');
-const { performValidation } = require('../middleware/validation');
+const { questionValidation } = require('../middleware/validation');
 const { advancedFilters } = require('../middleware/advancedFilters');
 
 const {
@@ -24,12 +24,12 @@ router.use('/:questionId/comments', commentRouter);
 router
   .route('/')
   .get(advancedFilters, getQuestions)
-  .post(protect, authorize('user', 'admin'), performValidation, createQuestion);
+  .post(protect, authorize('user', 'admin'), questionValidation, createQuestion);
 
 router
   .route('/:id')
   .get(getQuestion)
-  .put(protect, authorize('user', 'admin'), performValidation, updateQuestion)
+  .put(protect, authorize('user', 'admin'), questionValidation, updateQuestion)
   .delete(protect, authorize('user', 'admin'), deleteQuestion);
 
 module.exports = router;
