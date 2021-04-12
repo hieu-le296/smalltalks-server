@@ -16,6 +16,17 @@ exports.questionValidation = async (req, res, next) => {
 
 };
 
+exports.commentValidation = async (req, res, next) => {
+  
+  await check('content')
+    .notEmpty()
+    .withMessage(' Please input the content')
+    .run(req);
+
+    await parseErrors(req,res,next);
+
+};
+
 
 
 

@@ -53,6 +53,8 @@ exports.createComment = asyncHandler(async (req, res, next) => {
     }
    */
 
+  req.body.commentUserId = req.user.userId;
+
   req.body.questionId = req.params.questionId;
 
   const comment = await Comment.create(req.body);
@@ -75,15 +77,23 @@ exports.createComment = asyncHandler(async (req, res, next) => {
  * @access          Private - authenticated users
  */
 exports.updateComment = asyncHandler(async (req, res, next) => {
-  req.user = 2; // req.user.id will be from authentication later on
-
+  req.body.commentUserId = req.user.userId;
+  
   const comment = await Comment.findOne(req.params.id);
 
-  // Check if the question author
-  if (comment.postedBy.commentUserId != req.user)
+  // Check if the comment author
+  if (comment.postedBy.commentUserId !== req.user.userId && req.user.role !== 'admin'){
     return next(
-      new ThrowError('This user is not authorized to update the question', 404)
+      new ThrowError('This user is not authorized to update the comment', 401)
     );
+  }
+
+    if(!comment) {
+      return next(
+        new ThrowError('Could not update the comment', 404)
+    );
+    }
+        
 
   const updatedComment = await Comment.update(req.params.id, req.body);
 
@@ -100,15 +110,19 @@ exports.updateComment = asyncHandler(async (req, res, next) => {
  * @access          Private - authenticated users
  */
 exports.deleteComment = async (req, res, next) => {
-  req.user = 2; // req.user.id will be from authentication later on
+  req.body.commentUserId = req.user.userId;
 
   const comment = await Comment.findOne(req.params.id);
 
-  // Check if the question author
-  if (comment.postedBy.commentUserId != req.user)
-    return next(
-      new ThrowError('This user is not authorized to delete the question', 404)
-    );
+  if (!comment){
+    return next(new ThrowError('Could not delete the comment', 404));
+  }
+   
+    // Check if the comment author
+    if (comment.postedBy.commentUserId !== req.user.userId && req.user.role !== 'admin')
+      return next(
+        new ThrowError('This user is not authorized to update the comment', 401)
+      );
 
   await Comment.delete(req.params.id);
 
