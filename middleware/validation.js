@@ -16,6 +16,10 @@ exports.questionValidation = async (req, res, next) => {
 
 };
 
+
+
+
+//Parse errors and return errors,if any and proceed to next middleware
 let parseErrors = (req,res,next) => {
 
   const errors = validationResult(req).formatWith(({ msg }) => msg);

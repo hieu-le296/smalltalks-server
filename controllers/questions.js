@@ -80,9 +80,12 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
   if (!question)
     return next(new ThrowError('Could not update the question', 404));
 
-  await Question.findByIdAndUpdate(req.params.id, req.body);
+  const result = await Question.findByIdAndUpdate(req.params.id, req.body);
+
+  if (!result) return next(new ThrowError('Title is duplicated!', 406));
 
   const updatedQuestion = await Question.findOne(req.params.id);
+
 
   res.status(200).json({
     success: true,
