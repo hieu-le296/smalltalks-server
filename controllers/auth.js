@@ -139,7 +139,11 @@ exports.forgotPassword = asyncHandler(
         message,
       });
 
-      res.status(200).json({ success: true, data: 'Email Sent!' });
+      res.status(200).json({
+        success: true,
+        data:
+          'An email has been sent to your mailbox for resetting the password!',
+      });
     } catch (error) {
       // Empty resetPasswordToken and resetPasswordExpire
       await User.emptyTokenAndExpire(user.userId);
@@ -164,7 +168,22 @@ exports.resetPassword = asyncHandler(
 
     const user = await User.findOne('resetPasswordToken', resetPasswordToken);
 
-    if (!user) return next(new ThrowError('Invalid token', 400));
+    if (!user) {
+      // Empty resetPasswordToken and resetPasswordExpire
+      await User.emptyTokenAndExpire(user.userId);
+      return next(new ThrowError('Invalid token', 400));
+    }
+
+    const result = await User.checkTokenTimeLeft(
+      'resetPasswordExpire',
+      user.userId
+    );
+
+    if (result[0].timeLeft < 0) {
+      // Empty resetPasswordToken and resetPasswordExpire
+      await User.emptyTokenAndExpire(user.userId);
+      return next(new ThrowError('Password Token Request Time Out!', 400));
+    }
 
     // set new password
     await User.setUserPassword(user.userId, req.body.password);

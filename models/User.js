@@ -249,6 +249,13 @@ class User {
     const query = `UPDATE users SET resetPasswordToken = NULL, resetPasswordExpire = NULL WHERE userId = ? `;
     await db.queryDatabase(query, [id]);
   }
+
+  static async checkTokenTimeLeft(type, id) {
+    const db = new Database();
+    const query = `SELECT TIMESTAMPDIFF(MINUTE, CURRENT_TIMESTAMP() , ${type}) AS timeLeft FROM users WHERE userId = ?;`;
+
+    return await db.queryDatabase(query, [id]);
+  }
 }
 
 module.exports = User;
