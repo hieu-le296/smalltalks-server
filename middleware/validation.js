@@ -27,6 +27,53 @@ exports.commentValidation = async (req, res, next) => {
 
 };
 
+//validation for user registration/update
+exports.userValidation = async (req, res, next) => {
+  
+  await check('name')
+    .notEmpty()
+    .withMessage(' Please input the name')
+    .run(req);
+
+    await check('username')
+    .notEmpty()
+    .withMessage(' Please input the username')
+    .run(req);
+
+    await check('email')
+    .notEmpty()
+    .withMessage(' Please input the email')
+    .run(req);
+
+    await check('password')
+    .notEmpty()
+    .withMessage(' Please input the password')
+    .run(req);
+
+    await parseErrors(req,res,next);
+
+};
+
+//validation for user login
+exports.loginValidation = async (req, res, next) => {
+  
+  await check('email')
+    .notEmpty()
+    .withMessage(' Please input the email')
+    .run(req);
+
+    await check('password')
+    .notEmpty()
+    .withMessage(' Please input the password')
+    .run(req);
+
+
+    await parseErrors(req,res,next);
+
+};
+
+
+
 
 
 

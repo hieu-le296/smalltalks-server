@@ -15,17 +15,21 @@ const router = express.Router();
 
 const { protect, authorize } = require('../middleware/auth');
 
+
+const {userValidation} = require('../middleware/validation');
+
+
 // Admin Access only
 
 router
   .route('/')
   .get(protect, authorize('admin'), getUsers)
-  .post(protect, authorize('admin'), createUser);
+  .post(protect, authorize('admin'), userValidation, createUser);
 
 router
   .route('/:id')
   .get(protect, authorize('admin'), getUser)
-  .put(protect, authorize('admin'), updateUser)
+  .put(protect, authorize('admin'), userValidation, updateUser)
   .delete(protect, authorize('admin'), deleteUser);
 
 router.route('/:id/password').put(protect, authorize('admin'), setUserPassword);
