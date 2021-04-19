@@ -13,9 +13,11 @@ const router = express.Router();
 
 const { protect, authorize } = require('../middleware/auth');
 
+const {loginValidation} = require('../middleware/validation');
+
 router.route('/register').post(register);
 
-router.route('/login').post(login);
+router.route('/login').post(loginValidation, login);
 
 router.route('/me').get(protect, getMe);
 
