@@ -56,12 +56,22 @@ const users = require('./routes/users');
 const comments = require('./routes/comments');
 const auth = require('./routes/auth');
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.use('/api/v1/questions', routeURLDetector, questions);
 app.use('/api/v1/users', routeURLDetector, users);
 app.use('/api/v1/comments', routeURLDetector, comments);
 app.use('/api/v1/auth', routeURLDetector, auth);
 
 app.use(errorHandler);
+
+// Handle 404 error
+app.use((req, res, next) => {
+  res.status(404);
+  res.sendFile(path.join(__dirname, 'public', '404.html'));
+});
 
 const PORT = process.env.PORT || 5700;
 

@@ -102,7 +102,11 @@ class Question {
   static async findByIdAndUpdate(id, question) {
     const db = new Database();
     let query = `UPDATE questions SET title = ?, content = ? WHERE questionId = ?`;
-    await db.queryDatabase(query, [question.title, question.content, id]);
+    return await db.queryDatabase(query, [
+      question.title,
+      question.content,
+      id,
+    ]);
   }
 
   /**

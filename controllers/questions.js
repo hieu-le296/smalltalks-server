@@ -86,7 +86,6 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
 
   const updatedQuestion = await Question.findOne(req.params.id);
 
-
   res.status(200).json({
     success: true,
     data: updatedQuestion,
