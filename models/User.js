@@ -139,7 +139,7 @@ class User {
   static async findUserQuestions(id) {
     const db = new Database();
     let query = `
-      SELECT q.questionId, q.title, q.createdAt, q.updatedAt FROM users u 
+      SELECT q.questionId, q.title, q.content, q.createdAt, q.updatedAt FROM users u 
       INNER JOIN questions q ON u.userId = q.userId 
       WHERE u.userId = ?
     `;
