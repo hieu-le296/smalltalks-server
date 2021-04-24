@@ -1,6 +1,7 @@
 const ThrowError = require('../utils/throwError');
 const asyncHandler = require('../middleware/async');
 const Question = require('../models/Question');
+const slugify = require('slugify');
 
 /**
  * @description     Get All public questions
@@ -30,7 +31,7 @@ exports.getQuestions = asyncHandler(async (req, res, next) => {
  * @access          Public
  */
 exports.getQuestion = asyncHandler(async (req, res, next) => {
-  const question = await Question.findOne(req.params.id);
+  const question = await Question.findOne('slug', req.params.id);
 
   res.status(200).json({
     success: true,
@@ -46,11 +47,19 @@ exports.getQuestion = asyncHandler(async (req, res, next) => {
  */
 exports.createQuestion = asyncHandler(async (req, res, next) => {
   req.body.userId = req.user.userId;
+
+  req.body.slug = slugify(req.body.title, {
+    replacement: '-',
+    remove: /[*+~.()'"!:@]/g,
+    lower: false,
+    strict: false,
+  });
+
   const result = await Question.create(req.body);
 
   if (!result) return next(new ThrowError('Question is duplicate', 406));
 
-  const foundQuestion = await Question.findOne(result.insertId);
+  const foundQuestion = await Question.findOne('questionId', result.insertId);
 
   if (!foundQuestion)
     return next(new ThrowError('Could not create a question', 400));
@@ -69,7 +78,7 @@ exports.createQuestion = asyncHandler(async (req, res, next) => {
  */
 exports.updateQuestion = asyncHandler(async (req, res, next) => {
   req.body.userId = req.user.userId;
-  const question = await Question.findOne(req.params.id);
+  const question = await Question.findOne('questionId', req.params.id);
 
   // Check if the question author
   if (question.postedBy.userId !== req.user.userId && req.user.role !== 'admin')
@@ -80,11 +89,18 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
   if (!question)
     return next(new ThrowError('Could not update the question', 404));
 
+  req.body.slug = slugify(req.body.title, {
+    replacement: '-',
+    remove: /[*+~.()'"!:@]/g,
+    lower: false,
+    strict: false,
+  });
+
   const result = await Question.findByIdAndUpdate(req.params.id, req.body);
 
   if (!result) return next(new ThrowError('Title is duplicated!', 406));
 
-  const updatedQuestion = await Question.findOne(req.params.id);
+  const updatedQuestion = await Question.findOne('questionId', req.params.id);
 
   res.status(200).json({
     success: true,
@@ -100,7 +116,7 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
  */
 exports.deleteQuestion = asyncHandler(async (req, res, next) => {
   req.body.userId = req.user.userId;
-  const question = await Question.findOne(req.params.id);
+  const question = await Question.findOne('questionId', req.params.id);
 
   if (!question)
     return next(new ThrowError('Could not delete the question', 404));

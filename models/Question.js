@@ -9,8 +9,10 @@ class Question {
       userId,
       username,
       name,
+      profilePic,
       title,
       content,
+      slug,
       createdAt,
       updatedAt,
     } = question;
@@ -21,9 +23,11 @@ class Question {
         userId,
         username,
         name,
+        profilePic,
       },
       title,
       content,
+      slug,
       createdAt,
       updatedAt,
     };
@@ -37,7 +41,7 @@ class Question {
     const db = new Database();
 
     let query = `
-    SELECT q.questionId, q.title, q.content, u.userId, u.username, u.name, q.createdAt, q.updatedAt
+    SELECT q.questionId, q.title, q.slug, q.content, u.userId, u.username, u.name, q.createdAt, q.updatedAt
     FROM questions q INNER JOIN users u 
     ON q.userId = u.userId`;
 
@@ -66,15 +70,15 @@ class Question {
    * @param {id} id of the question
    * @returns single question
    */
-  static async findOne(id) {
+  static async findOne(field, value) {
     const db = new Database();
     let query = `
-            SELECT q.questionId, q.title, q.content, q.userId, u.username, u.name, q.createdAt, q.updatedAt
+            SELECT q.questionId, q.title, q.slug, q.content, q.userId, u.username, u.name, u.profilePic, q.createdAt, q.updatedAt
             FROM questions q INNER JOIN users u
             ON q.userId = u.userId
-            WHERE q.questionId = ?;`;
+            WHERE q.${field} = ?;`;
 
-    const questions = await db.queryDatabase(query, [id]);
+    const questions = await db.queryDatabase(query, [value]);
     return new Question(questions[0]).data;
   }
 
@@ -85,10 +89,11 @@ class Question {
    */
   static async create(question) {
     const db = new Database();
-    let insertQuery = `INSERT INTO questions(userId, title, content) VALUES(?, ?, ?);`;
+    let insertQuery = `INSERT INTO questions(userId, title, slug, content) VALUES(?, ?, ?, ?);`;
     const result = await db.queryDatabase(insertQuery, [
       question.userId,
       question.title,
+      question.slug,
       question.content,
     ]);
     return result;
@@ -101,9 +106,10 @@ class Question {
    */
   static async findByIdAndUpdate(id, question) {
     const db = new Database();
-    let query = `UPDATE questions SET title = ?, content = ? WHERE questionId = ?`;
+    let query = `UPDATE questions SET title = ?, slug = ?, content = ? WHERE questionId = ?`;
     return await db.queryDatabase(query, [
       question.title,
+      question.slug,
       question.content,
       id,
     ]);

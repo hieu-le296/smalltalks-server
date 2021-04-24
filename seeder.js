@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const colors = require('colors');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
+const slugify = require('slugify');
 
 // Load env configurations
 dotenv.config({ path: './config/config.env' });
@@ -73,13 +74,14 @@ async function createUsers(usersObj) {
 }
 
 async function createQuestions(questionsObj) {
-  const query = `INSERT INTO questions(questionId, userId, title, content) VALUES ?`;
+  const query = `INSERT INTO questions(questionId, userId, title, slug, content) VALUES ?`;
   const questionArr = [];
   for (let i = 0; i < questionsObj.length; i++) {
     let question = [
       questionsObj[i].questionId,
       questionsObj[i].userId,
       questionsObj[i].title,
+      slug(questions[i].title),
       questionsObj[i].content,
     ];
     questionArr.push(question);
@@ -129,4 +131,13 @@ if (process.argv[2] === '-i') {
   importData();
 } else if (process.argv[2] === '-d') {
   deleteData();
+}
+
+function slug(string) {
+  return slugify(string, {
+    replacement: '-',
+    remove: /[*+~.()'"!:@]/g,
+    lower: false,
+    strict: false,
+  });
 }
