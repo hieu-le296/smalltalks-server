@@ -256,7 +256,7 @@ exports.getUserQuestions = asyncHandler(async (req, res, next) => {
   // Find user
   const user = await checkUserExists(req, res, next);
 
-  const { userId, username, name, profilePic } = user;
+  const { userId, username, name, profilePic, backgroundPic } = user;
 
   const questions = await User.findUserQuestions(userId);
 
@@ -266,6 +266,7 @@ exports.getUserQuestions = asyncHandler(async (req, res, next) => {
     userId: userId,
     name: name,
     username: username,
+    backgroundPic : backgroundPic,
     profilePic: profilePic,
     questions: questions,
   });
@@ -280,7 +281,7 @@ exports.getUserComments = asyncHandler(async (req, res, next) => {
   // Find user
   const user = await checkUserExists(req, res, next);
 
-  const { userId, username, name, profilePic } = user;
+  const { userId, username, name, profilePic, backgroundPic } = user;
 
   const comments = await User.findUserComments(userId);
   res.status(200).json({
@@ -289,6 +290,7 @@ exports.getUserComments = asyncHandler(async (req, res, next) => {
     userId: userId,
     name: name,
     username: username,
+    backgroundPic: backgroundPic,
     profilePic: profilePic,
     comments: comments,
   });
