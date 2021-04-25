@@ -20,11 +20,11 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
 
 /**
  * @description     Get single user detail
- * @route           GET /api/v1/users/:id
+ * @route           GET /api/v1/users/:username
  * @access          Private - access only by admin or user
  */
 exports.getUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne('userId', req.params.id);
+  const user = await User.findOne('username', req.params.username);
   res.status(200).json({
     success: true,
     data: user,
@@ -163,18 +163,88 @@ exports.uploadProfilePic = asyncHandler(async (req, res, next) => {
   // Create custom filename and its extension
   file.name = `photo_${user.userId}${path.parse(file.name).ext}`;
 
-  file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
-    if (err) {
-      console.log(err);
-      return next(new ThrowError(`Problem with file upload`, 500));
-    }
-    await User.findUserAndUpdatePicture(req.params.userId, file.name);
+  file.mv(
+    `${process.env.FILE_UPLOAD_PATH}/avatars/${file.name}`,
+    async (err) => {
+      if (err) {
+        console.log(err);
+        return next(new ThrowError(`Problem with file upload`, 500));
+      }
+      await User.findUserAndUpdatePicture(
+        req.params.userId,
+        'profilePic',
+        file.name
+      );
 
-    res.status(200).json({
-      success: true,
-      data: file.name,
-    });
-  });
+      res.status(200).json({
+        success: true,
+        data: file.name,
+      });
+    }
+  );
+});
+
+/**
+ * @description     Upload user profile background
+ * @route           PUT /api/v1/users/:userId/background
+ * @access          Private - Access by admin or user
+ */
+exports.uploadBackgroundPic = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne('userId', req.params.userId);
+
+  // Check if the user is found
+  if (!user) return next(new ThrowError('User not found!', 404));
+
+  // Check if the user owner
+  if (user.userId !== req.user.userId && req.user.role !== 'admin')
+    return next(
+      new ThrowError(
+        'This user is not authorized to update the picture profile',
+        401
+      )
+    );
+
+  if (!req.files) return next(new ThrowError('Please upload a picture', 400));
+
+  const file = req.files.file;
+
+  //   Make sure the image is a photo
+  if (!file.mimetype.startsWith('image')) {
+    return next(new ThrowError('Please upload an image file', 400));
+  }
+
+  // Check filesize
+  if (file.size > process.env.MAX_FILE_UPLOAD) {
+    return next(
+      new ThrowError(
+        `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}`,
+        404
+      )
+    );
+  }
+
+  // Create custom filename and its extension
+  file.name = `background_${user.userId}${path.parse(file.name).ext}`;
+
+  file.mv(
+    `${process.env.FILE_UPLOAD_PATH}/backgrounds/${file.name}`,
+    async (err) => {
+      if (err) {
+        console.log(err);
+        return next(new ThrowError(`Problem with file upload`, 500));
+      }
+      await User.findUserAndUpdatePicture(
+        req.params.userId,
+        'backgroundPic',
+        file.name
+      );
+
+      res.status(200).json({
+        success: true,
+        data: file.name,
+      });
+    }
+  );
 });
 
 /**

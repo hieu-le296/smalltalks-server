@@ -7,6 +7,7 @@ const {
   updateUser,
   setUserPassword,
   uploadProfilePic,
+  uploadBackgroundPic,
   deleteUser,
   getUserQuestions,
   getUserComments,
@@ -22,14 +23,15 @@ const { userValidation } = require('../middleware/validation');
 
 router
   .route('/')
-  .get(protect, authorize('admin'), getUsers)
+  .get(getUsers)
   .post(protect, authorize('admin'), userValidation, createUser);
 
 router
   .route('/:id')
-  .get(protect, authorize('admin'), getUser)
   .put(protect, authorize('user', 'admin'), userValidation, updateUser)
   .delete(protect, authorize('user', 'admin'), deleteUser);
+
+router.route('/:username').get(getUser);
 
 router
   .route('/:id/password')
@@ -38,6 +40,10 @@ router
 router
   .route('/:userId/profilepic')
   .put(protect, authorize('user', 'admin'), uploadProfilePic);
+
+router
+  .route('/:userId/backgroundpic')
+  .put(protect, authorize('user', 'admin'), uploadBackgroundPic);
 
 // Public Access
 

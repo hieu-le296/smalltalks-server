@@ -12,6 +12,7 @@ class User {
       email,
       role,
       profilePic,
+      backgroundPic,
       createdAt,
       updatedAt,
     } = user;
@@ -23,6 +24,7 @@ class User {
       email,
       role,
       profilePic,
+      backgroundPic,
       createdAt,
       updatedAt,
     };
@@ -165,9 +167,9 @@ class User {
    * @param {*} filename of the profile picture
    * @returns result
    */
-  static async findUserAndUpdatePicture(id, filename) {
+  static async findUserAndUpdatePicture(id, type, filename) {
     const db = new Database();
-    let query = `UPDATE users SET profilePic = ? WHERE userId = ?;`;
+    let query = `UPDATE users SET ${type} = ? WHERE userId = ?;`;
 
     return await db.queryDatabase(query, [filename, id]);
   }
