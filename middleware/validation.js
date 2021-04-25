@@ -12,74 +12,65 @@ exports.questionValidation = async (req, res, next) => {
     .withMessage(' Please input the content')
     .run(req);
 
-    await parseErrors(req,res,next);
-
+  await parseErrors(req, res, next);
 };
 
 exports.commentValidation = async (req, res, next) => {
-  
   await check('content')
     .notEmpty()
     .withMessage(' Please input the content')
     .run(req);
 
-    await parseErrors(req,res,next);
-
+  await parseErrors(req, res, next);
 };
 
 //validation for user registration/update
 exports.userValidation = async (req, res, next) => {
-  
-  await check('name')
-    .notEmpty()
-    .withMessage(' Please input the name')
-    .run(req);
-
+  if (req.body.name) {
+    await check('name')
+      .notEmpty()
+      .withMessage(' Please input the name')
+      .run(req);
+  }
+  if (req.body.username) {
     await check('username')
-    .notEmpty()
-    .withMessage(' Please input the username')
-    .run(req);
-
+      .notEmpty()
+      .withMessage(' Please input the username')
+      .run(req);
+  }
+  if (req.body.email) {
     await check('email')
-    .notEmpty()
-    .withMessage(' Please input the email')
-    .run(req);
-
+      .notEmpty()
+      .withMessage(' Please input the email')
+      .run(req);
+  }
+  if (req.body.password) {
     await check('password')
-    .notEmpty()
-    .withMessage(' Please input the password')
-    .run(req);
+      .notEmpty()
+      .withMessage(' Please input the password')
+      .run(req);
+  }
 
-    await parseErrors(req,res,next);
-
+  await parseErrors(req, res, next);
 };
 
 //validation for user login
 exports.loginValidation = async (req, res, next) => {
-  
   await check('email')
     .notEmpty()
     .withMessage(' Please input the email')
     .run(req);
 
-    await check('password')
+  await check('password')
     .notEmpty()
     .withMessage(' Please input the password')
     .run(req);
 
-
-    await parseErrors(req,res,next);
-
+  await parseErrors(req, res, next);
 };
 
-
-
-
-
-
 //Parse errors and return errors,if any and proceed to next middleware
-let parseErrors = (req,res,next) => {
-
+let parseErrors = (req, res, next) => {
   const errors = validationResult(req).formatWith(({ msg }) => msg);
 
   const hasError = !errors.isEmpty();
@@ -89,5 +80,4 @@ let parseErrors = (req,res,next) => {
   } else {
     next();
   }
-
-}
+};

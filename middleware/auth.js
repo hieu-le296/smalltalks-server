@@ -41,7 +41,7 @@ exports.authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
-        new ThrowError(`User are not unauthorized to access this route`, 403)
+        new ThrowError(`You are not unauthorized to access this route`, 403)
       );
     }
     next();

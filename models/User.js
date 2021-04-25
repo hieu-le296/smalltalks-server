@@ -96,15 +96,9 @@ class User {
    */
   static async findByIdAndUpdate(id, user) {
     const db = new Database();
-    let query = `UPDATE users SET name = ?, username = ?, email = ?, role = ? WHERE userId = ?`;
+    let query = `UPDATE users SET ? WHERE userId = ?`;
 
-    return await db.queryDatabase(query, [
-      user.name,
-      user.username,
-      user.email,
-      user.role,
-      id,
-    ]);
+    return await db.queryDatabase(query, [user, id]);
   }
 
   /**

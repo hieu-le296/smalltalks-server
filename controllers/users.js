@@ -1,3 +1,4 @@
+const path = require('path');
 const ThrowError = require('../utils/throwError');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
@@ -5,7 +6,7 @@ const User = require('../models/User');
 /**
  * @description     Get all users in admin page
  * @route           GET /api/v1/users
- * @access          Private - access only admin
+ * @access          Private - access only by admin or user
  */
 exports.getUsers = asyncHandler(async (req, res, next) => {
   const users = await User.findAll();
@@ -20,7 +21,7 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
 /**
  * @description     Get single user detail
  * @route           GET /api/v1/users/:id
- * @access          Private - access only admin
+ * @access          Private - access only by admin or user
  */
 exports.getUser = asyncHandler(async (req, res, next) => {
   const user = await User.findOne('userId', req.params.id);
@@ -55,7 +56,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 /**
  * @description     Update the user information
  * @route           PUT /api/v1/users/:id
- * @access          Private - access only admin
+ * @access          Private - access only by admin or user
  */
 exports.updateUser = asyncHandler(async (req, res, next) => {
   const user = await User.findOne('userId', req.params.id);
@@ -84,9 +85,6 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
  * @access          Private - access only by admin or user
  */
 exports.deleteUser = asyncHandler(async (req, res, next) => {
-  req.user = 2; // req.user.id will be from authentication later on
-  req.role = 'user'; // req.user.admin will be from authentication later on
-
   const user = await User.findOne('userId', req.params.id);
 
   if (user.userId != req.user && req.role !== 'admin')
@@ -108,16 +106,10 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 /**
  * @description     Update user password
  * @route           PUT /api/v1/users/:id/password
- * @access          Admin only
+ * @access          Private - access only by admin or user
  */
 exports.setUserPassword = asyncHandler(async (req, res, next) => {
-  req.role = 'admin';
   const user = await User.findOne('userId', req.params.id);
-
-  if (req.role !== 'admin')
-    return next(
-      new ThrowError('You are not authorized to delete this user!', 401)
-    );
 
   const username = user.username;
 
@@ -126,6 +118,62 @@ exports.setUserPassword = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     msg: `Passowrd of username ${username} successfully updated!`,
+  });
+});
+
+/**
+ * @description     Upload user profile picture
+ * @route           PUT /api/v1/users/:userId/profilepic
+ * @access          Private - Access by admin or user
+ */
+exports.uploadProfilePic = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne('userId', req.params.userId);
+
+  // Check if the user is found
+  if (!user) return next(new ThrowError('User not found!', 404));
+
+  // Check if the user owner
+  if (user.userId !== req.user.userId && req.user.role !== 'admin')
+    return next(
+      new ThrowError(
+        'This user is not authorized to update the picture profile',
+        401
+      )
+    );
+
+  if (!req.files) return next(new ThrowError('Please upload a picture', 400));
+
+  const file = req.files.file;
+
+  //   Make sure the image is a photo
+  if (!file.mimetype.startsWith('image')) {
+    return next(new ThrowError('Please upload an image file', 400));
+  }
+
+  // Check filesize
+  if (file.size > process.env.MAX_FILE_UPLOAD) {
+    return next(
+      new ThrowError(
+        `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}`,
+        404
+      )
+    );
+  }
+
+  // Create custom filename and its extension
+  file.name = `photo_${user.userId}${path.parse(file.name).ext}`;
+
+  file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
+    if (err) {
+      console.log(err);
+      return next(new ThrowError(`Problem with file upload`, 500));
+    }
+    await User.findUserAndUpdatePicture(req.params.userId, file.name);
+
+    res.status(200).json({
+      success: true,
+      data: file.name,
+    });
   });
 });
 

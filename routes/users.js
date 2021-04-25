@@ -6,6 +6,7 @@ const {
   createUser,
   updateUser,
   setUserPassword,
+  uploadProfilePic,
   deleteUser,
   getUserQuestions,
   getUserComments,
@@ -27,10 +28,16 @@ router
 router
   .route('/:id')
   .get(protect, authorize('admin'), getUser)
-  .put(protect, authorize('admin'), userValidation, updateUser)
-  .delete(protect, authorize('admin'), deleteUser);
+  .put(protect, authorize('user', 'admin'), userValidation, updateUser)
+  .delete(protect, authorize('user', 'admin'), deleteUser);
 
-router.route('/:id/password').put(protect, authorize('admin'), setUserPassword);
+router
+  .route('/:id/password')
+  .put(protect, authorize('user', 'admin'), setUserPassword);
+
+router
+  .route('/:userId/profilepic')
+  .put(protect, authorize('user', 'admin'), uploadProfilePic);
 
 // Public Access
 
