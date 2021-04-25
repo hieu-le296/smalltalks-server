@@ -8413,7 +8413,6 @@
                                     user</a>
                             <li><a class=endpoint_menu href=#jump-Auth-Registerauser>Register a user</a>
                             <li><a class=endpoint_menu href=#jump-Auth-Resetpassword>Reset password</a>
-                            <li><a class=endpoint_menu href=#jump-Auth-Uploadprofilepicture>Upload profile picture</a>
                             <li><a class=endpoint_menu href=#jump-Auth-Userlogin>User login</a>
                         </ul>
                     <li><strong><a href=#Comments>Comments</a></strong>
@@ -8446,6 +8445,9 @@
                             <li><a class=endpoint_menu href=#jump-Users-Getsingleuser>Get single user</a>
                             <li><a class=endpoint_menu href=#jump-Users-Setuserpassword>Set user password</a>
                             <li><a class=endpoint_menu href=#jump-Users-Updatetheuser>Update the user</a>
+                            <li><a class=endpoint_menu href=#jump-Users-Uploadbackgroundpicture>Upload background
+                                    picture</a>
+                            <li><a class=endpoint_menu href=#jump-Users-Uploadprofilepicture>Upload profile picture</a>
                         </ul>
                 </ul>
             </div>
@@ -8453,7 +8455,7 @@
                 <div class="panel panel-default">
                     <div class=panel-heading>
                         <h3 class=panel-title id=Auth>Auth
-                            <span class=badge>6</span>
+                            <span class=badge>5</span>
                         </h3>
                     </div>
                     <div class=panel-body>
@@ -8710,50 +8712,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="panel panel-warning" id=jump-Auth-Uploadprofilepicture>
-                                    <div class=panel-heading><small class="pull-right text-muted">formdata</small>
-                                        <a class=text-warning data-toggle=collapse data-parent=#accordion-Auth
-                                            href=#collapse-Auth-Uploadprofilepicture>
-                                            <h4 class=panel-title><span
-                                                    class="glyphicon glyphicon-plus"></span><strong>Upload profile
-                                                    picture</strong> &nbsp;|&nbsp;
-                                                <strong class="request-method border-warning">PUT</strong>
-                                                &nbsp;
-                                                {{URL}}/api/v1/auth/:userId/profilepic
-                                            </h4>
-                                        </a>
-                                    </div>
-                                    <div id=collapse-Auth-Uploadprofilepicture class="panel-collapse collapse">
-                                        <div class=panel-body>
-                                            <h5 class="label label-info">URL Variables</h5>
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Key
-                                                        <th>Value
-                                                        <th>Description
-                                                <tbody>
-                                                    <tr>
-                                                        <td>userId
-                                                        <td>2
-                                                        <td>
-                                            </table>
-                                            <h5 class="label label-primary">Body</h5>
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Key
-                                                        <th>Value
-                                                        <th>Description
-                                                <tbody>
-                                                    <tr>
-                                                        <td>file
-                                                        <td>
-                                                        <td>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="panel panel-success" id=jump-Auth-Userlogin>
                                     <div class=panel-heading><small class="pull-right text-muted">raw</small>
                                         <a class=text-success data-toggle=collapse data-parent=#accordion-Auth
@@ -8787,7 +8745,7 @@
                                                             <p>JSON Type
                                             </table>
                                             <h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
-                                                &#34;email&#34;: &#34;hieu@gmail.com&#34;,
+                                                &#34;email&#34;: &#34;john@gmail.com&#34;,
                                                 &#34;password&#34;: &#34;123&#34;
                                                 }</span>
                                             <div class=clearfix></div><select class=resp-selector>
@@ -9323,7 +9281,7 @@
                                                             <p>JSON Type
                                             </table>
                                             <h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
-                                                &#34;title&#34;: &#34;Test New Question&#34;,
+                                                &#34;title&#34;: &#34;Test New Question ?&#34;,
                                                 &#34;content&#34;: &#34;Hello I am testing this questioin&#34;
                                                 }</span>
                                             <div class=clearfix></div><select class=resp-selector>
@@ -9613,7 +9571,7 @@
                                                     question</strong> &nbsp;|&nbsp;
                                                 <strong class="request-method border-info">GET</strong>
                                                 &nbsp;
-                                                {{URL}}/api/v1/questions/:id
+                                                {{URL}}/api/v1/questions/:slug
                                             </h4>
                                         </a></div>
                                     <div id=collapse-Questions-Getsinglequestion class="panel-collapse collapse">
@@ -9631,10 +9589,9 @@
                                                         <th>Description
                                                 <tbody>
                                                     <tr>
-                                                        <td>id
-                                                        <td>2
+                                                        <td>slug
+                                                        <td>What-is-the-best-web-stack-now
                                                         <td>
-                                                            <p>id of the question
                                             </table><select class=resp-selector>
                                                 <option value>Select Example Request/Response
                                                 <option value=req_res_Questions_Getsinglequestion_0_Getsinglequestion>
@@ -9643,7 +9600,7 @@
                                             <section id=req_res_Questions_Getsinglequestion_0_Getsinglequestion
                                                 style=display:none>
                                                 <h4>Example Request</h4>
-                                                <h5>URL: {{URL}}/api/v1/questions/:id</h5>
+                                                <h5>URL: {{URL}}/api/v1/questions/:slug</h5>
                                                 <h5 class="label label-info">URL Variables</h5>
                                                 <table class="table table-hover">
                                                     <thead>
@@ -9653,27 +9610,29 @@
                                                             <th>Description
                                                     <tbody>
                                                         <tr>
-                                                            <td>id
-                                                            <td>2
+                                                            <td>slug
+                                                            <td>What-is-the-best-web-stack-now
                                                             <td>
-                                                                <p>id of the question
                                                 </table>
                                                 <h4>Example Response</h4>
                                                 <h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
                                                     &#34;success&#34;: true,
                                                     &#34;data&#34;: {
-                                                    &#34;questionId&#34;: 2,
+                                                    &#34;questionId&#34;: 1,
                                                     &#34;postedBy&#34;: {
                                                     &#34;userId&#34;: 1,
                                                     &#34;username&#34;: &#34;johndoe&#34;,
-                                                    &#34;name&#34;: &#34;John Doe&#34;
+                                                    &#34;name&#34;: &#34;John Doe&#34;,
+                                                    &#34;profilePic&#34;: &#34;default.jpeg&#34;
                                                     },
-                                                    &#34;title&#34;: &#34;Test Question&#34;,
-                                                    &#34;content&#34;: &#34;UFV&#34;,
-                                                    &#34;createdAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;,
-                                                    &#34;updatedAt&#34;: &#34;2021-04-12T06:49:35.000Z&#34;
+                                                    &#34;title&#34;: &#34;What is the best web stack now?&#34;,
+                                                    &#34;content&#34;: &#34;I am starting to study web development. Can
+                                                    someone give me a hint?&#34;,
+                                                    &#34;slug&#34;: &#34;What-is-the-best-web-stack-now&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;
                                                     },
-                                                    &#34;msg&#34;: &#34;Show question with the id of 2&#34;
+                                                    &#34;msg&#34;: &#34;Show question with the id of undefined&#34;
                                                     }</span>
                                                 <div class=clearfix></div>
                                                 <h5 class="label label-info">Code:</h5><strong>200</strong>
@@ -9802,7 +9761,7 @@
                 <div class="panel panel-default">
                     <div class=panel-heading>
                         <h3 class=panel-title id=Users>Users
-                            <span class=badge>8</span>
+                            <span class=badge>10</span>
                         </h3>
                     </div>
                     <div class=panel-body>
@@ -9860,7 +9819,7 @@
                                     <div id=collapse-Users-Deletetheuser class="panel-collapse collapse">
                                         <div class=panel-body>
                                             <h5 class="label label-default">Description</h5><br><small>
-                                                <p>Delete the user - Admin only
+                                                <p>Delete the user - Admin and User only
                                             </small><br><br>
                                             <h5 class="label label-info">URL Variables</h5>
                                             <table class="table table-hover">
@@ -9888,7 +9847,7 @@
                                                     a user</strong> &nbsp;|&nbsp;
                                                 <strong class="request-method border-info">GET</strong>
                                                 &nbsp;
-                                                {{URL}}/api/v1/users/:id/comments
+                                                {{URL}}/api/v1/users/:username/comments
                                             </h4>
                                         </a></div>
                                     <div id=collapse-Users-Getallcommentsofauser class="panel-collapse collapse">
@@ -9905,10 +9864,9 @@
                                                         <th>Description
                                                 <tbody>
                                                     <tr>
-                                                        <td>id
-                                                        <td>3
+                                                        <td>username
+                                                        <td>johndoe
                                                         <td>
-                                                            <p>id of the user
                                             </table><select class=resp-selector>
                                                 <option value>Select Example Request/Response
                                                 <option
@@ -9918,7 +9876,7 @@
                                             <section id=req_res_Users_Getallcommentsofauser_0_Getallcommentsofauser
                                                 style=display:none>
                                                 <h4>Example Request</h4>
-                                                <h5>URL: {{URL}}/api/v1/users/:id/comments</h5>
+                                                <h5>URL: {{URL}}/api/v1/users/:username/comments</h5>
                                                 <h5 class="label label-info">URL Variables</h5>
                                                 <table class="table table-hover">
                                                     <thead>
@@ -9928,37 +9886,49 @@
                                                             <th>Description
                                                     <tbody>
                                                         <tr>
-                                                            <td>id
-                                                            <td>3
+                                                            <td>username
+                                                            <td>johndoe
                                                             <td>
-                                                                <p>id of the user
                                                 </table>
                                                 <h4>Example Response</h4>
                                                 <h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
                                                     &#34;success&#34;: true,
-                                                    &#34;msg&#34;: &#34;All comments that username hieule posted&#34;,
-                                                    &#34;userId&#34;: &#34;3&#34;,
+                                                    &#34;msg&#34;: &#34;All comments that username johndoe posted&#34;,
+                                                    &#34;userId&#34;: 1,
+                                                    &#34;name&#34;: &#34;John Doe&#34;,
+                                                    &#34;username&#34;: &#34;johndoe&#34;,
+                                                    &#34;profilePic&#34;: &#34;default.jpeg&#34;,
                                                     &#34;comments&#34;: [
                                                     {
-                                                    &#34;questionId&#34;: 2,
-                                                    &#34;commentId&#34;: 3,
-                                                    &#34;content&#34;: &#34;I think this Fall.&#34;,
-                                                    &#34;createdAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;,
-                                                    &#34;updatedAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;
+                                                    &#34;questionId&#34;: 1,
+                                                    &#34;commentId&#34;: 1,
+                                                    &#34;content&#34;: &#34;I think React and NodeJs. You can check out
+                                                    the MERN stack.&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;
                                                     },
                                                     {
-                                                    &#34;questionId&#34;: 6,
-                                                    &#34;commentId&#34;: 8,
-                                                    &#34;content&#34;: &#34;I do not really care haha.&#34;,
-                                                    &#34;createdAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;,
-                                                    &#34;updatedAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;
+                                                    &#34;questionId&#34;: 5,
+                                                    &#34;commentId&#34;: 7,
+                                                    &#34;content&#34;: &#34;I also never see it before, but am curious
+                                                    how it looks!.&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;
                                                     },
                                                     {
-                                                    &#34;questionId&#34;: 2,
-                                                    &#34;commentId&#34;: 13,
-                                                    &#34;content&#34;: &#34;This Fall for sure.&#34;,
-                                                    &#34;createdAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;,
-                                                    &#34;updatedAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;
+                                                    &#34;questionId&#34;: 7,
+                                                    &#34;commentId&#34;: 10,
+                                                    &#34;content&#34;: &#34;iPhone is my choice&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;
+                                                    },
+                                                    {
+                                                    &#34;questionId&#34;: 9,
+                                                    &#34;commentId&#34;: 15,
+                                                    &#34;content&#34;: &#34;We have can find good Roti in Abbotsford.
+                                                    Just google it!&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;
                                                     }
                                                     ]
                                                     }</span>
@@ -9977,7 +9947,7 @@
                                                     a user</strong> &nbsp;|&nbsp;
                                                 <strong class="request-method border-info">GET</strong>
                                                 &nbsp;
-                                                {{URL}}/api/v1/users/:id/questions
+                                                {{URL}}/api/v1/users/:username/questions
                                             </h4>
                                         </a></div>
                                     <div id=collapse-Users-Getallquestionsofauser class="panel-collapse collapse">
@@ -9994,10 +9964,9 @@
                                                         <th>Description
                                                 <tbody>
                                                     <tr>
-                                                        <td>id
-                                                        <td>1
+                                                        <td>username
+                                                        <td>johndoe
                                                         <td>
-                                                            <p>id of the user
                                             </table><select class=resp-selector>
                                                 <option value>Select Example Request/Response
                                                 <option
@@ -10007,7 +9976,7 @@
                                             <section id=req_res_Users_Getallquestionsofauser_0_Getallquestionsofauser
                                                 style=display:none>
                                                 <h4>Example Request</h4>
-                                                <h5>URL: {{URL}}/api/v1/users/:id/questions</h5>
+                                                <h5>URL: {{URL}}/api/v1/users/:username/questions</h5>
                                                 <h5 class="label label-info">URL Variables</h5>
                                                 <table class="table table-hover">
                                                     <thead>
@@ -10017,34 +9986,52 @@
                                                             <th>Description
                                                     <tbody>
                                                         <tr>
-                                                            <td>id
-                                                            <td>1
+                                                            <td>username
+                                                            <td>johndoe
                                                             <td>
-                                                                <p>id of the user
                                                 </table>
                                                 <h4>Example Response</h4>
                                                 <h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
                                                     &#34;success&#34;: true,
                                                     &#34;msg&#34;: &#34;All quetions that username johndoe posted&#34;,
-                                                    &#34;userId&#34;: &#34;1&#34;,
+                                                    &#34;userId&#34;: 1,
+                                                    &#34;name&#34;: &#34;John Doe&#34;,
+                                                    &#34;username&#34;: &#34;johndoe&#34;,
+                                                    &#34;profilePic&#34;: &#34;default.jpeg&#34;,
                                                     &#34;questions&#34;: [
                                                     {
                                                     &#34;questionId&#34;: 1,
-                                                    &#34;title&#34;: &#34;testing..&#34;,
-                                                    &#34;createdAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;,
-                                                    &#34;updatedAt&#34;: &#34;2021-04-12T06:56:16.000Z&#34;
+                                                    &#34;title&#34;: &#34;What is the best web stack now?&#34;,
+                                                    &#34;slug&#34;: &#34;What-is-the-best-web-stack-now&#34;,
+                                                    &#34;content&#34;: &#34;I am starting to study web development. Can
+                                                    someone give me a hint?&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;
                                                     },
                                                     {
                                                     &#34;questionId&#34;: 2,
-                                                    &#34;title&#34;: &#34;Question from admin&#34;,
-                                                    &#34;createdAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;,
-                                                    &#34;updatedAt&#34;: &#34;2021-04-19T10:07:14.000Z&#34;
+                                                    &#34;title&#34;: &#34;When will we go back to UFV&#34;,
+                                                    &#34;slug&#34;: &#34;When-will-we-go-back-to-UFV&#34;,
+                                                    &#34;content&#34;: &#34;It has been a while. \n I miss UFV!&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;
                                                     },
                                                     {
                                                     &#34;questionId&#34;: 10,
                                                     &#34;title&#34;: &#34;What are you studying in COMP 351&#34;,
-                                                    &#34;createdAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;,
-                                                    &#34;updatedAt&#34;: &#34;2021-04-12T03:45:31.000Z&#34;
+                                                    &#34;slug&#34;: &#34;What-are-you-studying-in-COMP-351&#34;,
+                                                    &#34;content&#34;: &#34;I am going to register for COMP 351 in next
+                                                    Fall. Any suggestion?&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;
+                                                    },
+                                                    {
+                                                    &#34;questionId&#34;: 13,
+                                                    &#34;title&#34;: &#34;Question from john&#34;,
+                                                    &#34;slug&#34;: &#34;Question-from-john&#34;,
+                                                    &#34;content&#34;: &#34;updating this one&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:40:47.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T08:41:52.000Z&#34;
                                                     }
                                                     ]
                                                     }</span>
@@ -10069,7 +10056,7 @@
                                     <div id=collapse-Users-Getallusers class="panel-collapse collapse">
                                         <div class=panel-body>
                                             <h5 class="label label-default">Description</h5><br><small>
-                                                <p>Get all users information - Admin only
+                                                <p>Get all users information
                                             </small><br><br><select class=resp-selector>
                                                 <option value>Select Example Request/Response
                                                 <option value=req_res_Users_Getallusers_0_Getallusers>Get all users
@@ -10180,7 +10167,7 @@
                                                     user</strong> &nbsp;|&nbsp;
                                                 <strong class="request-method border-info">GET</strong>
                                                 &nbsp;
-                                                {{URL}}/api/v1/users/:id
+                                                {{URL}}/api/v1/users/:username
                                             </h4>
                                         </a></div>
                                     <div id=collapse-Users-Getsingleuser class="panel-collapse collapse">
@@ -10197,11 +10184,50 @@
                                                         <th>Description
                                                 <tbody>
                                                     <tr>
-                                                        <td>id
-                                                        <td>1
+                                                        <td>username
+                                                        <td>johndoe
                                                         <td>
-                                                            <p>id of the user
-                                            </table>
+                                            </table><select class=resp-selector>
+                                                <option value>Select Example Request/Response
+                                                <option value=req_res_Users_Getsingleuser_0_Getsingleuser>Get single
+                                                    user
+                                            </select><br>
+                                            <section id=req_res_Users_Getsingleuser_0_Getsingleuser style=display:none>
+                                                <h4>Example Request</h4>
+                                                <h5>URL: {{URL}}/api/v1/users/:username</h5>
+                                                <h5 class="label label-info">URL Variables</h5>
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Key
+                                                            <th>Value
+                                                            <th>Description
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>username
+                                                            <td>johndoe
+                                                            <td>
+                                                </table>
+                                                <h4>Example Response</h4>
+                                                <h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+                                                    &#34;success&#34;: true,
+                                                    &#34;data&#34;: {
+                                                    &#34;userId&#34;: 1,
+                                                    &#34;name&#34;: &#34;John Doe&#34;,
+                                                    &#34;username&#34;: &#34;johndoe&#34;,
+                                                    &#34;email&#34;: &#34;john@gmail.com&#34;,
+                                                    &#34;role&#34;: &#34;user&#34;,
+                                                    &#34;profilePic&#34;: &#34;default.jpeg&#34;,
+                                                    &#34;backgroundPic&#34;: &#34;default.jpeg&#34;,
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T16:35:21.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T16:35:21.000Z&#34;
+                                                    },
+                                                    &#34;msg&#34;: &#34;Here is the information of user with username
+                                                    johndoe&#34;
+                                                    }</span>
+                                                <div class=clearfix></div>
+                                                <h5 class="label label-info">Code:</h5><strong>200</strong>
+                                            </section>
                                         </div>
                                     </div>
                                 </div>
@@ -10221,7 +10247,7 @@
                                     <div id=collapse-Users-Setuserpassword class="panel-collapse collapse">
                                         <div class=panel-body>
                                             <h5 class="label label-default">Description</h5><br><small>
-                                                <p>Update user password - Admin only
+                                                <p>Update user password - Admin and User only
                                             </small><br><br>
                                             <h5 class="label label-warning">Headers</h5>
                                             <table class="table table-hover">
@@ -10252,7 +10278,7 @@
                                                             <p>id of the user
                                             </table>
                                             <h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
-                                                &#34;password&#34;: &#34;111&#34;
+                                                &#34;password&#34;: &#34;123&#34;
                                                 }</span>
                                             <div class=clearfix></div><select class=resp-selector>
                                                 <option value>Select Example Request/Response
@@ -10323,7 +10349,7 @@
                                     <div id=collapse-Users-Updatetheuser class="panel-collapse collapse">
                                         <div class=panel-body>
                                             <h5 class="label label-default">Description</h5><br><small>
-                                                <p>Update the user information - Admin only
+                                                <p>Update the user information - Admin and User only
                                             </small><br><br>
                                             <h5 class="label label-warning">Headers</h5>
                                             <table class="table table-hover">
@@ -10355,9 +10381,8 @@
                                             </table>
                                             <h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
                                                 &#34;name&#34;: &#34;John Doe&#34;,
-                                                &#34;username&#34;: &#34;johndoe&#34;,
-                                                &#34;role&#34;: &#34;user&#34;,
-                                                &#34;email&#34;: &#34;john@gmail.com&#34;
+                                                &#34;username&#34;: &#34;johndoe21&#34;,
+                                                &#34;email&#34;: &#34;johnd@gmail.com&#34;
                                                 }</span>
                                             <div class=clearfix></div><select class=resp-selector>
                                                 <option value>Select Example Request/Response
@@ -10397,9 +10422,8 @@
                                                 </table>
                                                 <h5 class="label label-primary">Body</h5><span class=resp-prettyprint>{
                                                     &#34;name&#34;: &#34;John Doe&#34;,
-                                                    &#34;username&#34;: &#34;johndoe&#34;,
-                                                    &#34;role&#34;: &#34;user&#34;,
-                                                    &#34;email&#34;: &#34;john@gmail.com&#34;
+                                                    &#34;username&#34;: &#34;johndoe21&#34;,
+                                                    &#34;email&#34;: &#34;johnd@gmail.com&#34;
                                                     }</span>
                                                 <div class=clearfix></div>
                                                 <h4>Example Response</h4>
@@ -10407,15 +10431,188 @@
                                                     &#34;success&#34;: true,
                                                     &#34;data&#34;: {
                                                     &#34;userId&#34;: 1,
-                                                    &#34;name&#34;: &#34;John Doe&#34;,
-                                                    &#34;username&#34;: &#34;johndoe&#34;,
-                                                    &#34;email&#34;: &#34;john@gmail.com&#34;,
+                                                    &#34;name&#34;: &#34;John Doe 2&#34;,
+                                                    &#34;username&#34;: &#34;johndoe21&#34;,
+                                                    &#34;email&#34;: &#34;johnd@gmail.com&#34;,
                                                     &#34;role&#34;: &#34;user&#34;,
                                                     &#34;profilePic&#34;: &#34;default.jpeg&#34;,
-                                                    &#34;createdAt&#34;: &#34;2021-04-12T03:45:30.000Z&#34;,
-                                                    &#34;updatedAt&#34;: &#34;2021-04-19T10:09:14.000Z&#34;
+                                                    &#34;createdAt&#34;: &#34;2021-04-25T08:38:33.000Z&#34;,
+                                                    &#34;updatedAt&#34;: &#34;2021-04-25T16:18:28.000Z&#34;
                                                     },
-                                                    &#34;msg&#34;: &#34;User johndoe successfully updated!&#34;
+                                                    &#34;msg&#34;: &#34;User undefined successfully updated!&#34;
+                                                    }</span>
+                                                <div class=clearfix></div>
+                                                <h5 class="label label-info">Code:</h5><strong>200</strong>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-warning" id=jump-Users-Uploadbackgroundpicture>
+                                    <div class=panel-heading><small class="pull-right text-muted">formdata</small>
+                                        <a class=text-warning data-toggle=collapse data-parent=#accordion-Users
+                                            href=#collapse-Users-Uploadbackgroundpicture>
+                                            <h4 class=panel-title><span
+                                                    class="glyphicon glyphicon-plus"></span><strong>Upload background
+                                                    picture</strong> &nbsp;|&nbsp;
+                                                <strong class="request-method border-warning">PUT</strong>
+                                                &nbsp;
+                                                {{URL}}/api/v1/users/:userId/backgroundpic
+                                            </h4>
+                                        </a>
+                                    </div>
+                                    <div id=collapse-Users-Uploadbackgroundpicture class="panel-collapse collapse">
+                                        <div class=panel-body>
+                                            <h5 class="label label-info">URL Variables</h5>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key
+                                                        <th>Value
+                                                        <th>Description
+                                                <tbody>
+                                                    <tr>
+                                                        <td>userId
+                                                        <td>1
+                                                        <td>
+                                            </table>
+                                            <h5 class="label label-primary">Body</h5>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key
+                                                        <th>Value
+                                                        <th>Description
+                                                <tbody>
+                                                    <tr>
+                                                        <td>file
+                                                        <td>
+                                                        <td>
+                                            </table><select class=resp-selector>
+                                                <option value>Select Example Request/Response
+                                                <option
+                                                    value=req_res_Users_Uploadbackgroundpicture_0_Uploadbackgroundpicture>
+                                                    Upload background picture
+                                            </select><br>
+                                            <section id=req_res_Users_Uploadbackgroundpicture_0_Uploadbackgroundpicture
+                                                style=display:none>
+                                                <h4>Example Request</h4>
+                                                <h5>URL: {{URL}}/api/v1/users/:userId/backgroundpic</h5>
+                                                <h5 class="label label-info">URL Variables</h5>
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Key
+                                                            <th>Value
+                                                            <th>Description
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>userId
+                                                            <td>1
+                                                            <td>
+                                                </table>
+                                                <h5 class="label label-primary">Body</h5>
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Key
+                                                            <th>Value
+                                                            <th>Description
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>file
+                                                            <td>
+                                                            <td>
+                                                </table>
+                                                <h4>Example Response</h4>
+                                                <h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+                                                    &#34;success&#34;: true,
+                                                    &#34;data&#34;: &#34;background_1.png&#34;
+                                                    }</span>
+                                                <div class=clearfix></div>
+                                                <h5 class="label label-info">Code:</h5><strong>200</strong>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-warning" id=jump-Users-Uploadprofilepicture>
+                                    <div class=panel-heading><small class="pull-right text-muted">formdata</small>
+                                        <a class=text-warning data-toggle=collapse data-parent=#accordion-Users
+                                            href=#collapse-Users-Uploadprofilepicture>
+                                            <h4 class=panel-title><span
+                                                    class="glyphicon glyphicon-plus"></span><strong>Upload profile
+                                                    picture</strong> &nbsp;|&nbsp;
+                                                <strong class="request-method border-warning">PUT</strong>
+                                                &nbsp;
+                                                {{URL}}/api/v1/users/:userId/profilepic
+                                            </h4>
+                                        </a>
+                                    </div>
+                                    <div id=collapse-Users-Uploadprofilepicture class="panel-collapse collapse">
+                                        <div class=panel-body>
+                                            <h5 class="label label-info">URL Variables</h5>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key
+                                                        <th>Value
+                                                        <th>Description
+                                                <tbody>
+                                                    <tr>
+                                                        <td>userId
+                                                        <td>1
+                                                        <td>
+                                            </table>
+                                            <h5 class="label label-primary">Body</h5>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Key
+                                                        <th>Value
+                                                        <th>Description
+                                                <tbody>
+                                                    <tr>
+                                                        <td>file
+                                                        <td>
+                                                        <td>
+                                            </table><select class=resp-selector>
+                                                <option value>Select Example Request/Response
+                                                <option value=req_res_Users_Uploadprofilepicture_0_Uploadprofilepicture>
+                                                    Upload profile picture
+                                            </select><br>
+                                            <section id=req_res_Users_Uploadprofilepicture_0_Uploadprofilepicture
+                                                style=display:none>
+                                                <h4>Example Request</h4>
+                                                <h5>URL: {{URL}}/api/v1/users/:userId/profilepic</h5>
+                                                <h5 class="label label-info">URL Variables</h5>
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Key
+                                                            <th>Value
+                                                            <th>Description
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>userId
+                                                            <td>1
+                                                            <td>
+                                                </table>
+                                                <h5 class="label label-primary">Body</h5>
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Key
+                                                            <th>Value
+                                                            <th>Description
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>file
+                                                            <td>
+                                                            <td>
+                                                </table>
+                                                <h4>Example Response</h4>
+                                                <h5 class="label label-success">Body</h5><span class=resp-prettyprint>{
+                                                    &#34;success&#34;: true,
+                                                    &#34;data&#34;: &#34;photo_1.png&#34;
                                                     }</span>
                                                 <div class=clearfix></div>
                                                 <h5 class="label label-info">Code:</h5><strong>200</strong>
@@ -10447,4 +10644,4 @@
                 var cls = 'number'; if (/^"/.test(match)) { if (/:$/.test(match)) { cls = 'key'; } else { cls = 'string'; } } else if (/true|false/.test(match)) { cls = 'boolean'; } else if (/null/.test(match)) { cls = 'null'; }
                 return '<span class="' + cls + '">' + match + '</span>';
             });
-        }</script><br><br>
+        }</script>
