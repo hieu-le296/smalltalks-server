@@ -136,7 +136,7 @@ if (process.argv[2] === '-i') {
 function slug(string) {
   return slugify(string, {
     replacement: '-',
-    remove: /[*+~.()'"!:@]/g,
+    remove: /[*+~.()'"!:@?]/g,
     lower: false,
     strict: false,
   });

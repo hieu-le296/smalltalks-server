@@ -136,14 +136,19 @@ exports.setUserPassword = asyncHandler(async (req, res, next) => {
  */
 exports.getUserQuestions = asyncHandler(async (req, res, next) => {
   // Find user
-  const username = await checkUserExists(req, res, next);
+  const user = await checkUserExists(req, res, next);
 
-  const questions = await User.findUserQuestions(req.params.id);
+  const { userId, username, name, profilePic } = user;
+
+  const questions = await User.findUserQuestions(userId);
 
   res.status(200).json({
     success: true,
     msg: `All quetions that username ${username} posted`,
-    userId: req.params.id,
+    userId: userId,
+    name: name,
+    username: username,
+    profilePic: profilePic,
     questions: questions,
   });
 });
@@ -155,19 +160,24 @@ exports.getUserQuestions = asyncHandler(async (req, res, next) => {
  */
 exports.getUserComments = asyncHandler(async (req, res, next) => {
   // Find user
-  const username = await checkUserExists(req, res, next);
+  const user = await checkUserExists(req, res, next);
 
-  const comments = await User.findUserComments(req.params.id);
+  const { userId, username, name, profilePic } = user;
+
+  const comments = await User.findUserComments(userId);
   res.status(200).json({
     success: true,
     msg: `All comments that username ${username} posted`,
-    userId: req.params.id,
+    userId: userId,
+    name: name,
+    username: username,
+    profilePic: profilePic,
     comments: comments,
   });
 });
 
 const checkUserExists = async (req, res, next) => {
-  const user = await User.findOne('userId', req.params.id);
+  const user = await User.findOne('username', req.params.username);
   if (!user) return next(new ThrowError('User not found!', 404));
-  return user.username;
+  return user;
 };

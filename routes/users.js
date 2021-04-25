@@ -15,9 +15,7 @@ const router = express.Router();
 
 const { protect, authorize } = require('../middleware/auth');
 
-
-const {userValidation} = require('../middleware/validation');
-
+const { userValidation } = require('../middleware/validation');
 
 // Admin Access only
 
@@ -36,8 +34,8 @@ router.route('/:id/password').put(protect, authorize('admin'), setUserPassword);
 
 // Public Access
 
-router.route('/:id/questions').get(getUserQuestions);
+router.route('/:username/questions').get(getUserQuestions);
 
-router.route('/:id/comments').get(getUserComments);
+router.route('/:username/comments').get(getUserComments);
 
 module.exports = router;

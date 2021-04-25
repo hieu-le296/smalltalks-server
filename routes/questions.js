@@ -24,11 +24,17 @@ router.use('/:questionId/comments', commentRouter);
 router
   .route('/')
   .get(advancedFilters, getQuestions)
-  .post(protect, authorize('user', 'admin'), questionValidation, createQuestion);
+  .post(
+    protect,
+    authorize('user', 'admin'),
+    questionValidation,
+    createQuestion
+  );
+
+router.route('/:slug').get(getQuestion);
 
 router
   .route('/:id')
-  .get(getQuestion)
   .put(protect, authorize('user', 'admin'), questionValidation, updateQuestion)
   .delete(protect, authorize('user', 'admin'), deleteQuestion);
 

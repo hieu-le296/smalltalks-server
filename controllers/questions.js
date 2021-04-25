@@ -31,7 +31,8 @@ exports.getQuestions = asyncHandler(async (req, res, next) => {
  * @access          Public
  */
 exports.getQuestion = asyncHandler(async (req, res, next) => {
-  const question = await Question.findOne('slug', req.params.id);
+  console.log(req.params.slug);
+  const question = await Question.findOne('slug', req.params.slug);
 
   res.status(200).json({
     success: true,
@@ -50,7 +51,7 @@ exports.createQuestion = asyncHandler(async (req, res, next) => {
 
   req.body.slug = slugify(req.body.title, {
     replacement: '-',
-    remove: /[*+~.()'"!:@]/g,
+    remove: /[*+~.()'"!:@?]/g,
     lower: false,
     strict: false,
   });
@@ -91,7 +92,7 @@ exports.updateQuestion = asyncHandler(async (req, res, next) => {
 
   req.body.slug = slugify(req.body.title, {
     replacement: '-',
-    remove: /[*+~.()'"!:@]/g,
+    remove: /[*+~.()'"!:@?]/g,
     lower: false,
     strict: false,
   });
