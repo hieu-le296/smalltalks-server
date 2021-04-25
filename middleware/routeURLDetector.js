@@ -21,7 +21,8 @@ const routeURLDetector = async (req, res, next) => {
     }
 
 
-  }else{
+  }
+  else{
 
   
   arr.forEach((element,index) => {
