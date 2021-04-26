@@ -63,7 +63,7 @@ exports.forgotPassword = asyncHandler(
     const user = await User.findOne('email', req.body.email);
 
     if (!user)
-      return next(new ThrowError('There is user with req.body.email', 404));
+      return next(new ThrowError('There is no user with req.body.email', 404));
 
     // Get reset token
     const resetToken = await User.getResetPasswordToken(user.userId);
@@ -71,7 +71,7 @@ exports.forgotPassword = asyncHandler(
     // Create reset url
     const resetUrl = `${req.protocol}://${req.get(
       'host'
-    )}/api/v1/auth/resetpassword/${resetToken}`;
+    )}/resetpassword/${resetToken}`;
 
     const message = `You are receiving this email because you has requested a password. Click on the link below to change your password:\n\n ${resetUrl}`;
 
@@ -113,7 +113,6 @@ exports.resetPassword = asyncHandler(
 
     if (!user) {
       // Empty resetPasswordToken and resetPasswordExpire
-      await User.emptyTokenAndExpire(user.userId);
       return next(new ThrowError('Invalid token', 400));
     }
 
