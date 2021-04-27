@@ -23,7 +23,6 @@
   * Owner
 - Delete question
   * Owner 
-- Hastag included
 
 ## Comments for Questions
 - List all comments for a question 
@@ -37,7 +36,7 @@
 
 ## Search
 ### For public search
-- Search user, questions by keyword or hashtag
+- Search user, questions by keyword
 
 
 ## Users & Authentication
