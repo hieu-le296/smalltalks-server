@@ -8,7 +8,7 @@ const routeURLDetector = async (req, res, next) => {
    */
   let arr = req.path.split('/');
 
-  console.log(arr);
+
 
   if (arr[1] == 'uploads') {
     if (arr[2] == 'avatars') {

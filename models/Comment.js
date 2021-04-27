@@ -36,7 +36,7 @@ class Comment {
     let query = `SELECT c.commentId, c.commentUserId, u.name, u.profilePic, c.content, c.createdAt, c.updatedAt FROM comments c 
                 INNER JOIN users u ON 
                 c.commentUserId = u.userId 
-                WHERE c.questionId = ?`;
+                WHERE c.questionId = ? ORDER BY c.createdAt DESC`;
 
     if (req.searchKey) {
       query += ` AND c.content LIKE CONCAT('%','${req.searchKey}','%')`;
