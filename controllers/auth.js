@@ -69,9 +69,10 @@ exports.forgotPassword = asyncHandler(
     const resetToken = await User.getResetPasswordToken(user.userId);
 
     // Create reset url
-    const resetUrl = `${req.protocol}://${req.get(
-      'host'
-    )}/resetpassword/${resetToken}`;
+    // 
+
+    const resetUrl = `http://localhost:3000/resetpassword/${resetToken}`;
+
 
     const message = `You are receiving this email because you has requested a password. Click on the link below to change your password:\n\n ${resetUrl}`;
 
