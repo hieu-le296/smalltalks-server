@@ -7,6 +7,7 @@ class Comment {
       commentId,
       commentUserId,
       name,
+      username,
       profilePic,
       content,
       createdAt,
@@ -19,6 +20,7 @@ class Comment {
       postedBy: {
         commentUserId,
         name,
+        username,
         profilePic,
       },
       content,
@@ -33,7 +35,7 @@ class Comment {
    */
   static async findAll(questionId, req) {
     const db = new Database();
-    let query = `SELECT c.commentId, c.commentUserId, u.name, u.profilePic, c.content, c.createdAt, c.updatedAt FROM comments c 
+    let query = `SELECT c.commentId, c.commentUserId, u.name, u.username, u.profilePic, c.content, c.createdAt, c.updatedAt FROM comments c 
                 INNER JOIN users u ON 
                 c.commentUserId = u.userId 
                 WHERE c.questionId = ? ORDER BY c.createdAt DESC`;
@@ -57,7 +59,7 @@ class Comment {
    */
   static async findOne(id) {
     const db = new Database();
-    const query = `SELECT c.commentId, c.commentUserId, u.name, u.profilePic, c.content, c.createdAt, c.updatedAt FROM comments c 
+    const query = `SELECT c.commentId, c.commentUserId, u.name, u.username, u.profilePic, c.content, c.createdAt, c.updatedAt FROM comments c 
             INNER JOIN users u ON 
             c.commentUserId = u.userId 
             WHERE c.commentId = ?`;
