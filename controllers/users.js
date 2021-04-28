@@ -87,7 +87,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 exports.deleteUser = asyncHandler(async (req, res, next) => {
   const user = await User.findOne('userId', req.params.id);
 
-  if (user.userId != req.user && req.role !== 'admin')
+  if (user.userId !== req.user.userId && req.user.role !== 'admin')
     return next(
       new ThrowError('You are not authorized to delete this user!', 401)
     );
@@ -266,7 +266,7 @@ exports.getUserQuestions = asyncHandler(async (req, res, next) => {
     userId: userId,
     name: name,
     username: username,
-    backgroundPic : backgroundPic,
+    backgroundPic: backgroundPic,
     profilePic: profilePic,
     questions: questions,
   });
