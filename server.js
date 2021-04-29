@@ -4,6 +4,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 const morgan = require('morgan');
 const colors = require('colors');
 const cors = require('cors');
@@ -46,6 +47,9 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(fileUpload());
 app.use(routeURLDetector);
+
+// Set secruity header
+app.use(helmet())
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));

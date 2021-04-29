@@ -43,7 +43,8 @@ class Question {
     let query = `
     SELECT q.questionId, q.title, q.slug, q.content, u.userId, u.username, u.name, q.createdAt, q.updatedAt
     FROM questions q INNER JOIN users u 
-    ON q.userId = u.userId`;
+    ON q.userId = u.userId
+    ORDER BY q.questionId DESC`;
 
     if (req.searchKey) {
       query += ` WHERE q.title LIKE CONCAT('%','${req.searchKey}','%') OR q.content LIKE CONCAT('%','${req.searchKey}','%')`;
