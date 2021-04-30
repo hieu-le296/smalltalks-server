@@ -1,6 +1,9 @@
+const fs = require('fs');
 const ThrowError = require('../utils/throwError');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
+
+const { removeUserPictures } = require('../utils/removeUserPictures');
 
 /**
  * @description     Get all users in admin page
@@ -94,6 +97,8 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
   const username = user.username;
 
   await User.findByIdandDelete(req.params.id);
+
+  removeUserPictures(user.userId);
 
   res.status(200).json({
     success: true,

@@ -1,9 +1,11 @@
 const path = require('path');
+const fs = require('fs');
 const crypto = require('crypto');
 const asyncHandler = require('../middleware/async');
 const ThrowError = require('../utils/throwError');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
+const { removeUserPictures } = require('../utils/removeUserPictures');
 
 /**
  * @description     Register user
@@ -322,6 +324,8 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
   const username = user.username;
 
   await User.findByIdandDelete(req.params.userId);
+
+  removeUserPictures(user.userId);
 
   res.status(200).json({
     success: true,
