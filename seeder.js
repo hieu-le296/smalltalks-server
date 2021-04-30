@@ -122,6 +122,7 @@ const deleteData = async () => {
     console.log('Please Wait! Deleting Data...'.red.inverse);
     await queryDatabase(`DELETE FROM users`, []);
     await queryDatabase(`DELETE FROM routeStats`, []);
+    removeUserPicture();
   } catch (error) {
     console.log(error);
   }
@@ -140,4 +141,28 @@ function slug(string) {
     lower: false,
     strict: false,
   });
+}
+
+async function removeUserPicture() {
+  // Find the user picture
+  const profilePic = fs
+    .readdirSync(`${process.env.FILE_UPLOAD_PATH}/avatars/`)
+    .filter((file) => file.startsWith(`photo`));
+
+  // Remove user's profile image
+  if (profilePic.length !== 0)
+    await fs.promises.unlink(
+      `${process.env.FILE_UPLOAD_PATH}/avatars/${profilePic}`
+    );
+
+  // Find the user background image
+  const backgroundPic = fs
+    .readdirSync(`${process.env.FILE_UPLOAD_PATH}/backgrounds/`)
+    .filter((file) => file.startsWith(`background`));
+
+  // Remove user's background image
+  if (backgroundPic.length !== 0)
+    await fs.promises.unlink(
+      `${process.env.FILE_UPLOAD_PATH}/backgrounds/${backgroundPic}`
+    );
 }
