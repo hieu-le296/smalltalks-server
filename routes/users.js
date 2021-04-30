@@ -6,8 +6,6 @@ const {
   createUser,
   updateUser,
   setUserPassword,
-  uploadProfilePic,
-  uploadBackgroundPic,
   deleteUser,
   getUserQuestions,
   getUserComments,
@@ -36,14 +34,6 @@ router.route('/:username').get(getUser);
 router
   .route('/:id/password')
   .put(protect, authorize('user', 'admin'), setUserPassword);
-
-router
-  .route('/:userId/profilepic')
-  .put(protect, authorize('user', 'admin'), uploadProfilePic);
-
-router
-  .route('/:userId/backgroundpic')
-  .put(protect, authorize('user', 'admin'), uploadBackgroundPic);
 
 // Public Access
 
