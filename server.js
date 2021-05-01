@@ -49,7 +49,7 @@ app.use(fileUpload());
 app.use(routeURLDetector);
 
 // Set secruity header
-app.use(helmet())
+// app.use(helmet());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -69,7 +69,7 @@ app.use('/api/v1/questions', routeURLDetector, questions);
 app.use('/api/v1/users', routeURLDetector, users);
 app.use('/api/v1/comments', routeURLDetector, comments);
 app.use('/api/v1/auth', routeURLDetector, auth);
-app.use('/api/v1/routeStats',routeURLDetector, routeStats);
+app.use('/api/v1/routeStats', routeURLDetector, routeStats);
 
 app.use(errorHandler);
 

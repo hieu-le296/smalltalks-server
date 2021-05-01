@@ -41,7 +41,7 @@ class Question {
     const db = new Database();
 
     let query = `
-    SELECT q.questionId, q.title, q.slug, q.content, u.userId, u.username, u.name, q.createdAt, q.updatedAt
+    SELECT q.questionId, q.title, q.slug, q.content, u.userId, u.username, u.name, u.profilePic, q.createdAt, q.updatedAt
     FROM questions q INNER JOIN users u 
     ON q.userId = u.userId
     ORDER BY q.questionId DESC`;
