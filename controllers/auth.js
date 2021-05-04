@@ -14,8 +14,14 @@ const { removeUserPictures } = require('../utils/removeUserPictures');
  */
 exports.register = asyncHandler(async (req, res, next) => {
   // Create user
-  await User.create(req.body);
+  const user = await User.create(req.body);
 
+  console.log(user);
+
+  if (!user)
+    return next(
+      new ThrowError(`User ${req.body.username} already existed!`, 400)
+    );
   res.status(200).json({
     success: true,
     msg: `User Account ${req.body.username} sucessfully created!`,
