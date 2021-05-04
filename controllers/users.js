@@ -121,7 +121,7 @@ exports.setUserPassword = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    msg: `Passowrd of username ${username} successfully updated!`,
+    msg: `Password of ${username} successfully updated!`,
   });
 });
 

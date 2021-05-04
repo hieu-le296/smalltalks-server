@@ -14,9 +14,14 @@ const { removeUserPictures } = require('../utils/removeUserPictures');
  */
 exports.register = asyncHandler(async (req, res, next) => {
   // Create user
-  const user = await User.create(req.body);
+  await User.create(req.body);
 
-  sendTokenCookie(user.insertId, 200, res);
+  res.status(200).json({
+    success: true,
+    msg: `User Account ${req.body.username} sucessfully created!`,
+  });
+
+  // sendTokenCookie(user.insertId, 200, res);
 });
 
 /**
