@@ -40,7 +40,7 @@ exports.getUser = asyncHandler(async (req, res, next) => {
  * @access          Private - access only by admin
  */
 exports.createUser = asyncHandler(async (req, res, next) => {
-  const result = await User.create(req.body);
+  const result = await User.adminCreate(req.body);
 
   if (!result) return next(new ThrowError('User already existed', 406));
 

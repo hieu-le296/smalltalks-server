@@ -75,6 +75,11 @@ class User {
     return new User(user[0]).data;
   }
 
+  /**
+   * Create a user
+   * @param {*} user
+   * @returns
+   */
   static async create(user) {
     const db = new Database();
     user.password = await User.encryptPassword(user.password.toString());
@@ -86,6 +91,26 @@ class User {
       user.email,
       user.password,
       'user',
+    ]);
+    return result;
+  }
+
+  /**
+   * Admin creates a user. Admin can decide the role
+   * @param {*} user
+   * @returns the user created
+   */
+  static async adminCreate(user) {
+    const db = new Database();
+    user.password = await User.encryptPassword(user.password.toString());
+    let insertQuery = `INSERT INTO users(name, username, email, passwd, role) VALUES(?, ?, ?, ?, ?);`;
+
+    const result = await db.queryDatabase(insertQuery, [
+      user.name,
+      user.username,
+      user.email,
+      user.password,
+      user.role,
     ]);
     return result;
   }
