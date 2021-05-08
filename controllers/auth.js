@@ -5,7 +5,7 @@ const asyncHandler = require('../middleware/async');
 const ThrowError = require('../utils/throwError');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
-const { removeUserPictures } = require('../utils/removeUserPictures');
+const ImageHandler = require('../utils/ImageHandler');
 
 /**
  * @description     Register user
@@ -15,8 +15,6 @@ const { removeUserPictures } = require('../utils/removeUserPictures');
 exports.register = asyncHandler(async (req, res, next) => {
   // Create user
   const user = await User.create(req.body);
-
-  console.log(user);
 
   if (!user)
     return next(
@@ -206,28 +204,23 @@ exports.uploadProfilePic = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Create custom filename and its extension
-  file.name = `photo_${user.userId}${path.parse(file.name).ext}`;
-
-  file.mv(
-    `${process.env.FILE_UPLOAD_PATH}/avatars/${file.name}`,
-    async (err) => {
-      if (err) {
-        console.log(err);
-        return next(new ThrowError(`Problem with file upload`, 500));
-      }
-      await User.findUserAndUpdatePicture(
-        req.params.userId,
-        'profilePic',
-        file.name
-      );
-
-      res.status(200).json({
-        success: true,
-        data: file.name,
-      });
-    }
+  const imagePath = `${process.env.FILE_UPLOAD_PATH}/avatars`;
+  const imageUpload = new ImageHandler(imagePath);
+  const fileName = await imageUpload.saveProfile(
+    req.files.file.data,
+    req.params.userId
   );
+
+  await User.findUserAndUpdatePicture(
+    req.params.userId,
+    'profilePic',
+    fileName
+  );
+
+  res.status(200).json({
+    success: true,
+    data: fileName,
+  });
 });
 
 /**
@@ -269,28 +262,23 @@ exports.uploadBackgroundPic = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Create custom filename and its extension
-  file.name = `background_${user.userId}${path.parse(file.name).ext}`;
-
-  file.mv(
-    `${process.env.FILE_UPLOAD_PATH}/backgrounds/${file.name}`,
-    async (err) => {
-      if (err) {
-        console.log(err);
-        return next(new ThrowError(`Problem with file upload`, 500));
-      }
-      await User.findUserAndUpdatePicture(
-        req.params.userId,
-        'backgroundPic',
-        file.name
-      );
-
-      res.status(200).json({
-        success: true,
-        data: file.name,
-      });
-    }
+  const imagePath = `${process.env.FILE_UPLOAD_PATH}/backgrounds`;
+  const imageUpload = new ImageHandler(imagePath);
+  const fileName = await imageUpload.saveBackground(
+    req.files.file.data,
+    req.params.userId
   );
+
+  await User.findUserAndUpdatePicture(
+    req.params.userId,
+    'backgroundPic',
+    fileName
+  );
+
+  res.status(200).json({
+    success: true,
+    data: fileName,
+  });
 });
 
 /**
@@ -336,7 +324,7 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 
   await User.findByIdandDelete(req.params.userId);
 
-  removeUserPictures(user.userId);
+  ImageHandler.removeUserImages(user.userId);
 
   res.status(200).json({
     success: true,

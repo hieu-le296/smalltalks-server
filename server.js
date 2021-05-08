@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const colors = require('colors');
 const cors = require('cors');
+const compression = require('compression');
 
 // Load middleware
 const errorHandler = require('./middleware/error');
@@ -49,7 +50,10 @@ app.use(fileUpload());
 app.use(routeURLDetector);
 
 // Set secruity header
-// app.use(helmet());
+app.use(helmet());
+
+//Compress all routes
+app.use(compression());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));

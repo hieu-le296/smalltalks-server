@@ -31,7 +31,6 @@ exports.getQuestions = asyncHandler(async (req, res, next) => {
  * @access          Public
  */
 exports.getQuestion = asyncHandler(async (req, res, next) => {
-  console.log(req.params.slug);
   const question = await Question.findOne('slug', req.params.slug);
 
   res.status(200).json({

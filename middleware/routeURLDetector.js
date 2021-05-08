@@ -8,8 +8,6 @@ const routeURLDetector = async (req, res, next) => {
    */
   let arr = req.path.split('/');
 
-
-
   if (arr[1] == 'uploads') {
     if (arr[2] == 'avatars') {
       arr[3] = 'profilePic';
@@ -28,23 +26,19 @@ const routeURLDetector = async (req, res, next) => {
         arr[index] = 'slug';
       }
 
-      if(element == 'resetpassword') {
-        arr[index+1]='token';
+      if (element == 'resetpassword') {
+        arr[index + 1] = 'token';
       }
 
-      if(element == 'users'){
-        arr[index+1]='userName'
+      if (element == 'users') {
+        arr[index + 1] = 'userName';
       }
     });
   }
 
   let generializedPathName = arr.join('/');
 
-  
-
   if (arr[1] == 'api' || arr[1] == 'uploads') {
-
-   // console.log('path --> ',generializedPathName);
     //Store generalized request url in the request object
     req.routeURL = req.baseUrl + generializedPathName;
 

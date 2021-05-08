@@ -3,19 +3,14 @@ const Database = require('../utils/db_query');
 class RouteStats {
   constructor() {}
 
-
-
-  static async getAll(){
-
+  static async getAll() {
     const db = new Database();
 
     let query = `SELECT * FROM routeStats`;
 
-    const routesData = await db.queryDatabase(query,[]);
-
+    const routesData = await db.queryDatabase(query, []);
 
     return routesData;
-
   }
 
   /**

@@ -1,6 +1,6 @@
 {
-  "name": "group-project",
-  "version": "1.0.0",
+  "name": "smalltalks",
+  "version": "1.1.0",
   "description": "API Server for Question Answer platform",
   "main": "server.js",
   "scripts": {
@@ -21,6 +21,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
+    "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
@@ -35,7 +36,9 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.5.0",
     "npm": "^7.8.0",
-    "slugify": "^1.5.0"
+    "sharp": "^0.28.1",
+    "slugify": "^1.5.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
