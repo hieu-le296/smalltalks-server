@@ -133,18 +133,14 @@ exports.getUserQuestions = asyncHandler(async (req, res, next) => {
   // Find user
   const user = await checkUserExists(req, res, next);
 
-  const { userId, username, name, profilePic, backgroundPic } = user;
+  const { userId, name } = user;
 
   const questions = await User.findUserQuestions(userId);
 
   res.status(200).json({
     success: true,
-    msg: `All quetions that username ${username} posted`,
+    msg: `All quetions that User ${name} posted`,
     userId: userId,
-    name: name,
-    username: username,
-    backgroundPic: backgroundPic,
-    profilePic: profilePic,
     questions: questions,
   });
 });

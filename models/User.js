@@ -160,12 +160,33 @@ class User {
   static async findUserQuestions(id) {
     const db = new Database();
     let query = `
-      SELECT q.questionId, q.title, q.slug, q.content, q.createdAt, q.updatedAt FROM users u 
+      SELECT q.questionId, q.title, q.slug, q.content, q.createdAt, q.updatedAt, u.name, u.username, u.profilePic, u.backgroundPic FROM users u 
       INNER JOIN questions q ON u.userId = q.userId 
       WHERE u.userId = ?
     `;
-    const data = await db.queryDatabase(query, [id]);
-    return data;
+    const questions = await db.queryDatabase(query, [id]);
+
+    const questionsData = [];
+
+    questions.forEach((question) => {
+      const data = {
+        questionId: question.questionId,
+        postedBy: {
+          userId: question.userId,
+          username: question.username,
+          name: question.name,
+          profilePic: question.profilePic,
+        },
+        title: question.title,
+        content: question.content,
+        slug: question.slug,
+        createdAt: question.createdAt,
+        updatedAt: question.updatedAt,
+      };
+
+      questionsData.push(data);
+    });
+    return questionsData;
   }
 
   /**
@@ -230,7 +251,11 @@ class User {
     return await bcrypt.compare(enteredPassword, userPassword);
   }
 
-  // Generate and hash password token
+  /**
+   * Generate the token for password reset
+   * @param {*} userId of the user
+   * @returns the reset Token
+   */
   static async getResetPasswordToken(userId) {
     const db = new Database();
 
@@ -265,12 +290,22 @@ class User {
     return resetToken;
   }
 
+  /**
+   * Empty the Reset Token and Expiration Date
+   * @param {*} id of the user
+   */
   static async emptyTokenAndExpire(id) {
     const db = new Database();
     const query = `UPDATE users SET resetPasswordToken = NULL, resetPasswordExpire = NULL WHERE userId = ? `;
     await db.queryDatabase(query, [id]);
   }
 
+  /**
+   * Check if there is time left for token.
+   * @param {*} type of the field
+   * @param {*} id of the user
+   * @returns
+   */
   static async checkTokenTimeLeft(type, id) {
     const db = new Database();
     const query = `SELECT TIMESTAMPDIFF(MINUTE, CURRENT_TIMESTAMP() , ${type}) AS timeLeft FROM users WHERE userId = ?;`;
