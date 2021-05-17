@@ -31,7 +31,9 @@ class Comment {
 
   /**
    * Method to find all comments linked to a post having unique ID
-   *
+   * @param {*} postId
+   * @param {*} req
+   * @returns commentsData
    */
   static async findAll(postId, req) {
     const db = new Database();
@@ -56,6 +58,8 @@ class Comment {
 
   /**
    * Method to find one comment by id
+   * @param {*} id of the comment
+   * @returns single commment
    */
   static async findOne(id) {
     const db = new Database();
@@ -72,6 +76,8 @@ class Comment {
 
   /**
    * Method to create a comment for a post
+   * @param {*} commentData
+   * @returns insertId - a promise
    */
   static async create(commentData) {
     const { postId, commentUserId, content } = commentData;
@@ -79,19 +85,14 @@ class Comment {
     const db = new Database();
     const query = `INSERT INTO comments (postId,commentUserId,content) values(?,?,?)`;
 
-    const comment = await db.queryDatabase(query, [
-      postId,
-      commentUserId,
-      content,
-    ]);
-
-    //Return JSON object of new comment to frontend -- including info of user who posted the comment
-    return comment;
-    // return Comment.findOne(comment.insertId);
+    return db.queryDatabase(query, [postId, commentUserId, content]);
   }
 
   /**
    * Method to update a comment for a post
+   * @param {*} id
+   * @param {*} commentData
+   * @returns updated comment
    */
   static async update(id, commentData) {
     const { content } = commentData;
@@ -108,15 +109,13 @@ class Comment {
 
   /**
    * Method to delete a comment for a post
+   * @param {*} commentId of the comment
+   * @returns a promise
    */
   static async delete(commentId) {
     const db = new Database();
     const query = `DELETE FROM comments WHERE commentId = ?`;
-
-    await db.queryDatabase(query, [commentId]);
-
-    //Return JSON object of new comment to frontend -- including info of user who posted the comment
-    return true;
+    return db.queryDatabase(query, [commentId]);
   }
 }
 

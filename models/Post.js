@@ -41,13 +41,13 @@ class Post {
     const db = new Database();
 
     let query = `
-    SELECT q.postId, q.title, q.slug, q.content, u.userId, u.username, u.name, u.profilePic, q.createdAt, q.updatedAt
-    FROM posts q INNER JOIN users u 
-    ON q.userId = u.userId
-    ORDER BY q.postId DESC`;
+    SELECT p.postId, p.title, p.slug, p.content, u.userId, u.username, u.name, u.profilePic, p.createdAt, p.updatedAt
+    FROM posts p INNER JOIN users u 
+    ON p.userId = u.userId
+    ORDER BY p.postId DESC`;
 
     if (req.searchKey) {
-      query += ` WHERE q.title LIKE CONCAT('%','${req.searchKey}','%') OR q.content LIKE CONCAT('%','${req.searchKey}','%')`;
+      query += ` WHERE p.title LIKE CONCAT('%','${req.searchKey}','%') OR p.content LIKE CONCAT('%','${req.searchKey}','%')`;
     }
 
     if (req.limit && req.offset) {
@@ -72,10 +72,10 @@ class Post {
   static async findOne(field, value) {
     const db = new Database();
     let query = `
-            SELECT q.postId, q.title, q.slug, q.content, q.userId, u.username, u.name, u.profilePic, q.createdAt, q.updatedAt
-            FROM posts q INNER JOIN users u
-            ON q.userId = u.userId
-            WHERE q.${field} = ?;`;
+            SELECT p.postId, p.title, p.slug, p.content, p.userId, u.username, u.name, u.profilePic, p.createdAt, p.updatedAt
+            FROM posts p INNER JOIN users u
+            ON p.userId = u.userId
+            WHERE p.${field} = ?;`;
 
     const posts = await db.queryDatabase(query, [value]);
     return new Post(posts[0]).data;
@@ -84,7 +84,7 @@ class Post {
   /**
    * Create a post
    * @param {post} post is the object
-   * @returns insertId
+   * @returns insertId - a promise
    */
   static async create(post) {
     const db = new Database();
@@ -100,7 +100,7 @@ class Post {
   /**
    * Update a post by Id
    * @param {id} id of the post
-   * @param {post} post is the object
+   * @param {post} post is the object - a promise
    */
   static async findByIdAndUpdate(id, post) {
     const db = new Database();
@@ -111,7 +111,7 @@ class Post {
   /**
    * Delete a post by Id
    * @param {id} id of the post
-   * @returns {}
+   * @returns {} - a promise
    */
   static async findByIdAndDelete(id) {
     const db = new Database();

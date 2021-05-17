@@ -7,7 +7,7 @@ const {
   updateUser,
   setUserPassword,
   deleteUser,
-  getUserQuestions,
+  getUserPosts,
   getUserComments,
 } = require('../controllers/users');
 
@@ -37,7 +37,7 @@ router
 
 // Public Access
 
-router.route('/:username/questions').get(getUserQuestions);
+router.route('/:username/posts').get(getUserPosts);
 
 router.route('/:username/comments').get(getUserComments);
 

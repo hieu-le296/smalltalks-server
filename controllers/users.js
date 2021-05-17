@@ -1,4 +1,3 @@
-const fs = require('fs');
 const ThrowError = require('../utils/throwError');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
@@ -125,34 +124,34 @@ exports.setUserPassword = asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @description     Get User's all questions. This route is for showing on user's public page. Admin or question author can delete any questions of that user
- * @route           GET /api/v1/users/:id/questions
+ * @description     Get User's all posts. This route is for showing on user's public page. Admin or post author can delete any posts of that user
+ * @route           GET /api/v1/users/:id/posts
  * @access          Public
  */
-exports.getUserQuestions = asyncHandler(async (req, res, next) => {
+exports.getUserPosts = asyncHandler(async (req, res, next) => {
   // Find user
-  const user = checkUserExists(req, res, next);
+  const user = await checkUserExists(req, res, next);
 
   const { userId, name } = user;
 
-  const questions = await User.findUserQuestions(userId);
+  const posts = await User.findUserPosts(userId);
 
   res.status(200).json({
     success: true,
-    msg: `All quetions that User ${name} posted`,
+    msg: `All posts that User ${name} posted`,
     userId: userId,
-    questions: questions,
+    posts: posts,
   });
 });
 
 /**
- * @description     Get User's all questions. This route is for showing on user's public page. Admin can delete any comments of that user
+ * @description     Get User's all posts. This route is for showing on user's public page. Admin can delete any comments of that user
  * @route           GET /api/v1/users/:id/comments
  * @access          Public
  */
 exports.getUserComments = asyncHandler(async (req, res, next) => {
   // Find user
-  const user = checkUserExists(req, res, next);
+  const user = await checkUserExists(req, res, next);
 
   const { userId, username, name, profilePic, backgroundPic } = user;
 
@@ -169,8 +168,6 @@ exports.getUserComments = asyncHandler(async (req, res, next) => {
   });
 });
 
-const checkUserExists = async (req, res, next) => {
-  const user = await User.findOne('username', req.params.username);
-  if (!user) return next(new ThrowError('User not found!', 404));
-  return user;
+const checkUserExists = (req, res, next) => {
+  return User.findOne('username', req.params.username);
 };
