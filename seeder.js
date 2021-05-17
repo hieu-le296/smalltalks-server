@@ -37,7 +37,7 @@ function queryDatabase(query, values) {
 
 async function encryptPassword(password) {
   const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
+  return bcrypt.hash(password, salt);
 }
 
 // Read JSON files
@@ -45,8 +45,8 @@ const users = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8')
 );
 
-const questions = JSON.parse(
-  fs.readFileSync(`${__dirname}/_data/questions.json`, 'utf-8')
+const posts = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/posts.json`, 'utf-8')
 );
 
 const comments = JSON.parse(
@@ -73,29 +73,29 @@ async function createUsers(usersObj) {
   await queryDatabase(query, [userArr]);
 }
 
-async function createQuestions(questionsObj) {
-  const query = `INSERT INTO questions(questionId, userId, title, slug, content) VALUES ?`;
-  const questionArr = [];
-  for (let i = 0; i < questionsObj.length; i++) {
-    let question = [
-      questionsObj[i].questionId,
-      questionsObj[i].userId,
-      questionsObj[i].title,
-      slug(questions[i].title),
-      questionsObj[i].content,
+async function createPosts(postsObj) {
+  const query = `INSERT INTO posts(postId, userId, title, slug, content) VALUES ?`;
+  const postArr = [];
+  for (let i = 0; i < postsObj.length; i++) {
+    let post = [
+      postsObj[i].postId,
+      postsObj[i].userId,
+      postsObj[i].title,
+      slug(posts[i].title),
+      postsObj[i].content,
     ];
-    questionArr.push(question);
+    postArr.push(post);
   }
-  await queryDatabase(query, [questionArr]);
+  await queryDatabase(query, [postArr]);
 }
 
 async function createComments(commentsObj) {
-  const query = `INSERT INTO comments(commentId, questionId, commentUserId, content) VALUES ?;`;
+  const query = `INSERT INTO comments(commentId, postId, commentUserId, content) VALUES ?;`;
   const commentArr = [];
   for (let i = 0; i < commentsObj.length; i++) {
     let comment = [
       commentsObj[i].commentId,
-      commentsObj[i].questionId,
+      commentsObj[i].postId,
       commentsObj[i].commentUserId,
       commentsObj[i].content,
     ];
@@ -109,7 +109,7 @@ const importData = async () => {
   try {
     console.log('Please Wait! Importing Data...'.green.inverse);
     await createUsers(users);
-    await createQuestions(questions);
+    await createPosts(posts);
     await createComments(comments);
   } catch (error) {
     console.log(error);

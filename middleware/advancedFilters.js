@@ -1,5 +1,5 @@
 /**
- * Function for handling request parameters for filtering/sorting questions stored in the database
+ * Function for handling request parameters for filtering/sorting posts stored in the database
  */
 
 const advancedFilters = (req, res, next) => {

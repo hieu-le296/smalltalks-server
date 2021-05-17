@@ -5,7 +5,7 @@ class Database {
   constructor() {
     this.connectPool = connectPool;
     this.createTable(userTable);
-    this.createTable(questionTable);
+    this.createTable(postTable);
     this.createTable(commentTable);
     this.createTable(routeStatsTable);
   }
@@ -51,9 +51,9 @@ let userTable = `
 ) 
 `;
 
-let questionTable = `
-  CREATE TABLE IF NOT EXISTS questions(
-    questionId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+let postTable = `
+  CREATE TABLE IF NOT EXISTS posts(
+    postId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userId INT(11) NOT NULL, 
     title VARCHAR(500) NOT NULL UNIQUE,
     slug VARCHAR(500) NOT NULL,
@@ -67,13 +67,13 @@ let questionTable = `
 let commentTable = `
   CREATE TABLE IF NOT EXISTS comments(
     commentId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    questionId INT(11) NOT NULL,
+    postId INT(11) NOT NULL,
     commentUserId INT(11) NOT NULL, 
     content TEXT NOT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (commentUserId) REFERENCES users (userId) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (questionId) REFERENCES questions (questionId) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (postId) REFERENCES posts (postId) ON DELETE CASCADE ON UPDATE CASCADE
 )
 `;
 

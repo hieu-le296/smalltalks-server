@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ufvteam/datacomputation-server.git"
+    "url": "git+https://github.com/hieu-le296/smalltalks-server.git"
   },
   "author": "Hieu Le, Gurjit",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ufvteam/datacomputation-server/issues"
+    "url": "https://github.com/hieu-le296/smalltalks-server/issues"
   },
-  "homepage": "https://github.com/ufvteam/datacomputation-server#readme",
+  "homepage": "https://github.com/hieu-le296/smalltalks-server#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",

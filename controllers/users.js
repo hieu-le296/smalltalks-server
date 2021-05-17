@@ -131,7 +131,7 @@ exports.setUserPassword = asyncHandler(async (req, res, next) => {
  */
 exports.getUserQuestions = asyncHandler(async (req, res, next) => {
   // Find user
-  const user = await checkUserExists(req, res, next);
+  const user = checkUserExists(req, res, next);
 
   const { userId, name } = user;
 
@@ -152,7 +152,7 @@ exports.getUserQuestions = asyncHandler(async (req, res, next) => {
  */
 exports.getUserComments = asyncHandler(async (req, res, next) => {
   // Find user
-  const user = await checkUserExists(req, res, next);
+  const user = checkUserExists(req, res, next);
 
   const { userId, username, name, profilePic, backgroundPic } = user;
 

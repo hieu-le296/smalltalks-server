@@ -37,7 +37,7 @@ class User {
   static async findAll() {
     const db = new Database();
 
-    let query = 'SELECT * FROM users;';
+    let query = 'SELECT * FROM users ORDER BY userId DESC;';
     const users = await db.queryDatabase(query, []);
     const usersData = [];
 
@@ -82,17 +82,16 @@ class User {
    */
   static async create(user) {
     const db = new Database();
-    user.password = await User.encryptPassword(user.password.toString());
+    user.password = User.encryptPassword(user.password.toString());
     let insertQuery = `INSERT INTO users(name, username, email, passwd, role) VALUES(?, ?, ?, ?, ?);`;
 
-    const result = await db.queryDatabase(insertQuery, [
+    return db.queryDatabase(insertQuery, [
       user.name,
       user.username,
       user.email,
       user.password,
       'user',
     ]);
-    return result;
   }
 
   /**
@@ -102,17 +101,16 @@ class User {
    */
   static async adminCreate(user) {
     const db = new Database();
-    user.password = await User.encryptPassword(user.password.toString());
+    user.password = User.encryptPassword(user.password.toString());
     let insertQuery = `INSERT INTO users(name, username, email, passwd, role) VALUES(?, ?, ?, ?, ?);`;
 
-    const result = await db.queryDatabase(insertQuery, [
+    return db.queryDatabase(insertQuery, [
       user.name,
       user.username,
       user.email,
       user.password,
       user.role,
     ]);
-    return result;
   }
 
   /**
@@ -125,7 +123,7 @@ class User {
     const db = new Database();
     let query = `UPDATE users SET ? WHERE userId = ?`;
 
-    return await db.queryDatabase(query, [user, id]);
+    return db.queryDatabase(query, [user, id]);
   }
 
   /**
@@ -136,9 +134,9 @@ class User {
    */
   static async setUserPassword(id, password) {
     const db = new Database();
-    const newPassword = await User.encryptPassword(password);
+    const newPassword = User.encryptPassword(password);
     let query = `UPDATE users SET passwd = ? WHERE userId = ?`;
-    return await db.queryDatabase(query, [newPassword, id]);
+    return db.queryDatabase(query, [newPassword, id]);
   }
 
   /**
@@ -149,7 +147,7 @@ class User {
   static async findByIdandDelete(id) {
     const db = new Database();
     let query = `DELETE FROM users WHERE userId = ?`;
-    return await db.queryDatabase(query, [id]);
+    return db.queryDatabase(query, [id]);
   }
 
   /**
@@ -163,6 +161,7 @@ class User {
       SELECT q.questionId, q.title, q.slug, q.content, q.createdAt, q.updatedAt, u.name, u.username, u.profilePic, u.backgroundPic FROM users u 
       INNER JOIN questions q ON u.userId = q.userId 
       WHERE u.userId = ?
+      ORDER BY q.postId DESC;
     `;
     const questions = await db.queryDatabase(query, [id]);
 
@@ -203,8 +202,7 @@ class User {
         ON c.questionId = q.questionId
       WHERE u.userId = ?
     `;
-    const data = await db.queryDatabase(query, [id]);
-    return data;
+    return db.queryDatabase(query, [id]);
   }
 
   /**
@@ -217,7 +215,7 @@ class User {
     const db = new Database();
     let query = `UPDATE users SET ${type} = ? WHERE userId = ?;`;
 
-    return await db.queryDatabase(query, [filename, id]);
+    return db.queryDatabase(query, [filename, id]);
   }
 
   /**
@@ -227,7 +225,7 @@ class User {
    */
   static async encryptPassword(password) {
     const salt = await bcrypt.genSalt(10);
-    return await bcrypt.hash(password, salt);
+    return bcrypt.hash(password, salt);
   }
 
   /**
@@ -245,10 +243,10 @@ class User {
    * Compare the entered password with the correct user password
    * @param {*} enteredPassword
    * @param {*} userPassword
-   * @returns
+   * @returns a promise
    */
-  static async matchPassword(enteredPassword, userPassword) {
-    return await bcrypt.compare(enteredPassword, userPassword);
+  static matchPassword(enteredPassword, userPassword) {
+    return bcrypt.compare(enteredPassword, userPassword);
   }
 
   /**
@@ -310,7 +308,7 @@ class User {
     const db = new Database();
     const query = `SELECT TIMESTAMPDIFF(MINUTE, CURRENT_TIMESTAMP() , ${type}) AS timeLeft FROM users WHERE userId = ?;`;
 
-    return await db.queryDatabase(query, [id]);
+    return db.queryDatabase(query, [id]);
   }
 }
 

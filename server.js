@@ -59,7 +59,7 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Import route modules
-const questions = require('./routes/questions');
+const posts = require('./routes/posts');
 const users = require('./routes/users');
 const comments = require('./routes/comments');
 const auth = require('./routes/auth');
@@ -69,7 +69,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.use('/api/v1/questions', routeURLDetector, questions);
+app.use('/api/v1/posts', routeURLDetector, posts);
 app.use('/api/v1/users', routeURLDetector, users);
 app.use('/api/v1/comments', routeURLDetector, comments);
 app.use('/api/v1/auth', routeURLDetector, auth);

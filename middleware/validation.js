@@ -1,10 +1,10 @@
 const { check, validationResult, body } = require('express-validator');
 const ThrowError = require('../utils/throwError');
 
-exports.questionValidation = async (req, res, next) => {
+exports.postValidation = async (req, res, next) => {
   await check('title')
     .notEmpty()
-    .withMessage(' Please input the question title')
+    .withMessage(' Please input the post title')
     .run(req);
 
   await check('content')

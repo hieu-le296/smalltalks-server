@@ -30,21 +30,21 @@ class Comment {
   }
 
   /**
-   * Method to find all comments linked to a question having unique ID
+   * Method to find all comments linked to a post having unique ID
    *
    */
-  static async findAll(questionId, req) {
+  static async findAll(postId, req) {
     const db = new Database();
     let query = `SELECT c.commentId, c.commentUserId, u.name, u.username, u.profilePic, c.content, c.createdAt, c.updatedAt FROM comments c 
                 INNER JOIN users u ON 
                 c.commentUserId = u.userId 
-                WHERE c.questionId = ? ORDER BY c.createdAt DESC`;
+                WHERE c.postId = ? ORDER BY c.createdAt DESC`;
 
     if (req.searchKey) {
       query += ` AND c.content LIKE CONCAT('%','${req.searchKey}','%')`;
     }
 
-    const comments = await db.queryDatabase(query, [questionId]);
+    const comments = await db.queryDatabase(query, [postId]);
 
     const commentsData = [];
 
@@ -71,16 +71,16 @@ class Comment {
   }
 
   /**
-   * Method to create a comment for a question
+   * Method to create a comment for a post
    */
   static async create(commentData) {
-    const { questionId, commentUserId, content } = commentData;
+    const { postId, commentUserId, content } = commentData;
 
     const db = new Database();
-    const query = `INSERT INTO comments (questionId,commentUserId,content) values(?,?,?)`;
+    const query = `INSERT INTO comments (postId,commentUserId,content) values(?,?,?)`;
 
     const comment = await db.queryDatabase(query, [
-      questionId,
+      postId,
       commentUserId,
       content,
     ]);
@@ -91,7 +91,7 @@ class Comment {
   }
 
   /**
-   * Method to update a comment for a question
+   * Method to update a comment for a post
    */
   static async update(id, commentData) {
     const { content } = commentData;
@@ -107,7 +107,7 @@ class Comment {
   }
 
   /**
-   * Method to delete a comment for a question
+   * Method to delete a comment for a post
    */
   static async delete(commentId) {
     const db = new Database();

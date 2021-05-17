@@ -3,20 +3,20 @@ const asyncHandler = require('../middleware/async');
 const Comment = require('../models/Comment');
 
 /**
- * @description     Get all comments that associated with the question
- * @route           GET /api/v1/questions/:questionId/comments
+ * @description     Get all comments that associated with the post
+ * @route           GET /api/v1/posts/:postId/comments
  * @access          Public
  */
 exports.getComments = async (req, res, next) => {
-  const questionId = req.params.questionId;
+  const postId = req.params.postId;
 
-  const questionComments = await Comment.findAll(questionId, req);
+  const postComments = await Comment.findAll(postId, req);
 
-  if (questionComments.length > 0) {
+  if (postComments.length > 0) {
     res.status(200).json({
       success: true,
-      data: questionComments,
-      msg: `Show all comments of the question with the id of ${req.params.questionId}`,
+      data: postComments,
+      msg: `Show all comments of the post with the id of ${req.params.postId}`,
     });
   } else {
     return next(new ThrowError('No comments found', 404));
@@ -41,8 +41,8 @@ exports.getComment = async (req, res, next) => {
 };
 
 /**
- * @description     Create a question comment
- * @route           POST /api/v1/questions/:questionId/comments
+ * @description     Create a post comment
+ * @route           POST /api/v1/posts/:postId/comments
  * @access          Private - authenticated users
  */
 exports.createComment = asyncHandler(async (req, res, next) => {
@@ -55,7 +55,7 @@ exports.createComment = asyncHandler(async (req, res, next) => {
 
   req.body.commentUserId = req.user.userId;
 
-  req.body.questionId = req.params.questionId;
+  req.body.postId = req.params.postId;
 
   const comment = await Comment.create(req.body);
 
@@ -78,22 +78,22 @@ exports.createComment = asyncHandler(async (req, res, next) => {
  */
 exports.updateComment = asyncHandler(async (req, res, next) => {
   req.body.commentUserId = req.user.userId;
-  
+
   const comment = await Comment.findOne(req.params.id);
 
   // Check if the comment author
-  if (comment.postedBy.commentUserId !== req.user.userId && req.user.role !== 'admin'){
+  if (
+    comment.postedBy.commentUserId !== req.user.userId &&
+    req.user.role !== 'admin'
+  ) {
     return next(
       new ThrowError('This user is not authorized to update the comment', 401)
     );
   }
 
-    if(!comment) {
-      return next(
-        new ThrowError('Could not update the comment', 404)
-    );
-    }
-        
+  if (!comment) {
+    return next(new ThrowError('Could not update the comment', 404));
+  }
 
   const updatedComment = await Comment.update(req.params.id, req.body);
 
@@ -114,15 +114,18 @@ exports.deleteComment = async (req, res, next) => {
 
   const comment = await Comment.findOne(req.params.id);
 
-  if (!comment){
+  if (!comment) {
     return next(new ThrowError('Could not delete the comment', 404));
   }
-   
-    // Check if the comment author
-    if (comment.postedBy.commentUserId !== req.user.userId && req.user.role !== 'admin')
-      return next(
-        new ThrowError('This user is not authorized to update the comment', 401)
-      );
+
+  // Check if the comment author
+  if (
+    comment.postedBy.commentUserId !== req.user.userId &&
+    req.user.role !== 'admin'
+  )
+    return next(
+      new ThrowError('This user is not authorized to update the comment', 401)
+    );
 
   await Comment.delete(req.params.id);
 
