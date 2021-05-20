@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs');
 const crypto = require('crypto');
 const asyncHandler = require('../middleware/async');
 const ThrowError = require('../utils/throwError');
@@ -92,8 +91,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data:
-        'An email has been sent to your mailbox for resetting the password!',
+      data: 'An email has been sent to your mailbox for resetting the password!',
     });
   } catch (error) {
     // Empty resetPasswordToken and resetPasswordExpire

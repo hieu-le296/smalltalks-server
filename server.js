@@ -63,6 +63,7 @@ const posts = require('./routes/posts');
 const users = require('./routes/users');
 const comments = require('./routes/comments');
 const auth = require('./routes/auth');
+const contactMe = require('./routes/contactMe');
 const routeStats = require('./routes/routeStats');
 
 app.get('/', (req, res) => {
@@ -73,6 +74,7 @@ app.use('/api/v1/posts', routeURLDetector, posts);
 app.use('/api/v1/users', routeURLDetector, users);
 app.use('/api/v1/comments', routeURLDetector, comments);
 app.use('/api/v1/auth', routeURLDetector, auth);
+app.use('/api/v1/contactme', routeURLDetector, contactMe);
 app.use('/api/v1/routeStats', routeURLDetector, routeStats);
 
 app.use(errorHandler);

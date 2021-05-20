@@ -69,6 +69,23 @@ exports.loginValidation = async (req, res, next) => {
   await parseErrors(req, res, next);
 };
 
+// validation for contact me
+exports.contactMeValidation = async (req, res, next) => {
+  await check('name').notEmpty().withMessage(' Please input the name').run(req);
+
+  await check('email')
+    .notEmpty()
+    .withMessage(' Please input the email')
+    .run(req);
+
+  await check('message')
+    .notEmpty()
+    .withMessage(' Please input a message')
+    .run(req);
+
+  await parseErrors(req, res, next);
+};
+
 //Parse errors and return errors,if any and proceed to next middleware
 let parseErrors = (req, res, next) => {
   const errors = validationResult(req).formatWith(({ msg }) => msg);
