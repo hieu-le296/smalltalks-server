@@ -3,23 +3,27 @@ const asyncHandler = require('../middleware/async');
 const Comment = require('../models/Comment');
 
 /**
- * @description     Get all comments that associated with the post
- * @route           GET /api/v1/posts/:postId/comments
+ * @description     Get all comments that associated with the question
+ * @route           GET /api/v1/questions/:questionId/comments
  * @access          Public
  */
 exports.getComments = async (req, res, next) => {
-  const postId = req.params.postId;
+  const questionId = req.params.questionId;
 
-  const postComments = await Comment.findAll(postId, req);
+  const questionComments = await Comment.findAll(questionId, req);
 
-  if (postComments.length > 0) {
+  if (questionComments.length > 0) {
     res.status(200).json({
       success: true,
-      data: postComments,
-      msg: `Show all comments of the post with the id of ${req.params.postId}`,
+      data: questionComments,
+      msg: `Show all comments of the question with the id of ${req.params.questionId}`,
     });
   } else {
-    return next(new ThrowError('No comments found', 404));
+    res.status(404).json({
+      success: false,
+      data: [],
+      msg: 'No comments found',
+    });
   }
 };
 
@@ -41,8 +45,8 @@ exports.getComment = async (req, res, next) => {
 };
 
 /**
- * @description     Create a post comment
- * @route           POST /api/v1/posts/:postId/comments
+ * @description     Create a question comment
+ * @route           POST /api/v1/questions/:questionId/comments
  * @access          Private - authenticated users
  */
 exports.createComment = asyncHandler(async (req, res, next) => {
@@ -55,7 +59,7 @@ exports.createComment = asyncHandler(async (req, res, next) => {
 
   req.body.commentUserId = req.user.userId;
 
-  req.body.postId = req.params.postId;
+  req.body.questionId = req.params.questionId;
 
   const comment = await Comment.create(req.body);
 
@@ -92,7 +96,7 @@ exports.updateComment = asyncHandler(async (req, res, next) => {
   }
 
   if (!comment) {
-    return next(new ThrowError('Could not update the comment', 404));
+    return next(new ThrowError('Could not update the comment', 400));
   }
 
   const updatedComment = await Comment.update(req.params.id, req.body);
@@ -115,7 +119,7 @@ exports.deleteComment = async (req, res, next) => {
   const comment = await Comment.findOne(req.params.id);
 
   if (!comment) {
-    return next(new ThrowError('Could not delete the comment', 404));
+    return next(new ThrowError('Could not delete the comment', 400));
   }
 
   // Check if the comment author

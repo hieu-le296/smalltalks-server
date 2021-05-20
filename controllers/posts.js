@@ -85,7 +85,7 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
       new ThrowError('This user is not authorized to update the post', 401)
     );
 
-  if (!post) return next(new ThrowError('Could not update the post', 404));
+  if (!post) return next(new ThrowError('Could not update the post', 400));
 
   req.body.slug = slugify(req.body.title, {
     replacement: '-',
@@ -96,7 +96,7 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 
   const result = await Post.findByIdAndUpdate(req.params.id, req.body);
 
-  if (!result) return next(new ThrowError('Title is duplicated!', 406));
+  if (!result) return next(new ThrowError('Title is duplicated!', 400));
 
   const updatedPost = await Post.findOne('postId', req.params.id);
 
@@ -116,7 +116,7 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
   req.body.userId = req.user.userId;
   const post = await Post.findOne('postId', req.params.id);
 
-  if (!post) return next(new ThrowError('Could not delete the post', 404));
+  if (!post) return next(new ThrowError('Could not delete the post', 400));
 
   // Check if the post author
   if (post.postedBy.userId !== req.user.userId && req.user.role !== 'admin')
