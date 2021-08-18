@@ -78,7 +78,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
   // Create reset url
 
-  const resetUrl = `https://smalltalks.tk/resetpassword/${resetToken}`;
+  const resetUrl = `https://smalltalks.cf/resetpassword/${resetToken}`;
 
   const message = `You are receiving this email because you has requested a password. Click on the link below to change your password:\n\n ${resetUrl}`;
 
